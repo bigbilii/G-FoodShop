@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="gfoodshop-manager-web:war">
+    <output-path>$PROJECT_DIR$/gfoodshop-manager-web/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>gfoodshop-manager-web</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="gfoodshop-manager-web-1.0.0.war">
+      <element id="artifact" artifact-name="gfoodshop-manager-web:war exploded" />
+    </root>
+  </artifact>
+</component>

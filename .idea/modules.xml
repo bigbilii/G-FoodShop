@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/gfoodshop-manager-web/gfoodshop-manager-web.iml" filepath="$PROJECT_DIR$/gfoodshop-manager-web/gfoodshop-manager-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gfoodshop-parent/gfoodshop-parent.iml" filepath="$PROJECT_DIR$/gfoodshop-parent/gfoodshop-parent.iml" />
+    </modules>
+  </component>
+</project>
