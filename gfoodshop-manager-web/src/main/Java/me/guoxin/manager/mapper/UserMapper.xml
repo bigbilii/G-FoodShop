@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="me.guoxin.manager.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="me.guoxin.manager.pojo.GfsUser">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="salt" jdbcType="VARCHAR" property="salt"/>
+        <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime"/>
+        <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime"/>
+        <result column="state" jdbcType="BIGINT" property="state"/>
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="sex" jdbcType="VARCHAR" property="sex"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,username,phone,password,salt,creat_time,last_login_time,status,role_id,sex,address,description
+    </sql>
+
+    <select id="selectByPhone" parameterType="String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gfs_user
+        WHERE phone = #{userPhone}
+    </select>
+
+    <insert id="insert" parameterType="me.guoxin.manager.pojo.GfsUser">
+        INSERT INTO gfs_user(id, username, phone, password, salt, creat_time, last_login_time, status, role_id, sex, address, description)
+        VALUES (#{id}, #{username}, #{phone}, #{password}, #{salt}, #{creatTime}, #{lastLoginTime}, #{status}, #{roleId}, #{sex}, #{address}, #{description});
+    </insert>
+    
+    <select id="getRolesByUserPhone" resultType="String">
+        SELECT
+        r.name
+        FROM
+        gfs_user u
+        JOIN gfs_role r ON u.role_id = r.id
+        WHERE u.phone = #{userPhone}
+    </select>
+
+    <select id="getPermissionsByUserPhone" resultType="String">
+        SELECT
+        p.name
+        FROM
+        gfs_user u
+        JOIN gfs_role r ON u.role_id = r.id
+        JOIN gfs_role_perm rp ON rp.role_id = u.role_id
+        JOIN gfs_perm p ON rp.perm_id = p.id
+        WHERE u.phone = #{userPhone}
+    </select>
+
+</mapper>

@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="gfoodshop-manager-web" target="1.5" />
+      <module name="gfoodshop-manager-web" target="1.8" />
       <module name="gfoodshop-parent" target="1.8" />
     </bytecodeTargetLevel>
   </component>

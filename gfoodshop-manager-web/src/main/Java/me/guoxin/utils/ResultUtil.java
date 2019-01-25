@@ -1,0 +1,44 @@
+package me.guoxin.utils;
+
+
+import me.guoxin.manager.vo.Result;
+
+/**
+ * @author Exrick
+ * @date 2018/03/24
+ */
+public class ResultUtil<T> {
+
+    private Result<T> result;
+
+    public ResultUtil(){
+        result=new Result<>();
+        result.setMessage("success");
+        result.setCode(200);
+    }
+
+    public Result<T> setData(T t){
+        this.result.setData(t);
+        this.result.setCode(200);
+        return this.result;
+    }
+
+    public Result<T> setData(T t, String msg){
+        this.result.setData(t);
+        this.result.setCode(200);
+        this.result.setMessage(msg);
+        return this.result;
+    }
+
+    public Result<T> setMsg(String msg){
+        this.result.setMessage(msg);
+        this.result.setCode(500);
+        return this.result;
+    }
+
+    public Result<T> setMsg(Integer code, String msg){
+        this.result.setMessage(msg);
+        this.result.setCode(code);
+        return this.result;
+    }
+}

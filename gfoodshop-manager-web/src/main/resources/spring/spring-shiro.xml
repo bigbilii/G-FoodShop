@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd ">
+
+    <!-- Shiro过滤器 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- 安全认证管理器 -->
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/gfoodshop/pages/login.html"/>
+        <property name="filterChainDefinitions">
+            <value>
+                <!--静态资源-->
+                /gfoodshop/bower_components/** = anon
+                /gfoodshop/dist/** = anon
+                /gfoodshop/plugins/** = anon
+
+                /user/login = anon
+                /gfoodshop/pages/login.html** = anon
+
+                /user/logout = logout
+                <!--所有请求-->
+                /gfoodshop/pages/** = user
+                /** = authc
+            </value>
+        </property>
+
+    </bean>
+
+    <!-- 配置Shiro RedisManager  -->
+    <bean id="redisManager" class="org.crazycake.shiro.RedisManager">
+        <property name="host" value="192.168.33.10:6379"/>
+    </bean>
+
+    <!-- 配置Shiro 缓存管理 -->
+    <bean id="cacheManager" class="org.crazycake.shiro.RedisCacheManager">
+        <property name="redisManager" ref="redisManager"/>
+        <property name="principalIdFieldName" value="phone"/>
+    </bean>
+
+    <!-- 配置Shiro 会话DAO层 通过redis -->
+    <bean id="redisSessionDAO" class="org.crazycake.shiro.RedisSessionDAO">
+        <property name="redisManager" ref="redisManager"/>
+    </bean>
+
+    <!-- 配置Shiro 会话管理 -->
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <property name="sessionDAO" ref="redisSessionDAO"/>
+        <property name="sessionIdCookie" ref="sessionIdCookie"/>
+    </bean>
+
+    <!-- 会话Cookie模板 -->
+    <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg name="name" value="SID"/>
+        <!-- 如果设置为true，则客户端不会暴露给服务端脚本代码，有助于减少某些类型的跨站脚本攻击 -->
+        <property name="httpOnly" value="true"/>
+        <property name="maxAge" value="-1"/><!-- maxAge=-1表示浏览器关闭时失效此Cookie -->
+    </bean>
+    <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="rememberMe"/>
+        <property name="httpOnly" value="true"/>
+        <property name="maxAge" value="2592000"/><!-- 30天 -->
+    </bean>
+
+    <!-- rememberMe管理器 -->
+    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+        <!-- cipherKey是加密rememberMe Cookie的密匙，默认AES算法 -->
+        <property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}"/>
+        <property name="cookie" ref="rememberMeCookie"/>
+    </bean>
+
+    <!-- Shiro安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="myRealm"/>
+        <property name="cacheManager" ref="cacheManager"/>
+        <property name="sessionManager" ref="sessionManager"/>
+        <property name="rememberMeManager" ref="rememberMeManager"/>
+    </bean>
+
+    <!-- 自定义Realm -->
+    <bean id="myRealm" class="me.guoxin.manager.shiro.MyRealm">
+        <!-- 使用credentialsMatcher实现密码验证服务 -->
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
+    </bean>
+
+    <!-- 密码匹配过程 -->
+    <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <!-- 加密算法名称 -->
+        <property name="hashAlgorithmName" value="md5"/>
+        <!-- 加盐次数 -->
+        <property name="hashIterations" value="2"/>
+        <!-- 是否储存散列后的密码为16进制 -->
+        <property name="storedCredentialsHexEncoded" value="true"/>
+    </bean>
+
+    <!-- Shiro生命周期处理器 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+</beans>
