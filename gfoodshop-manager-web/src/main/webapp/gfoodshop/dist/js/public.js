@@ -5,10 +5,8 @@
  * @returns {boolean}
  */
 function isNull(obj) {
-    if (obj == null || obj == undefined || obj.trim() == "") {
-        return true;
-    }
-    return false;
+    return obj == null || obj == undefined || obj.trim() == "";
+
 }
 
 /**
@@ -19,10 +17,8 @@ function isNull(obj) {
  * @returns {boolean}
  */
 function validLength(obj, length) {
-    if (obj.trim().length < length) {
-        return true;
-    }
-    return false;
+    return obj.trim().length < length;
+
 }
 
 /**
@@ -64,126 +60,3 @@ function validPassword(password) {
 }
 
 
-/**
- * 登录
- */
-function login() {
-    var phone = $("#phone").val();
-    var password = $("#password").val();
-    var remenber = $("#remenber").prop("checked") === true;
-    if (isNull(phone)) {
-        swal("","请输入手机号码!", "error"); 
-        return;
-    }
-    if (!validPhone(phone)) {
-        swal("","请输入正确的手机号!", "error"); 
-        return;
-    }
-    if (isNull(password)) {
-        swal("","请输入密码!", "error"); 
-        return;
-    }
-    if (!validPassword(password)) {
-        swal("","请输入正确的密码!", "error"); 
-        return;
-    }
-    var data = { "phone": phone, "password": password, "remember": remenber }
-    console.log(data)
-    $.ajax({
-        type: "POST",//方法类型
-        dataType: "json",//预期服务器返回的数据类型
-        url: "/user/login",
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(data),
-        success: function (result) {
-            if (result.code === 200) {
-                $(location).prop('href', '/gfoodshop/pages/index.html');
-            } else {
-                swal("登录错误",result.message, "error");
-            }
-        },
-        error: function (result) {
-            swal("登录错误",result.message, "error");
-        }
-    });
-}
-
-function logout() {
-    swal({
-        title: "确认弹框",
-        text: "你将退出登录!",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-    })
-        .then((flag) => {
-            if (flag) {
-                delCookie("user");
-                swal("你已退出此次登录", {
-                    icon: "success",
-                });
-                window.location.href = "login.html";
-            }
-        });
-}
-
-/**
- * 修改密码
- */
-function editPassword() {
-    swal("温馨提示", "暂时还没做哦！");
-}
-
-/**
- * 写入cookie
- *
- * @param name
- * @param value
- */
-function setCookie(name, value) {
-    var Days = 30;
-    var exp = new Date();
-    exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
-    document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString() + ";path=/";
-
-}
-
-/**
- * 读取cookie
- * @param name
- * @returns {null}
- */
-function getCookie(name) {
-    var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-    if (arr = document.cookie.match(reg))
-        return unescape(arr[2]);
-    else
-        return null;
-}
-
-/**
- * 删除cookie
- * @param name
- */
-function delCookie(name) {
-    var exp = new Date();
-    exp.setTime(exp.getTime() - 1);
-    var cval = getCookie(name);
-    if (cval != null)
-        document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
-}
-
-/**
- * 检查cookie
- */
-function checkCookie() {
-    if (getCookie("user") == null) {
-        swal("未登录！");
-        window.location.href = "login.html";
-    }
-}
-
-function showErrorInfo(info) {
-    $('.alert-danger').css("display", "block");
-    $('.alert-danger').html(info);
-}

@@ -11,8 +11,6 @@
     <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
     <!-- iCheck -->
@@ -25,7 +23,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <a href="../../index2.html"><b>GFood</b>Shop</a>
+        <a href="../../index.html"><b>GFood</b>Shop</a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
@@ -64,10 +62,8 @@
 <!-- /.login-box -->
 
 <!-- jQuery 3 -->
-<!-- <script src="../bower_components/jquery/dist/jquery.min.js"></script> -->
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
-<!-- <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script> -->
 <script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <!-- iCheck -->
 <script src="../plugins/iCheck/icheck.min.js"></script>
@@ -83,6 +79,53 @@
             increaseArea: '20%' /* optional */
         });
     });
+
+
+    /**
+     * 登录
+     */
+    function login() {
+        var phone = $("#phone").val();
+        var password = $("#password").val();
+        var remenber = $("#remenber").prop("checked") === true;
+        if (isNull(phone)) {
+            swal("", "请输入手机号码!", "error");
+            return;
+        }
+        if (!validPhone(phone)) {
+            swal("", "请输入正确的手机号!", "error");
+            return;
+        }
+        if (isNull(password)) {
+            swal("", "请输入密码!", "error");
+            return;
+        }
+        if (!validPassword(password)) {
+            swal("", "请输入正确的密码!", "error");
+            return;
+        }
+        var data = {"phone": phone, "password": password, "remember": remenber};
+        $.ajax({
+            type: "POST",//方法类型
+            dataType: "json",//预期服务器返回的数据类型
+            url: "/user/login",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(data),
+            success: function (result) {
+                console.log(result);
+                if (result.code === 200) {
+                    $(location).prop('href', '/gfoodshop/pages/index.html');
+                } else {
+                    alert(result.message)
+                    // swal("", ,result.message "error");
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                swal("", resultMsg.message, "error");
+            }
+        });
+    }
 </script>
 </body>
 

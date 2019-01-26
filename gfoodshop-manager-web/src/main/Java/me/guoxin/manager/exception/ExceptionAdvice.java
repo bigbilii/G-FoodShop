@@ -4,9 +4,7 @@ import me.guoxin.manager.vo.Result;
 import me.guoxin.utils.ResultUtil;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.http.HttpStatus;
@@ -34,7 +32,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Result handleHttpMessageNotReadableException(Exception e) {
         e.printStackTrace();
-        return new ResultUtil<>().setMsg(500,"无法读取");
+        return new ResultUtil<>().setMsg(500, "无法读取");
     }
 
     /**
@@ -46,7 +44,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Result handleMethodArgumentNotValidException(Exception e) {
-        return new ResultUtil<>().setMsg(500,"参数验证失败");
+        return new ResultUtil<>().setMsg(500, "参数验证失败");
     }
 
 
@@ -60,56 +58,58 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Result handleArithmeticException(ArithmeticException e) {
 
-        return new ResultUtil<>().setMsg(500,"服务器内部错误");
+        return new ResultUtil<>().setMsg(500, "服务器内部错误");
     }
 
-    /**
-     * 登陆错误
-     *
-     * @param e
-     * @return
-     */
-    @ExceptionHandler(AuthenticationException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public Result handleAuthenticationException(AuthenticationException e) {
-        log.error(e);
-        return new ResultUtil<>().setMsg(401,"登陆错误");
-    }
-    /**
-     * 登陆错误
-     *
-     * @param e
-     * @return
-     */
-    @ExceptionHandler(AuthorizationException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public Result handleAuthorizationException(AuthorizationException e) {
-        log.error(e);
-        return new ResultUtil<>().setMsg(403,"没有权限");
-    }
-
-    @ExceptionHandler(IncorrectCredentialsException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public Result handleIncorrectCredentialsException(AuthenticationException e) {
-        return new ResultUtil<>().setMsg(401,"用户名或密码错误");
-    }
-
-    @ExceptionHandler(UnknownAccountException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public Result handleUnknownAccountException(UnknownAccountException e) {
-        log.error(e);
-        return new ResultUtil<>().setMsg(401,"请登录");
-    }
-
-
+    /*自定义错误*/
     @ResponseStatus(value = HttpStatus.OK)
     @ExceptionHandler(IException.class)
     public Result<Object> handleIException(IException e) {
-        String errorMsg = "Xmall exception: ";
+        String errorMsg = "GFS exception: ";
         if (e != null) {
             errorMsg = e.getMsg();
             log.warn(e.getMessage());
         }
         return new ResultUtil<>().setMsg(errorMsg);
     }
+
+    /*================Shiro-START================*/
+    @ExceptionHandler(AuthorizationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Result handleAuthorizationException(AuthorizationException e) {
+        log.error(e);
+        return new ResultUtil<>().setMsg(403, "没有访问权限");
+    }
+
+    @ExceptionHandler(IncorrectCredentialsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Result handleIncorrectCredentialsException(AuthenticationException e) {
+        return new ResultUtil<>().setMsg(401, "用户名或密码错误");
+    }
+
+    @ExceptionHandler(UnknownAccountException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Result handleUnknownAccountException(UnknownAccountException e) {
+        return new ResultUtil<>().setMsg(401, "未知用户，请登录");
+    }
+
+    @ExceptionHandler(ExcessiveAttemptsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Result handleUnknownAccountException(ExcessiveAttemptsException e) {
+        return new ResultUtil<>().setMsg(401, "错误登录超过5次，请在30分钟后登录，或者联系管理员");
+    }
+
+    @ExceptionHandler(DisabledAccountException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Result handleUnknownAccountException(DisabledAccountException e) {
+        return new ResultUtil<>().setMsg(401, "账户以禁用，请联系管理员");
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Result handleAuthenticationException(AuthenticationException e) {
+        log.error(e);
+        return new ResultUtil<>().setMsg(401, "登陆错误");
+    }
+    /*================Shiro-END================*/
 }

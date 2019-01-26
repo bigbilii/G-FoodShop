@@ -15,6 +15,11 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Resource;
 
+/**
+ * 自定义Realm
+ * 从数据库获取用户和权限信息
+ * 来判断当前访问会话中的登录和授权
+ */
 public class MyRealm extends AuthorizingRealm {
     @Resource
     UserService userService;
@@ -31,15 +36,15 @@ public class MyRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         log.info("正在进行授权验证！");
         /*获取用户手机号*/
-        GfsUser gfsUser = (GfsUser)principalCollection.getPrimaryPrincipal();
-        SimpleAuthorizationInfo authorizationInfo=new SimpleAuthorizationInfo();
+        GfsUser gfsUser = (GfsUser) principalCollection.getPrimaryPrincipal();
+        SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         log.info("正在从数据库获得角色信息，用户登录手机号为：" + gfsUser);
         //获得授权角色
         authorizationInfo.setRoles(userService.getRolesByUserPhone(gfsUser.getPhone()));
         log.info("正在从数据库获得权限信息，用户登录手机号为：" + gfsUser);
         //获得授权权限
         authorizationInfo.setStringPermissions(userService.getPermissionsByUserPhone(gfsUser.getPhone()));
-        log.info("数据库获得信息完成，信息为：" + authorizationInfo.getRoles() + " \n"+authorizationInfo.getStringPermissions());
+        log.info("数据库获得信息完成，信息为：" + authorizationInfo.getRoles() + " \n" + authorizationInfo.getStringPermissions());
         return authorizationInfo;
     }
 
@@ -64,7 +69,7 @@ public class MyRealm extends AuthorizingRealm {
         }
 
         if (GfsUser._0.equals(gfsuser.getStatus())) {
-            throw new IException("帐号已经禁止登录！");
+            throw new DisabledAccountException();
         }
 
         clearCached();
@@ -81,7 +86,7 @@ public class MyRealm extends AuthorizingRealm {
     /**
      * 清除缓存
      */
-    public void clearCached() {
+    private void clearCached() {
         PrincipalCollection principals = SecurityUtils.getSubject().getPrincipals();
         super.clearCache(principals);
     }

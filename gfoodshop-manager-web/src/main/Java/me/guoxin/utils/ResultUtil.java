@@ -3,10 +3,7 @@ package me.guoxin.utils;
 
 import me.guoxin.manager.vo.Result;
 
-/**
- * @author Exrick
- * @date 2018/03/24
- */
+
 public class ResultUtil<T> {
 
     private Result<T> result;

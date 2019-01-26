@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd ">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
     <!-- Shiro过滤器 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <!-- 安全认证管理器 -->
         <property name="securityManager" ref="securityManager"/>
         <property name="loginUrl" value="/gfoodshop/pages/login.html"/>
+        <property name="filters">
+            <util:map>
+                <entry key="kickoutSessionFilter" value-ref="kickoutSessionFilter"/>
+            </util:map>
+        </property>
         <property name="filterChainDefinitions">
             <value>
                 <!--静态资源-->
@@ -15,16 +20,23 @@
                 /gfoodshop/dist/** = anon
                 /gfoodshop/plugins/** = anon
 
-                /user/login = anon
-                /gfoodshop/pages/login.html** = anon
+                /user/login = kickoutSessionFilter
+                /gfoodshop/pages/login.html** = kickoutSessionFilter
 
                 /user/logout = logout
                 <!--所有请求-->
                 /gfoodshop/pages/** = user
-                /** = authc
+                /** = authc,kickoutSessionFilter
             </value>
         </property>
+    </bean>
 
+    <bean id="kickoutSessionFilter" class="me.guoxin.manager.shiro.KickoutSessionFilter">
+        <property name="cacheManager" ref="cacheManager"/>
+        <property name="sessionManager" ref="sessionManager"/>
+        <property name="maxSession" value="1"/>
+        <property name="kickoutAfter" value="false"/>
+        <property name="kickoutUrl" value="/"/>
     </bean>
 
     <!-- 配置Shiro RedisManager  -->
@@ -83,14 +95,15 @@
         <property name="credentialsMatcher" ref="credentialsMatcher"/>
     </bean>
 
-    <!-- 密码匹配过程 -->
-    <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+    <bean id="credentialsMatcher" class="me.guoxin.manager.shiro.RetryLimitHashedCredentialsMatcher">
         <!-- 加密算法名称 -->
         <property name="hashAlgorithmName" value="md5"/>
         <!-- 加盐次数 -->
         <property name="hashIterations" value="2"/>
         <!-- 是否储存散列后的密码为16进制 -->
         <property name="storedCredentialsHexEncoded" value="true"/>
+        <!-- 缓存管理器 -->
+        <constructor-arg index="0" ref="cacheManager"/>
     </bean>
 
     <!-- Shiro生命周期处理器 -->
