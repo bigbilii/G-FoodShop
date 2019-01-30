@@ -54,6 +54,12 @@
             <artifactId>jackson-annotations</artifactId>
         </dependency>
 
+        <!-- json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+        </dependency>
+
         <!-- Servlet -->
         <dependency>
             <groupId>javax.servlet</groupId>

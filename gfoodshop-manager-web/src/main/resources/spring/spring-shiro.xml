@@ -10,33 +10,40 @@
         <property name="loginUrl" value="/gfoodshop/pages/login.html"/>
         <property name="filters">
             <util:map>
-                <entry key="kickoutSessionFilter" value-ref="kickoutSessionFilter"/>
+                <entry key="kickout" value-ref="kickoutSessionFilter"/>
             </util:map>
         </property>
         <property name="filterChainDefinitions">
             <value>
-                <!--静态资源-->
+                <!-- 静态资源 -->
                 /gfoodshop/bower_components/** = anon
                 /gfoodshop/dist/** = anon
                 /gfoodshop/plugins/** = anon
 
-                /user/login = kickoutSessionFilter
-                /gfoodshop/pages/login.html** = kickoutSessionFilter
+                <!-- 踢出 -->
+                /gfoodshop/pages/kickout.html= anon
 
+                <!-- 登录 -->
+                /user/login = kickout
+                /gfoodshop/pages/login.html= kickout
                 /user/logout = logout
-                <!--所有请求-->
-                /gfoodshop/pages/** = user
-                /** = authc,kickoutSessionFilter
+                <!-- 验证码 -->
+                /getValidate = anon
+
+                <!-- 所有请求 -->
+                /gfoodshop/pages/** = user,kickout
+                /** = authc,kickout
             </value>
         </property>
     </bean>
 
+    <!-- 自定义拦截器 -->
     <bean id="kickoutSessionFilter" class="me.guoxin.manager.shiro.KickoutSessionFilter">
         <property name="cacheManager" ref="cacheManager"/>
         <property name="sessionManager" ref="sessionManager"/>
         <property name="maxSession" value="1"/>
         <property name="kickoutAfter" value="false"/>
-        <property name="kickoutUrl" value="/"/>
+        <property name="kickoutUrl" value="/gfoodshop/pages/kickout.html"/>
     </bean>
 
     <!-- 配置Shiro RedisManager  -->

@@ -6,6 +6,7 @@ import me.guoxin.manager.service.UserService;
 import me.guoxin.manager.vo.Account;
 import me.guoxin.manager.vo.Result;
 import me.guoxin.utils.ResultUtil;
+import me.guoxin.utils.gee.GeetestLib;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -19,8 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -31,10 +31,8 @@ public class UserController {
     @Resource
     private UserService userService;
 
-    @GetMapping(value = "/getValidateCode")
-    public void getValidateCode(HttpServletResponse response, HttpServletRequest request) {
-        // TODO: 2019/1/24 验证码获取与校验 
-    }
+    @Resource
+    private GeetestLib geetestLib;
 
     /**
      * 登录
@@ -45,13 +43,38 @@ public class UserController {
      * @throws Exception
      */
     @PostMapping(value = "/user/login")
-    public Result login(@RequestBody Account account) {
-        UsernamePasswordToken token = new UsernamePasswordToken(account.getPhone(), account.getPassword(), account.isRemember());
-        log.info("login：正在登录中，登录信息为：" + account);
-        Subject subject = SecurityUtils.getSubject();
-        subject.login(token);
-        log.info("login：登录成功");
-        return new ResultUtil<Object>().setData(null, "登录成功");
+    public Result login(@RequestBody Account account, HttpServletRequest request) {
+        /*从session中获取验证状态值*/
+        int gt_server_status_code = (Integer) request.getSession().getAttribute(geetestLib.gtServerStatusSessionKey);
+        /*从session中获取userid*/
+        String userid = (String) request.getSession().getAttribute("userid");
+        /*获取用户ip地址*/
+        String ip_address = request.getRemoteAddr();
+
+        HashMap<String, String> param = new HashMap<String, String>();
+        param.put("user_id", userid); //网站用户id
+        param.put("ip_address", ip_address); //传输用户请求验证时所携带的IP
+
+        int gtResult = 0;
+
+        if (gt_server_status_code == 1) {
+            /*gt-server正常，向gt-server进行二次验证*/
+            gtResult = geetestLib.enhencedValidateRequest(account.getGeetest_challenge(), account.getGeetest_validate(), account.getGeetest_seccode(), param);
+        } else {
+            /*gt-server非正常情况下，进行failback模式验证*/
+            gtResult = geetestLib.failbackValidateRequest(account.getGeetest_challenge(), account.getGeetest_validate(), account.getGeetest_seccode());
+        }
+        /*验证成功*/
+        if (gtResult == 1) {
+            UsernamePasswordToken token = new UsernamePasswordToken(account.getPhone(), account.getPassword(), account.isRemember());
+            log.info("login：正在登录中，登录信息为：" + account);
+            Subject subject = SecurityUtils.getSubject();
+            subject.login(token);
+            log.info("login：登录成功");
+            return new ResultUtil<Object>().setData(null, "登录成功");
+        } else {
+            return new ResultUtil<Object>().setMsg(401, "验证错误");
+        }
     }
 
     /**

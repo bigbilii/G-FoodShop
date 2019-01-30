@@ -6,17 +6,14 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationException;
-import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.sql.SQLIntegrityConstraintViolationException;
-
+import java.io.IOException;
 @RestControllerAdvice
 public class ExceptionAdvice {
 
@@ -59,6 +56,18 @@ public class ExceptionAdvice {
     public Result handleArithmeticException(ArithmeticException e) {
 
         return new ResultUtil<>().setMsg(500, "服务器内部错误");
+    }
+
+    /**
+     * 读写错误
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(IOException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result handleIOException(IOException e) {
+        return new ResultUtil<>().setMsg(500, "服务器内部读写错误");
     }
 
     /*自定义错误*/

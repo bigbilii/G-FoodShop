@@ -2,7 +2,9 @@ package me.guoxin.manager.shiro;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.guoxin.manager.pojo.GfsUser;
+import me.guoxin.manager.vo.Result;
 import me.guoxin.utils.JsonUtil;
+import me.guoxin.utils.ResultUtil;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.session.Session;
@@ -17,23 +19,27 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.*;
 
 /**
- *
+ * 踢出检验拦截器
+ * 用于检验该用户是否被踢出
  */
 public class KickoutSessionFilter extends AccessControlFilter {
 
+    private static final Logger log = LoggerFactory.getLogger(KickoutSessionFilter.class);
 
-    private final static ObjectMapper objectMapper = new ObjectMapper();
-
-    private String kickoutUrl; // 踢出后到的地址
-    private boolean kickoutAfter = false; // 踢出之前登录的/之后登录的用户 默认false踢出之前登录的用户
-    private int maxSession = 1; // 同一个帐号最大会话数 默认1
+    /*提出后的地址*/
+    private String kickoutUrl;
+    /*是否踢出当前*/
+    private boolean kickoutAfter = false;
+    /*最大会话数*/
+    private int maxSession = 1;
+    /*会话管理器*/
     private SessionManager sessionManager;
+    /*缓存*/
     private Cache<String, Deque<Serializable>> cache;
 
     public void setKickoutUrl(String kickoutUrl) {
@@ -52,9 +58,9 @@ public class KickoutSessionFilter extends AccessControlFilter {
         this.sessionManager = sessionManager;
     }
 
-    // 设置Cache的key的前缀
+    /*设置Cache的key的前缀*/
     public void setCacheManager(CacheManager cacheManager) {
-        //必须和ehcache缓存配置中的缓存name一致
+        /*自定义缓存前缀*/
         this.cache = cacheManager.getCache("shiro-activeSessionCache");
     }
 
@@ -68,78 +74,68 @@ public class KickoutSessionFilter extends AccessControlFilter {
     protected boolean onAccessDenied(ServletRequest request,
                                      ServletResponse response) throws Exception {
         Subject subject = getSubject(request, response);
-        System.out.println("kickon!!!!!!!!!");
-        if (!subject.isAuthenticated() && !subject.isRemembered()) {
-            //如果没有登录，直接进行之后的流程
+        /*没有登录*/
+        if (!subject.isAuthenticated() && !subject.isRemembered())
             return true;
-        }
 
         Session session = subject.getSession();
         GfsUser user = (GfsUser) subject.getPrincipal();
         String userPhone = user.getPhone();
         Serializable sessionId = session.getId();
 
-        //读取缓存   没有就存入
+        /*读取缓存 */
         Deque<Serializable> deque = cache.get(userPhone);
-
-        //如果此用户没有session队列，也就是还没有登录过，缓存中没有
-        //就new一个空队列，不然deque对象为空，会报空指针
         if (deque == null) {
             deque = new LinkedList<Serializable>();
         }
 
-        //如果队列里没有此sessionId，且用户没有被踢出；放入队列
+        /*如果队列里没有此sessionId，且用户没有被踢出；放入队列*/
         if (!deque.contains(sessionId) && session.getAttribute("kickout") == null) {
-            //将sessionId存入队列
             deque.push(sessionId);
-            //将用户的sessionId队列缓存
             cache.put(userPhone, deque);
         }
 
-        //如果队列里的sessionId数超出最大会话数，开始踢人
+        /*如果队列里的sessionId数超出最大会话数*/
         while (deque.size() > maxSession) {
             Serializable kickoutSessionId = null;
-            if (kickoutAfter) { //如果踢出后者
+            /*踢出前者或者后者*/
+            if (kickoutAfter) {
                 kickoutSessionId = deque.removeFirst();
-                //踢出后再更新下缓存队列
                 cache.put(userPhone, deque);
-            } else { //否则踢出前者
+            } else {
                 kickoutSessionId = deque.removeLast();
-                //踢出后再更新下缓存队列
                 cache.put(userPhone, deque);
             }
 
             try {
-                //获取被踢出的sessionId的session对象
+                /*获取被踢出的sessionId的session对象*/
                 Session kickoutSession = sessionManager.getSession(new DefaultSessionKey(kickoutSessionId));
                 if (kickoutSession != null) {
-                    //设置会话的kickout属性表示踢出了
+                    /*设置会话的kickout属性表示踢出了*/
                     kickoutSession.setAttribute("kickout", true);
                 }
-            } catch (Exception e) {//ignore exception
+            } catch (Exception e) {
+                log.error(e.getMessage());
             }
         }
 
-        //如果被踢出了，直接退出，重定向到踢出后的地址
+        /*如果被踢出了，直接退出，重定向到踢出后的地址*/
         if ((Boolean) session.getAttribute("kickout") != null && (Boolean) session.getAttribute("kickout")) {
-            //会话被踢出了
+            /*踢出*/
             try {
-                //退出登录
-                System.out.println("踢出");
                 subject.logout();
-            } catch (Exception e) { //ignore
+            } catch (Exception e) {
+                log.error(e.getMessage());
             }
             saveRequest(request);
 
-            Map<String, String> resultMap = new HashMap<String, String>();
-            //判断是不是Ajax请求
+            /*判断是不是Ajax请求*/
             if ("XMLHttpRequest".equalsIgnoreCase(((HttpServletRequest) request).getHeader("X-Requested-With"))) {
-                resultMap.put("user_status", "300");
-                resultMap.put("message", "您已经在其他地方登录，请重新登录！");
-                //输出json串
-                out(response, resultMap);
+                Result result = new ResultUtil<Object>().setData(300, "您已经在其他地方登录，请重新登录！");
+                /*输出json串*/
+                out(response, result);
             } else {
-                //重定向
+                /*重定向*/
                 WebUtils.issueRedirect(request, response, kickoutUrl);
             }
             return false;
@@ -147,16 +143,15 @@ public class KickoutSessionFilter extends AccessControlFilter {
         return true;
     }
 
-    private void out(ServletResponse hresponse, Map<String, String> resultMap)
-            throws IOException {
+    private void out(ServletResponse hresponse, Result result) {
         try {
             hresponse.setCharacterEncoding("UTF-8");
             PrintWriter out = hresponse.getWriter();
-            out.println(JsonUtil.toJSonString(resultMap));
+            out.println(JsonUtil.toJSonString(result));
             out.flush();
             out.close();
         } catch (Exception e) {
-            System.err.println("KickoutSessionFilter.class 输出JSON异常，可以忽略。");
+            log.error("KickoutSessionFilter.class 输出JSON异常，可以忽略。");
         }
     }
 }
