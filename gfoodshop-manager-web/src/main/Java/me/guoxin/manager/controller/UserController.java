@@ -1,12 +1,13 @@
 package me.guoxin.manager.controller;
 
 
-import me.guoxin.manager.pojo.GfsUser;
 import me.guoxin.manager.service.UserService;
-import me.guoxin.manager.vo.Account;
-import me.guoxin.manager.vo.Result;
+
+import me.guoxin.pojo.GfsUser;
+import me.guoxin.utils.GeetestLib;
 import me.guoxin.utils.ResultUtil;
-import me.guoxin.utils.gee.GeetestLib;
+import me.guoxin.vo.Account;
+import me.guoxin.vo.Result;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;

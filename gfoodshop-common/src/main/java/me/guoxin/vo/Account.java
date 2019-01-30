@@ -1,7 +1,10 @@
-package me.guoxin.manager.vo;
+package me.guoxin.vo;
 
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * 登录
+ */
 public class Account {
     /**
      * 账号|手机号

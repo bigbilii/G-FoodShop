@@ -1,7 +1,9 @@
 package me.guoxin.manager.exception;
 
-import me.guoxin.manager.vo.Result;
+
+import me.guoxin.exception.IException;
 import me.guoxin.utils.ResultUtil;
+import me.guoxin.vo.Result;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.shiro.authc.*;
@@ -14,6 +16,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.io.IOException;
+
+/**
+ * 全局异常处理
+ */
 @RestControllerAdvice
 public class ExceptionAdvice {
 

@@ -1,6 +1,6 @@
 package me.guoxin.manager.shiro;
 
-import me.guoxin.manager.exception.IException;
+import me.guoxin.exception.IException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.ExcessiveAttemptsException;

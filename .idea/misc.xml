@@ -8,6 +8,7 @@
       <list>
         <option value="$PROJECT_DIR$/gfoodshop-parent/pom.xml" />
         <option value="$PROJECT_DIR$/gfoodshop-manager-web/pom.xml" />
+        <option value="$PROJECT_DIR$/gfoodshop-common/pom.xml" />
       </list>
     </option>
   </component>

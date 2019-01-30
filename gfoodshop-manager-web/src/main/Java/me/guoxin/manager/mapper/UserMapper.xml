@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="me.guoxin.manager.mapper.UserMapper">
-    <resultMap id="BaseResultMap" type="me.guoxin.manager.pojo.GfsUser">
+    <resultMap id="BaseResultMap" type="me.guoxin.pojo.GfsUser">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
@@ -29,7 +29,7 @@
         WHERE phone = #{userPhone}
     </select>
 
-    <insert id="insert" parameterType="me.guoxin.manager.pojo.GfsUser">
+    <insert id="insert" parameterType="me.guoxin.pojo.GfsUser">
         INSERT INTO gfs_user(id, username, phone, password, salt, creat_time, last_login_time, status, role_id, sex, address, description)
         VALUES (#{id}, #{username}, #{phone}, #{password}, #{salt}, #{creatTime}, #{lastLoginTime}, #{status}, #{roleId}, #{sex}, #{address}, #{description});
     </insert>

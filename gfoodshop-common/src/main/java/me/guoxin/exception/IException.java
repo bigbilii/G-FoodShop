@@ -1,5 +1,8 @@
-package me.guoxin.manager.exception;
+package me.guoxin.exception;
 
+/**
+ * 自定义异常
+ */
 public class IException extends RuntimeException {
     private String msg;
 

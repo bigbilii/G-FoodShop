@@ -6,10 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="gfoodshop-common" />
         <module name="gfoodshop-manager-web" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="gfoodshop-common" target="1.8" />
       <module name="gfoodshop-manager-web" target="1.8" />
       <module name="gfoodshop-parent" target="1.8" />
     </bytecodeTargetLevel>

@@ -1,10 +1,9 @@
 package me.guoxin.manager.shiro;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import me.guoxin.manager.pojo.GfsUser;
-import me.guoxin.manager.vo.Result;
+import me.guoxin.pojo.GfsUser;
 import me.guoxin.utils.JsonUtil;
 import me.guoxin.utils.ResultUtil;
+import me.guoxin.vo.Result;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.session.Session;

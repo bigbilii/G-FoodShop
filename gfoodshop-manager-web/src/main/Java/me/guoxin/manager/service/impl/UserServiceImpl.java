@@ -1,6 +1,6 @@
 package me.guoxin.manager.service.impl;
 
-import me.guoxin.manager.exception.IException;
+import me.guoxin.exception.IException;
 import me.guoxin.manager.mapper.UserMapper;
 import me.guoxin.manager.pojo.GfsUser;
 import me.guoxin.manager.service.UserService;

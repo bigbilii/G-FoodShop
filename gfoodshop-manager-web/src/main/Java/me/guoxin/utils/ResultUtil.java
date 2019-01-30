@@ -1,7 +1,7 @@
 package me.guoxin.utils;
 
 
-import me.guoxin.manager.vo.Result;
+import me.guoxin.vo.Result;
 
 
 public class ResultUtil<T> {
@@ -33,7 +33,7 @@ public class ResultUtil<T> {
         return this.result;
     }
 
-    public Result<T> setMsg(Integer code, String msg){
+    public Result setMsg(Integer code, String msg){
         this.result.setMessage(msg);
         this.result.setCode(code);
         return this.result;

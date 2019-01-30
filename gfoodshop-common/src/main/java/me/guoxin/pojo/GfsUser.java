@@ -1,4 +1,4 @@
-package me.guoxin.manager.pojo;
+package me.guoxin.pojo;
 
 import java.io.Serializable;
 import java.util.Date;

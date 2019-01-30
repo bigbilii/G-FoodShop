@@ -1,6 +1,7 @@
 package me.guoxin.utils;
 
-import me.guoxin.manager.pojo.GfsUser;
+
+import me.guoxin.pojo.GfsUser;
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;

@@ -1,6 +1,8 @@
 package me.guoxin.manager.service;
 
-import me.guoxin.manager.pojo.GfsUser;
+
+
+import me.guoxin.pojo.GfsUser;
 
 import java.util.List;
 import java.util.Set;

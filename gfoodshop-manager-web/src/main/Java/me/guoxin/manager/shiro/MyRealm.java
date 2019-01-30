@@ -1,8 +1,7 @@
 package me.guoxin.manager.shiro;
 
-import me.guoxin.manager.exception.IException;
-import me.guoxin.manager.pojo.GfsUser;
 import me.guoxin.manager.service.UserService;
+import me.guoxin.pojo.GfsUser;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;

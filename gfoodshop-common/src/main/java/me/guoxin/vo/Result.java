@@ -1,4 +1,4 @@
-package me.guoxin.manager.vo;
+package me.guoxin.vo;
 
 
 /**
