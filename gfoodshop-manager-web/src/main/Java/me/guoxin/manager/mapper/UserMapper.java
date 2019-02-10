@@ -1,6 +1,7 @@
 package me.guoxin.manager.mapper;
 
-import me.guoxin.manager.pojo.GfsUser;
+
+import me.guoxin.pojo.GfsUser;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.dao.DataAccessException;
 

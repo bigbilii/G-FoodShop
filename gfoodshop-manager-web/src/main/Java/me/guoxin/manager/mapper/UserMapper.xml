@@ -29,6 +29,7 @@
         WHERE phone = #{userPhone}
     </select>
 
+
     <insert id="insert" parameterType="me.guoxin.pojo.GfsUser">
         INSERT INTO gfs_user(id, username, phone, password, salt, creat_time, last_login_time, status, role_id, sex, address, description)
         VALUES (#{id}, #{username}, #{phone}, #{password}, #{salt}, #{creatTime}, #{lastLoginTime}, #{status}, #{roleId}, #{sex}, #{address}, #{description});
