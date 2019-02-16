@@ -1,4 +1,4 @@
-package me.guoxin.utils;
+package me.guoxin.manager.utils;
 
 
 import me.guoxin.pojo.GfsUser;
@@ -16,8 +16,8 @@ public class PasswordHelper {
     private int hashInterations = 2;
 
     //加密算法
-    public void encryptPassword(GfsUser user){
-        if (user.getPassword() != null){
+    public void encryptPassword(GfsUser user) {
+        if (user.getPassword() != null) {
             //对user对象设置盐：salt；这个盐值是randomNumberGenerator生成的随机数
             user.setSalt(randomNumberGenerator.nextBytes().toHex());
 

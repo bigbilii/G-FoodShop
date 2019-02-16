@@ -1,16 +1,17 @@
 package me.guoxin.utils;
 
 
-import me.guoxin.vo.Result;
-
+import me.guoxin.pojo.Result;
 
 public class ResultUtil<T> {
+
+    private static String SUCCESS_MESSAGE = "success";
 
     private Result<T> result;
 
     public ResultUtil(){
         result=new Result<>();
-        result.setMessage("success");
+        result.setMessage(SUCCESS_MESSAGE);
         result.setCode(200);
     }
 

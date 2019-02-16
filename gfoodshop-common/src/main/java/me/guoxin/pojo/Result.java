@@ -1,4 +1,4 @@
-package me.guoxin.vo;
+package me.guoxin.pojo;
 
 
 /**

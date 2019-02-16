@@ -3,10 +3,13 @@ package me.guoxin.pojo;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * 用户实体
+ */
 public class GfsUser implements Serializable {
-    //0:禁止登录
+    // 0:禁止登录
     public static final Integer _0 = 0;
-    //1:有效
+    // 1:有效
     public static final Integer _1 = 1;
     private Long id;
     private String username;
@@ -126,21 +129,4 @@ public class GfsUser implements Serializable {
         return phone.trim().length() == 11;
     }
 
-    @Override
-    public String toString() {
-        return "GfsUser{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", phone='" + phone + '\'' +
-                ", password='" + password + '\'' +
-                ", salt='" + salt + '\'' +
-                ", creatTime='" + creatTime + '\'' +
-                ", lastLoginTime='" + lastLoginTime + '\'' +
-                ", status=" + status +
-                ", roleId=" + roleId +
-                ", sex='" + sex + '\'' +
-                ", address='" + address + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
 }

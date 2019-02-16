@@ -1,9 +1,9 @@
 package me.guoxin.manager.shiro;
 
 import me.guoxin.pojo.GfsUser;
+import me.guoxin.pojo.Result;
 import me.guoxin.utils.JsonUtil;
 import me.guoxin.utils.ResultUtil;
-import me.guoxin.vo.Result;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.session.Session;

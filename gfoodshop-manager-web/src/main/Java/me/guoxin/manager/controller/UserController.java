@@ -1,13 +1,13 @@
 package me.guoxin.manager.controller;
 
 
+import me.guoxin.dto.AccountDTO;
 import me.guoxin.manager.service.UserService;
 
 import me.guoxin.pojo.GfsUser;
+import me.guoxin.pojo.Result;
 import me.guoxin.utils.GeetestLib;
 import me.guoxin.utils.ResultUtil;
-import me.guoxin.vo.Account;
-import me.guoxin.vo.Result;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -44,7 +44,7 @@ public class UserController {
      * @throws Exception
      */
     @PostMapping(value = "/user/login")
-    public Result login(@RequestBody Account account, HttpServletRequest request) {
+    public Result login(@RequestBody AccountDTO account, HttpServletRequest request) {
         /*从session中获取验证状态值*/
         int gt_server_status_code = (Integer) request.getSession().getAttribute(geetestLib.gtServerStatusSessionKey);
         /*从session中获取userid*/

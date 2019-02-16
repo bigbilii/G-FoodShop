@@ -2,9 +2,12 @@
 <project version="4">
   <component name="Encoding" addBOMForNewFiles="with NO BOM">
     <file url="file://$PROJECT_DIR$/gfoodshop-common" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gfoodshop-manager" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gfoodshop-manager-mapper" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gfoodshop-manager-pojo" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gfoodshop-manager-service" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gfoodshop-manager-web" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gfoodshop-manager-web/src/main/Java/me/guoxin/utils" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gfoodshop-parent" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/gfoodshop-parent/gfoodshop-common" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/gfoodshop-parent/gfoodshop-common" charset="UTF-8" />
   </component>
 </project>

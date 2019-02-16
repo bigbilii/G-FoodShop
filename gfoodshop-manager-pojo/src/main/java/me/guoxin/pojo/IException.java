@@ -1,4 +1,4 @@
-package me.guoxin.exception;
+package me.guoxin.pojo;
 
 /**
  * 自定义异常
@@ -6,9 +6,9 @@ package me.guoxin.exception;
 public class IException extends RuntimeException {
     private String msg;
 
-    public IException(String msg){
+    public IException(String msg) {
         super(msg);
-        this.msg=msg;
+        this.msg = msg;
     }
 
     public String getMsg() {

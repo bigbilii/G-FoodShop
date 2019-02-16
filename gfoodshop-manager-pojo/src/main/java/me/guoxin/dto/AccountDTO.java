@@ -1,13 +1,13 @@
-package me.guoxin.vo;
+package me.guoxin.dto;
 
 import org.apache.commons.lang3.StringUtils;
 
 /**
  * 登录
  */
-public class Account {
+public class AccountDTO {
     /**
-     * 账号|手机号
+     * 账号 | 手机号
      */
     private String phone;
     /**
@@ -80,15 +80,4 @@ public class Account {
         this.geetest_seccode = geetest_seccode;
     }
 
-    @Override
-    public String toString() {
-        return "Account{" +
-                "phone='" + phone + '\'' +
-                ", password='" + password + '\'' +
-                ", remember=" + remember +
-                ", geetest_challenge='" + geetest_challenge + '\'' +
-                ", geetest_validate='" + geetest_validate + '\'' +
-                ", geetest_seccode='" + geetest_seccode + '\'' +
-                '}';
-    }
 }

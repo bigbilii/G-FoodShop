@@ -1,11 +1,11 @@
 package me.guoxin.manager.service.impl;
 
-import me.guoxin.exception.IException;
+import me.guoxin.pojo.IException;
 import me.guoxin.manager.mapper.UserMapper;
 
 import me.guoxin.manager.service.UserService;
 import me.guoxin.pojo.GfsUser;
-import me.guoxin.utils.PasswordHelper;
+import me.guoxin.manager.utils.PasswordHelper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(!list.isEmpty()){
+        if (!list.isEmpty()) {
             return list.get(0);
         }
         return null;
@@ -46,7 +46,6 @@ public class UserServiceImpl implements UserService {
         if (!gfsUser.isRightPhone()) {
             throw new IException("手机号格式错误，请重新输入");
         }
-
 
         /*密码加密与盐*/
         passwordHelper.encryptPassword(gfsUser);

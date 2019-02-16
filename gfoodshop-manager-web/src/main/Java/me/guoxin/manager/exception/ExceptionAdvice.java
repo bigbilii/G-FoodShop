@@ -1,9 +1,11 @@
 package me.guoxin.manager.exception;
 
 
-import me.guoxin.exception.IException;
+
+import me.guoxin.pojo.IException;
+import me.guoxin.pojo.Result;
 import me.guoxin.utils.ResultUtil;
-import me.guoxin.vo.Result;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.shiro.authc.*;

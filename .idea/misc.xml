@@ -9,6 +9,10 @@
         <option value="$PROJECT_DIR$/gfoodshop-parent/pom.xml" />
         <option value="$PROJECT_DIR$/gfoodshop-manager-web/pom.xml" />
         <option value="$PROJECT_DIR$/gfoodshop-common/pom.xml" />
+        <option value="$PROJECT_DIR$/gfoodshop-manager-web/src/main/Java/me/guoxin/utils/pom.xml" />
+        <option value="$PROJECT_DIR$/gfoodshop-manager-mapper/pom.xml" />
+        <option value="$PROJECT_DIR$/gfoodshop-manager-service/pom.xml" />
+        <option value="$PROJECT_DIR$/gfoodshop-manager/pom.xml" />
       </list>
     </option>
   </component>
