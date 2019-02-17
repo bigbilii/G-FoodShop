@@ -2,10 +2,12 @@ package me.guoxin.dto;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.Serializable;
+
 /**
  * 登录
  */
-public class AccountDTO {
+public class AccountDTO implements Serializable {
     /**
      * 账号 | 手机号
      */

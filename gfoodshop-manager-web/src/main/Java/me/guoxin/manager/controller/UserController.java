@@ -2,10 +2,14 @@ package me.guoxin.manager.controller;
 
 
 import me.guoxin.dto.AccountDTO;
+import me.guoxin.dto.DataTableViewPageDTO;
+import me.guoxin.dto.OnlineUserDTO;
 import me.guoxin.manager.service.UserService;
 
+import me.guoxin.pojo.DataTableDTO;
 import me.guoxin.pojo.GfsUser;
 import me.guoxin.pojo.Result;
+import me.guoxin.utils.DataTableUtil;
 import me.guoxin.utils.GeetestLib;
 import me.guoxin.utils.ResultUtil;
 import org.apache.shiro.SecurityUtils;
@@ -129,11 +133,23 @@ public class UserController {
      * @throws Exception
      */
     @PostMapping(value = "/user/addRole")
-    public String addRole(@RequestBody GfsUser gfsUser) throws Exception {
-        System.out.println(gfsUser.getUsername() + gfsUser.getPassword());
-        log.info("addUser：添加用户中，添加信息为为：" + gfsUser);
+    public String addRole(@RequestBody GfsUser gfsUser) {
         userService.addUser(gfsUser);
-        log.info("login：添加成功");
         return "hello world";
+    }
+    /**
+     * 获取在线用户
+     *
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(value = "/user/list/online")
+    @RequiresPermissions("onlineUser:list")
+    public Result getOnlineUsers(String tbData) {
+        DataTableDTO dataTableDTO = DataTableUtil.getDataTableDTO(tbData);
+        DataTableViewPageDTO<OnlineUserDTO> list = userService.getOnlineUser(dataTableDTO);
+        System.out.println(list);
+        return new ResultUtil<>().setData(list);
+
     }
 }

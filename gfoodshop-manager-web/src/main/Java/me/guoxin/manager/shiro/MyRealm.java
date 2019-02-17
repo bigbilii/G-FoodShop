@@ -76,7 +76,7 @@ public class MyRealm extends AuthorizingRealm {
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                 gfsuser,
                 gfsuser.getPassword(),
-                ByteSource.Util.bytes(gfsuser.getCredentialsSalt()),
+                ByteSource.Util.bytes(gfsuser.CredentialsSalt()),
                 getName()
         );
         return authenticationInfo;

@@ -2,6 +2,9 @@ package me.guoxin.manager.service;
 
 
 
+import me.guoxin.dto.DataTableViewPageDTO;
+import me.guoxin.dto.OnlineUserDTO;
+import me.guoxin.pojo.DataTableDTO;
 import me.guoxin.pojo.GfsUser;
 
 import java.util.List;
@@ -49,4 +52,10 @@ public interface UserService {
      * @return
      */
     List<GfsUser> getUserList();
+
+    /**
+     * 获取在线用户
+     * @return
+     */
+    DataTableViewPageDTO<OnlineUserDTO> getOnlineUser(DataTableDTO dataTableDTO);
 }

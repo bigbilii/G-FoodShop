@@ -1,5 +1,7 @@
 package me.guoxin.pojo;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -24,6 +26,38 @@ public class GfsUser implements Serializable {
     private String address;
     private String description;
 
+    public GfsUser() {
+    }
+
+    public GfsUser(Long id, String username, String phone, String password, String salt, Date creatTime, Date lastLoginTime, Integer status, Integer roleId, String sex, String address, String description) {
+        this.id = id;
+        this.username = username;
+        this.phone = phone;
+        this.password = password;
+        this.salt = salt;
+        this.creatTime = creatTime;
+        this.lastLoginTime = lastLoginTime;
+        this.status = status;
+        this.roleId = roleId;
+        this.sex = sex;
+        this.address = address;
+        this.description = description;
+    }
+
+    public GfsUser(GfsUser gfsUser) {
+        this.id = gfsUser.getId();
+        this.username = gfsUser.getUsername();
+        this.phone = gfsUser.getPhone();
+        this.password = gfsUser.getPassword();
+        this.salt = gfsUser.getSalt();
+        this.creatTime = gfsUser.getCreatTime();
+        this.lastLoginTime = gfsUser.getLastLoginTime();
+        this.status = gfsUser.getStatus();
+        this.roleId = gfsUser.getRoleId();
+        this.sex = gfsUser.getSex();
+        this.address = gfsUser.getAddress();
+        this.description = gfsUser.getDescription();
+    }
 
     public Long getId() {
         return id;
@@ -121,12 +155,17 @@ public class GfsUser implements Serializable {
         this.description = description;
     }
 
-    public String getCredentialsSalt() {
+    public String CredentialsSalt() {
         return username + salt;
     }
 
-    public boolean isRightPhone() {
+    public boolean RightPhone() {
         return phone.trim().length() == 11;
+    }
+
+    public void maskPasswordInfo() {
+        setPassword("***");
+        setSalt("***");
     }
 
 }
