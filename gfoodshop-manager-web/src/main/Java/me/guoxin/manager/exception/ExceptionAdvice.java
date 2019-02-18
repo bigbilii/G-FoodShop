@@ -78,7 +78,11 @@ public class ExceptionAdvice {
         return new ResultUtil<>().setMsg(500, "服务器内部读写错误");
     }
 
-    /*自定义错误*/
+    /**
+     * 自定义错误
+     * @param e
+     * @return
+     */
     @ResponseStatus(value = HttpStatus.OK)
     @ExceptionHandler(IException.class)
     public Result<Object> handleIException(IException e) {

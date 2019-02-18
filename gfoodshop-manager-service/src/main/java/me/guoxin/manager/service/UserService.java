@@ -58,4 +58,10 @@ public interface UserService {
      * @return
      */
     DataTableViewPageDTO<OnlineUserDTO> getOnlineUser(DataTableDTO dataTableDTO);
+
+    /**
+     * 踢出在线用户
+     * @param sessionIds
+     */
+    void kickOutOnlineUser(List<String> sessionIds);
 }

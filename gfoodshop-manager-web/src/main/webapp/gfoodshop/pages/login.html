@@ -15,8 +15,6 @@
     <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
     <!-- iCheck -->
     <link rel="stylesheet" href="../plugins/iCheck/square/blue.css">
-    <!-- sweet alert -->
-    <link rel="stylesheet" href="../plugins/sweetalert/sweetalert.css">
 
 </head>
 
@@ -76,8 +74,6 @@
 <script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <!-- iCheck -->
 <script src="../plugins/iCheck/icheck.min.js"></script>
-<!-- sweet alert -->
-<script src="../plugins/sweetalert/sweetalert.min.js"></script>
 <!-- Geetest 验证码 -->
 <script src="../plugins/Geetest/gt.js"></script>
 
@@ -144,19 +140,19 @@
         var geetest_validate = result.geetest_validate;
         var geetest_seccode = result.geetest_seccode;
         if (isNull(phone)) {
-            swal("", "请输入手机号码!", "error");
+            alert("请输入手机号码!");
             return;
         }
         if (!validPhone(phone)) {
-            swal("", "请输入正确的手机号!", "error");
+            alert("请输入正确的手机号!");
             return;
         }
         if (isNull(password)) {
-            swal("", "请输入密码!", "error");
+            alert("请输入密码!");
             return;
         }
         if (!validPassword(password)) {
-            swal("", "请输入正确的密码!", "error");
+            alert("请输入正确的密码!");
             return;
         }
         var data = {
@@ -174,17 +170,24 @@
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(data),
             success: function (result) {
-                var resultMsg = result.responseJSON;
                 if (result.code === 200) {
                     $(location).prop('href', '/gfoodshop/pages/index.html');
                 } else {
-                    swal("", resultMsg.message, "error");
+                    if (isEmptyResult(result)) {
+                        alert("未知错误");
+                    } else {
+                        alert(result.message);
+                    }
                     window.location.reload();
                 }
             },
             error: function (result) {
                 var resultMsg = result.responseJSON;
-                swal("", resultMsg.message, "error");
+                if (isEmptyResult(resultMsg)) {
+                    alert("未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
                 window.location.reload();
             }
         });

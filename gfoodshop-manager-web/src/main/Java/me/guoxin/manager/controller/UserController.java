@@ -137,8 +137,9 @@ public class UserController {
         userService.addUser(gfsUser);
         return "hello world";
     }
+
     /**
-     * 获取在线用户
+     * 获取在线用户列表
      *
      * @return
      * @throws Exception
@@ -146,10 +147,22 @@ public class UserController {
     @PostMapping(value = "/user/list/online")
     @RequiresPermissions("onlineUser:list")
     public Result getOnlineUsers(String tbData) {
+        // 处理dataTable发送Json字符串参数
         DataTableDTO dataTableDTO = DataTableUtil.getDataTableDTO(tbData);
         DataTableViewPageDTO<OnlineUserDTO> list = userService.getOnlineUser(dataTableDTO);
-        System.out.println(list);
         return new ResultUtil<>().setData(list);
+    }
 
+    /**
+     * 踢出在线用户
+     *
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(value = "/user/kickout/online")
+    @RequiresPermissions("onlineUser:kickout")
+    public Result kickOutOnlineUser(@RequestBody List<String> sessionIds) {
+        userService.kickOutOnlineUser(sessionIds);
+        return new ResultUtil<>().setData(null, "踢出成功");
     }
 }

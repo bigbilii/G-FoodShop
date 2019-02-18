@@ -72,18 +72,34 @@ function MillisecondToDate(msd) {
         if (time > 60 && time < 60 * 60) {
             time = parseInt(time / 60.0) + "分钟" + parseInt((parseFloat(time / 60.0) -
                 parseInt(time / 60.0)) * 60) + "秒";
-        }
-        else if (time >= 60 * 60 && time < 60 * 60 * 24) {
+        } else if (time >= 60 * 60 && time < 60 * 60 * 24) {
             time = parseInt(time / 3600.0) + "小时" + parseInt((parseFloat(time / 3600.0) -
                 parseInt(time / 3600.0)) * 60) + "分钟" +
                 parseInt((parseFloat((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60) -
                     parseInt((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60)) * 60) + "秒";
-        }
-        else {
+        } else {
             time = parseInt(time) + "秒";
         }
     }
     return time;
+}
+
+/**
+ * 判断返回结果是否为空
+ * @param resultMsg
+ * @returns {boolean}
+ */
+function isEmptyResult(resultMsg) {
+    if (jQuery.isEmptyObject(resultMsg)) {
+        return true;
+    }
+    if (resultMsg.message == null) {
+        return true;
+    }
+    if (resultMsg.message.length === 0) {
+        return true;
+    }
+    return false;
 }
 
 
