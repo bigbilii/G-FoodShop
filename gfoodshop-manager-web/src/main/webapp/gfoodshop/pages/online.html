@@ -135,6 +135,7 @@
                                     <th>sessionId</th>
                                     <th>用户名</th>
                                     <th>手机号</th>
+                                    <th>角色身份</th>
                                     <th>登录IP地址</th>
                                     <th>上次登录时间</th>
                                     <th>会话开始时间</th>
@@ -229,6 +230,9 @@
             },
             {"data": "username"},
             {"data": "phone"},
+            {"data": function (data, type, full) {
+                    return data.role.name + "(" + data.role.description + ")";
+                }},
             {"data": "host"},
             {"data": "lastLoginTime"},
             {"data": "startTime"},

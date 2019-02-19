@@ -12,29 +12,36 @@
         <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime"/>
         <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime"/>
         <result column="state" jdbcType="BIGINT" property="state"/>
-        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
         <result column="sex" jdbcType="VARCHAR" property="sex"/>
         <result column="address" jdbcType="VARCHAR" property="address"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
+        <association property="role" javaType="me.guoxin.pojo.GfsRole">
+            <id column="r_id" jdbcType="BIGINT" property="id"/>
+            <result column="r_name" jdbcType="VARCHAR" property="name"/>
+            <result column="r_description" jdbcType="VARCHAR" property="description"/>
+        </association>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,username,phone,password,salt,creat_time,last_login_time,status,role_id,sex,address,description
+        u.id, u.username, u.phone, u.password, u.salt, u.creat_time,
+u.last_login_time, u.status, u.role_id, u.sex, u.address, u.description, r.id as r_id, r.name as r_name, r.description as r_description
     </sql>
 
     <select id="selectByPhone" parameterType="String" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM gfs_user
-        WHERE phone = #{userPhone}
+        FROM
+        gfs_user u
+        JOIN  gfs_role r ON u.role_id = r.id
+        WHERE u.phone = #{userPhone}
     </select>
 
 
     <insert id="insert" parameterType="me.guoxin.pojo.GfsUser">
         INSERT INTO gfs_user(id, username, phone, password, salt, creat_time, last_login_time, status, role_id, sex, address, description)
-        VALUES (#{id}, #{username}, #{phone}, #{password}, #{salt}, #{creatTime}, #{lastLoginTime}, #{status}, #{roleId}, #{sex}, #{address}, #{description});
+        VALUES (#{id}, #{username}, #{phone}, #{password}, #{salt}, #{creatTime}, #{lastLoginTime}, #{status}, #{role.id}, #{sex}, #{address}, #{description});
     </insert>
-    
+
     <select id="getRolesByUserPhone" resultType="String">
         SELECT
         r.name

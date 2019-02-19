@@ -21,7 +21,7 @@ public class GfsUser implements Serializable {
     private Date creatTime;
     private Date lastLoginTime;
     private Integer status;
-    private Integer roleId;
+    private GfsRole role;
     private String sex;
     private String address;
     private String description;
@@ -29,7 +29,7 @@ public class GfsUser implements Serializable {
     public GfsUser() {
     }
 
-    public GfsUser(Long id, String username, String phone, String password, String salt, Date creatTime, Date lastLoginTime, Integer status, Integer roleId, String sex, String address, String description) {
+    public GfsUser(Long id, String username, String phone, String password, String salt, Date creatTime, Date lastLoginTime, Integer status, GfsRole role, String sex, String address, String description) {
         this.id = id;
         this.username = username;
         this.phone = phone;
@@ -38,7 +38,7 @@ public class GfsUser implements Serializable {
         this.creatTime = creatTime;
         this.lastLoginTime = lastLoginTime;
         this.status = status;
-        this.roleId = roleId;
+        this.role = role;
         this.sex = sex;
         this.address = address;
         this.description = description;
@@ -53,7 +53,7 @@ public class GfsUser implements Serializable {
         this.creatTime = gfsUser.getCreatTime();
         this.lastLoginTime = gfsUser.getLastLoginTime();
         this.status = gfsUser.getStatus();
-        this.roleId = gfsUser.getRoleId();
+        this.role = gfsUser.getRole();
         this.sex = gfsUser.getSex();
         this.address = gfsUser.getAddress();
         this.description = gfsUser.getDescription();
@@ -123,14 +123,6 @@ public class GfsUser implements Serializable {
         this.status = status;
     }
 
-    public Integer getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
-
     public String getSex() {
         return sex;
     }
@@ -153,6 +145,14 @@ public class GfsUser implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public GfsRole getRole() {
+        return role;
+    }
+
+    public void setRole(GfsRole role) {
+        this.role = role;
     }
 
     public String CredentialsSalt() {
