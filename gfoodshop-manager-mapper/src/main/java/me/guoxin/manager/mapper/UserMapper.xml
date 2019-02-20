@@ -71,6 +71,13 @@ u.last_login_time, u.status, u.role_id, u.sex, u.address, u.description, r.id as
         ORDER BY u.id
     </select>
 
+    <delete id="deleteUser" parameterType="java.util.List">
+        delete from gfs_user where id in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+
 
 
 </mapper>

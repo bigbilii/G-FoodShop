@@ -244,13 +244,57 @@
             },
             {
                 "data": function (data, type, full) {
-                    return " <div class=\"btn-group\"><button type=\"button\" class=\"btn btn-primary btn-xs\">修改</button><button type=\"button\" class=\"btn btn-danger btn-xs\">删除</button></div>";
+                    return "<div class=\"btn-group\">" +
+                        "<button type=\"button\" class=\"btn btn-primary btn-xs\" >修改</button>" +
+                        "<button type=\"button\" class=\"btn btn-danger btn-xs\" onclick='deleteOne(this)'>删除</button>" +
+                        "</div>";
                 }
             }
         ]
     });
 
+    function deleteOne(data) {
+        var rowIndex = $(data).parents("tr").index();
+        var id = $('#onlineTable').DataTable().row(rowIndex).data().id;
+        var datas = [];
+        datas.push(id);
+        deleteUser(datas);
+    }
 
+    /**
+     * 踢出请求
+     * @param data
+     */
+    function deleteUser(data) {
+        $.ajax({
+            type: "DELETE",
+            url: "/user/delete",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (result) {
+                if (result.code === 200) {
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("未知错误");
+                    } else {
+                        alert(result.message);
+                    }
+                    window.location.reload();
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+                window.location.reload();
+            }
+        });
+    }
 </script>
 </body>
 </html>

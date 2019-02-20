@@ -17,6 +17,7 @@ import org.apache.shiro.session.mgt.DefaultSessionKey;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -152,6 +153,12 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             throw new IException("踢出在线用户时发生未知错误！");
         }
+    }
+
+    @Transactional
+    @Override
+    public void deleteUser(List<Long> ids) {
+        userMapper.deleteUser(ids);
     }
 
 

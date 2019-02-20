@@ -18,10 +18,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -136,6 +133,19 @@ public class UserController {
         DataTableDTO dataTableDTO = DataTableUtil.getDataTableDTO(tbData);
         DataTableViewPageDTO<GfsUser> list = userService.getUserList(dataTableDTO);
         return new ResultUtil<>().setData(list);
+    }
+
+    /**
+     * 删除用户
+     *
+     * @return
+     * @throws Exception
+     */
+    @RequiresPermissions("user:delete")
+    @DeleteMapping(value = "/user/delete")
+    public Result deleteUser(@RequestBody List<Long> ids) {
+        userService.deleteUser(ids);
+        return new ResultUtil<>().setData(null, "删除成功");
     }
 
     /**

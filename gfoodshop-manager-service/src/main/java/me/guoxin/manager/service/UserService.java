@@ -62,7 +62,13 @@ public interface UserService {
 
     /**
      * 踢出在线用户
-     * @param sessionIds
+     * @param sessionIds 会话id集合
      */
     void kickOutOnlineUser(List<String> sessionIds);
+
+    /**
+     * 删除用户
+     * @param ids 用户id集合
+     */
+    void deleteUser(List<Long> ids);
 }

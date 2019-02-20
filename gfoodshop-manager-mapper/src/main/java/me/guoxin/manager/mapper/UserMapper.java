@@ -19,4 +19,6 @@ public interface UserMapper {
     Set<String> getPermissionsByUserPhone(@Param("userPhone")String userPhone);
 
     List<GfsUser> getUserList();
+
+    void deleteUser(List<Long> ids);
 }
