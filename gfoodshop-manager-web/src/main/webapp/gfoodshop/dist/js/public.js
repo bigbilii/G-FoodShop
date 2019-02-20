@@ -1,11 +1,21 @@
 /**
+ * 用户获取信息
+ */
+function loadUserInfo() {
+    var userInfo;
+    $.ajax({
+        
+    });
+}
+
+/**
  * 判空
  *
  * @param obj
  * @returns {boolean}
  */
 function isNull(obj) {
-    return obj == null || obj == undefined || obj.trim() == "";
+    return obj == null || obj === undefined || obj.trim() === "";
 
 }
 
@@ -68,7 +78,7 @@ function validPassword(password) {
  */
 function MillisecondToDate(msd) {
     var time = parseFloat(msd) / 1000;
-    if (null != time && "" != time) {
+    if (null != time && "" !== time) {
         if (time > 60 && time < 60 * 60) {
             time = parseInt(time / 60.0) + "分钟" + parseInt((parseFloat(time / 60.0) -
                 parseInt(time / 60.0)) * 60) + "秒";

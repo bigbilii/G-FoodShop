@@ -72,10 +72,8 @@ public class UserController {
         /*验证成功*/
         if (gtResult == 1) {
             UsernamePasswordToken token = new UsernamePasswordToken(account.getPhone(), account.getPassword(), account.isRemember());
-            log.info("login：正在登录中，登录信息为：" + account);
             Subject subject = SecurityUtils.getSubject();
             subject.login(token);
-            log.info("login：登录成功");
             return new ResultUtil<Object>().setData(null, "登录成功");
         } else {
             return new ResultUtil<Object>().setMsg(401, "验证错误");
