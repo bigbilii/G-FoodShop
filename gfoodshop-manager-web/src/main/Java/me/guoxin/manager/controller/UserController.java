@@ -130,10 +130,12 @@ public class UserController {
      * @throws Exception
      */
     @RequiresPermissions("user:list")
-    @GetMapping(value = "/user/list")
-    public Result userList() {
-        List<GfsUser> list = userService.getUserList();
-        return new ResultUtil<Object>().setData(null);
+    @PostMapping(value = "/user/list")
+    public Result userList(String tbData) {
+        // 处理dataTable发送Json字符串参数
+        DataTableDTO dataTableDTO = DataTableUtil.getDataTableDTO(tbData);
+        DataTableViewPageDTO<GfsUser> list = userService.getUserList(dataTableDTO);
+        return new ResultUtil<>().setData(list);
     }
 
     /**

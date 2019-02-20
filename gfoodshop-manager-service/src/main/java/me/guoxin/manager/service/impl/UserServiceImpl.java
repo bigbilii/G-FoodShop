@@ -1,5 +1,7 @@
 package me.guoxin.manager.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import me.guoxin.dto.DataTableViewPageDTO;
 import me.guoxin.dto.OnlineUserDTO;
 import me.guoxin.manager.utils.SessionUtils;
@@ -89,8 +91,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<GfsUser> getUserList() {
-        return userMapper.getUserList();
+    public DataTableViewPageDTO<GfsUser> getUserList(DataTableDTO dataTableDTO) {
+        DataTableViewPageDTO<GfsUser> dtoDataTableViewPageDTO = new DataTableViewPageDTO<>();
+        int startIndex = dataTableDTO.getPage().getStart();
+        int length = dataTableDTO.getPage().getLength();
+        startIndex = startIndex / length + 1;
+        PageHelper.startPage(startIndex, length);
+
+        List<GfsUser> list = userMapper.getUserList();
+
+        PageInfo<GfsUser> pageInfo = new PageInfo<>(list);
+        long total = pageInfo.getTotal();
+        dtoDataTableViewPageDTO.setData(list);
+        dtoDataTableViewPageDTO.setiTotalRecords(length);
+        dtoDataTableViewPageDTO.setiTotalDisplayRecords(total);
+        return dtoDataTableViewPageDTO;
     }
 
     @Override
@@ -115,9 +130,9 @@ public class UserServiceImpl implements UserService {
         int startIndex = dataTableDTO.getPage().getStart();
         int length = dataTableDTO.getPage().getLength();
         int endIndex = (startIndex * length) + length;
-        int size = onlineUserList.size();
+        long size = onlineUserList.size();
         if (endIndex > size) {
-            endIndex = size;
+            endIndex = (int)size;
         }
 
         List<OnlineUserDTO> list = onlineUserList.subList(startIndex, endIndex);

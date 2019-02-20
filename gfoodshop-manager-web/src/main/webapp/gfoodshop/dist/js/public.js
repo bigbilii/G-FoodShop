@@ -33,7 +33,6 @@ function loadUserInfo() {
 }
 
 function showUserInfo(userInfo) {
-    console.log(userInfo);
     if (isNull(userInfo.username)) {
         $("#userName").text("{获取错误}");
         $("#userNameB").text("{获取错误}");

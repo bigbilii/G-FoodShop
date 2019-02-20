@@ -11,7 +11,7 @@
         <result column="salt" jdbcType="VARCHAR" property="salt"/>
         <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime"/>
         <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime"/>
-        <result column="state" jdbcType="BIGINT" property="state"/>
+        <result column="status" jdbcType="BIGINT" property="status"/>
         <result column="sex" jdbcType="VARCHAR" property="sex"/>
         <result column="address" jdbcType="VARCHAR" property="address"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
@@ -61,5 +61,16 @@ u.last_login_time, u.status, u.role_id, u.sex, u.address, u.description, r.id as
         JOIN gfs_perm p ON rp.perm_id = p.id
         WHERE u.phone = #{userPhone}
     </select>
+
+    <select id="getUserList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        gfs_user u
+        LEFT JOIN  gfs_role r ON u.role_id = r.id
+        ORDER BY u.id
+    </select>
+
+
 
 </mapper>

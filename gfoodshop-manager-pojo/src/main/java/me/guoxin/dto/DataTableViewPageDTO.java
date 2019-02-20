@@ -4,7 +4,7 @@ import java.util.List;
 
 public class DataTableViewPageDTO<T> {
     private List<T> data;
-    private Integer iTotalDisplayRecords;
+    private Long iTotalDisplayRecords;
     private Integer iTotalRecords;
 
     public List<T> getData() {
@@ -15,11 +15,11 @@ public class DataTableViewPageDTO<T> {
         this.data = data;
     }
 
-    public Integer getiTotalDisplayRecords() {
+    public Long getiTotalDisplayRecords() {
         return iTotalDisplayRecords;
     }
 
-    public void setiTotalDisplayRecords(Integer iTotalDisplayRecords) {
+    public void setiTotalDisplayRecords(Long iTotalDisplayRecords) {
         this.iTotalDisplayRecords = iTotalDisplayRecords;
     }
 

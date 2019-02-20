@@ -50,8 +50,9 @@ public interface UserService {
     /**
      * 查询用户信息
      * @return
+     * @param dataTableDTO
      */
-    List<GfsUser> getUserList();
+    DataTableViewPageDTO<GfsUser> getUserList(DataTableDTO dataTableDTO);
 
     /**
      * 获取在线用户
