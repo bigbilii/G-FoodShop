@@ -254,6 +254,10 @@
     });
 
     function deleteOne(data) {
+        var del = confirm("是否删除");
+        if (!del) {
+            return;
+        }
         var rowIndex = $(data).parents("tr").index();
         var id = $('#onlineTable').DataTable().row(rowIndex).data().id;
         var datas = [];

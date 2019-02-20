@@ -253,6 +253,10 @@
      * @param data
      */
     function kickoutThis(data) {
+        var del = confirm("是否踢出");
+        if (!del) {
+            return;
+        }
         var rowIndex = $(data).parents("tr").index();
         var sessionId = $('#onlineTable').DataTable().row(rowIndex).data().sessionId;
         var datas = [];
