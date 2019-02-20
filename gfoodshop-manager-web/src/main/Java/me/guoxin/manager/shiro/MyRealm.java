@@ -9,8 +9,6 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.Resource;
 
@@ -23,8 +21,6 @@ public class MyRealm extends AuthorizingRealm {
     @Resource
     UserService userService;
 
-    private static final Logger log = LoggerFactory.getLogger(MyRealm.class);
-
     /**
      * 授权验证
      *
@@ -33,17 +29,13 @@ public class MyRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        log.info("正在进行授权验证！");
         /*获取用户手机号*/
         GfsUser gfsUser = (GfsUser) principalCollection.getPrimaryPrincipal();
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        log.info("正在从数据库获得角色信息，用户登录手机号为：" + gfsUser);
         //获得授权角色
         authorizationInfo.setRoles(userService.getRolesByUserPhone(gfsUser.getPhone()));
-        log.info("正在从数据库获得权限信息，用户登录手机号为：" + gfsUser);
         //获得授权权限
         authorizationInfo.setStringPermissions(userService.getPermissionsByUserPhone(gfsUser.getPhone()));
-        log.info("数据库获得信息完成，信息为：" + authorizationInfo.getRoles() + " \n" + authorizationInfo.getStringPermissions());
         return authorizationInfo;
     }
 
@@ -56,13 +48,9 @@ public class MyRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        log.info("正在进行登录验证！");
-
         /*获取用户手机号*/
         String userPhone = authenticationToken.getPrincipal().toString();
-        log.info("正在从数据库获得用户信息，用户登录手机号为：" + userPhone);
         GfsUser gfsuser = userService.getUserByPhone(userPhone);
-        log.info("数据库获得用户信息，：" + gfsuser);
         if (gfsuser == null) {
             return null;
         }
