@@ -29,6 +29,8 @@
                 /user/logout = logout
                 <!-- 验证码 -->
                 /getValidate = anon
+                <!-- 获取当前用户信息 -->
+                /user/myInfo = user,kickout
 
                 <!-- 所有请求 -->
                 /gfoodshop/pages/** = user,kickout

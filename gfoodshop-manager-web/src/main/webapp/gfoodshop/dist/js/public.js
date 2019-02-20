@@ -4,8 +4,55 @@
 function loadUserInfo() {
     var userInfo;
     $.ajax({
-        
+        type: "GET",
+        async: false,
+        url: "/user/myInfo",
+        contentType: "application/json",
+        success: function (result) {
+            if (result.code === 200) {
+                userInfo = result.data;
+                return userInfo;
+            } else {
+                if (isEmptyResult(result)) {
+                    alert("未知错误");
+                } else {
+                    alert(result.message);
+                }
+            }
+        },
+        error: function (result) {
+            var resultMsg = result.responseJSON;
+            if (isEmptyResult(resultMsg)) {
+                alert("未知错误");
+            } else {
+                alert(resultMsg.message);
+            }
+        }
     });
+    return userInfo;
+}
+
+function showUserInfo(userInfo) {
+    console.log(userInfo);
+    if (isNull(userInfo.username)) {
+        $("#userName").text("{获取错误}");
+        $("#userNameB").text("{获取错误}");
+    } else {
+        $("#userName").text(userInfo.username);
+        $("#userNameB").text(userInfo.username);
+    }
+    if (isNull(userInfo.phone)) {
+        $("#userPhone").text("{获取错误}");
+    } else {
+        $("#userPhone").text(userInfo.phone);
+    }
+    if (isNull(userInfo.role.name)) {
+        $("#userRole").text("{获取错误}");
+        $("#userRoleName").text("{获取错误}");
+    } else {
+        $("#userRole").text(userInfo.role.name);
+        $("#userRoleName").text(userInfo.role.description);
+    }
 }
 
 /**

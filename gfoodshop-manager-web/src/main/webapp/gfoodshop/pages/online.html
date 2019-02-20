@@ -43,17 +43,16 @@
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="hidden-xs">Admin</span>
+                            <span class="hidden-xs" id="userName"></span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
-                                <p>
-                                    Admin
-                                </p>
-                                <p>
-                                    系统管理员
-                                    <small>Member since Nov. 2012</small>
+                                <p>用户名:<span id="userNameB"></span></p>
+                                <p>登录手机号:<span id="userPhone"></span></p>
+                                <p>身份:
+                                    <span id="userRole"></span>
+                                    <small id="userRoleName"></small>
                                 </p>
                             </li>
                             <!-- Menu Footer-->
@@ -62,7 +61,7 @@
                                     <a href="#" class="btn btn-default btn-flat">个人信息</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">退出登录</a>
+                                    <a href="/user/logout" class="btn btn-default btn-flat">退出登录</a>
                                 </div>
                             </li>
                         </ul>
@@ -87,7 +86,6 @@
                         <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> 在线用户</a></li>
                     </ul>
                 </li>
-                </span>
             </ul>
         </section>
         <!-- /.sidebar -->
@@ -176,7 +174,9 @@
      * 初始化加载函数
      */
     $(function(){
-
+        var userInfo = loadUserInfo();
+        console.log(userInfo);
+        showUserInfo(userInfo);
     });
     /**
      * 在线用户列表初始化

@@ -95,6 +95,19 @@ public class UserController {
     }
 
     /**
+     * 获取当前用户信息
+     *
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(value = "/user/myInfo")
+    public Result getMyUserInfo() {
+        GfsUser gfsUser = (GfsUser)SecurityUtils.getSubject().getPrincipal();
+        gfsUser.maskPasswordInfo();
+        return new ResultUtil<>().setData(gfsUser);
+    }
+
+    /**
      * 新增用户
      *
      * @param gfsUser 用户实体
