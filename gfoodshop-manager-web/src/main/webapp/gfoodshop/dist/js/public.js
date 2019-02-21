@@ -1,5 +1,5 @@
 /**
- * 用户获取信息
+ * 当前用户获取信息
  */
 function loadUserInfo() {
     var userInfo;
@@ -32,12 +32,24 @@ function loadUserInfo() {
     return userInfo;
 }
 
+/**
+ * 展示当前用户信息
+ * @param userInfo
+ */
 function showUserInfo(userInfo) {
+    if (userInfo === null) {
+        $("#userNameA").text("{获取错误}");
+        $("#userNameB").text("{获取错误}");
+        $("#userPhone").text("{获取错误}");
+        $("#userRole").text("{获取错误}");
+        $("#userRoleName").text("{获取错误}");
+        return;
+    }
     if (isNull(userInfo.username)) {
-        $("#userName").text("{获取错误}");
+        $("#userNameA").text("{获取错误}");
         $("#userNameB").text("{获取错误}");
     } else {
-        $("#userName").text(userInfo.username);
+        $("#userNameA").text(userInfo.username);
         $("#userNameB").text(userInfo.username);
     }
     if (isNull(userInfo.phone)) {
@@ -52,6 +64,16 @@ function showUserInfo(userInfo) {
         $("#userRole").text(userInfo.role.name);
         $("#userRoleName").text(userInfo.role.description);
     }
+}
+
+/**
+ * 密码重复是否正确
+ * @param password
+ * @param passwordSure
+ * @returns {boolean}
+ */
+function passwordIsSured(password, passwordSure) {
+    return password === passwordSure;
 }
 
 /**
@@ -156,6 +178,19 @@ function isEmptyResult(resultMsg) {
         return true;
     }
     return false;
+}
+
+function makeAddress(province, city, district) {
+    return province + city + district;
+}
+
+function findInListByName(list, data) {
+    for (var i = 0; i < list.length; i++) {
+        if (list[i].name === data) {
+            return list[i];
+        }
+    }
+    return null;
 }
 
 

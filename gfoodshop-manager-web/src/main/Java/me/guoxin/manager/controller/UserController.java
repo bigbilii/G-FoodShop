@@ -99,7 +99,7 @@ public class UserController {
      */
     @GetMapping(value = "/user/myInfo")
     public Result getMyUserInfo() {
-        GfsUser gfsUser = (GfsUser)SecurityUtils.getSubject().getPrincipal();
+        GfsUser gfsUser = (GfsUser) SecurityUtils.getSubject().getPrincipal();
         gfsUser.maskPasswordInfo();
         return new ResultUtil<>().setData(gfsUser);
     }
@@ -111,13 +111,11 @@ public class UserController {
      * @return
      * @throws Exception
      */
-    @RequiresPermissions("user:add")
-    @PostMapping(value = "/user/addUser")
-    public Result addUser(@RequestBody GfsUser gfsUser) {
-        log.info("addUser：添加用户中，添加信息为为：" + gfsUser);
-        userService.addUser(gfsUser);
-        log.info("login：添加成功");
-        return new ResultUtil<Object>().setData(null);
+    @RequiresPermissions("user:insert")
+    @PostMapping(value = "/user/insert")
+    public Result insertUser(@RequestBody GfsUser gfsUser) {
+        userService.insertUser(gfsUser);
+        return new ResultUtil<Object>().setData(null, "添加成功");
     }
 
     /**
@@ -146,19 +144,6 @@ public class UserController {
     public Result deleteUser(@RequestBody List<Long> ids) {
         userService.deleteUser(ids);
         return new ResultUtil<>().setData(null, "删除成功");
-    }
-
-    /**
-     * 新增用户
-     *
-     * @param gfsUser 用户实体
-     * @return
-     * @throws Exception
-     */
-    @PostMapping(value = "/user/addRole")
-    public String addRole(@RequestBody GfsUser gfsUser) {
-        userService.addUser(gfsUser);
-        return "hello world";
     }
 
     /**

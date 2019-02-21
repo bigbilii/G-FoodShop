@@ -20,13 +20,6 @@ public interface UserService {
     GfsUser getUserByPhone(String userPhone);
 
     /**
-     * 添加用户信息
-     * @param gfsUser 用户信息
-     * @return
-     */
-    int addUser(GfsUser gfsUser);
-
-    /**
      * 判断手机号是否存在
      * @param userPhone 用户登录手机
      * @return
@@ -71,4 +64,10 @@ public interface UserService {
      * @param ids 用户id集合
      */
     void deleteUser(List<Long> ids);
+
+    /**
+     * 添加用户
+     * @param gfsUser 用户信息
+     */
+    void insertUser(GfsUser gfsUser);
 }

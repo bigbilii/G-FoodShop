@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import me.guoxin.dto.DataTableViewPageDTO;
 import me.guoxin.dto.OnlineUserDTO;
+import me.guoxin.manager.mapper.RoleMapper;
 import me.guoxin.manager.utils.SessionUtils;
 import me.guoxin.pojo.DataTableDTO;
 import me.guoxin.pojo.IException;
@@ -28,6 +29,9 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Resource
+    private RoleMapper roleMapper;
+
+    @Resource
     private PasswordHelper passwordHelper;
 
     @Resource
@@ -49,30 +53,6 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
-
-    @Override
-    public int addUser(GfsUser gfsUser) {
-
-        if (hasUserByPhone(gfsUser.getPhone())) {
-            throw new IException("手机号已存在，请重新输入");
-        }
-
-        if (!gfsUser.RightPhone()) {
-            throw new IException("手机号格式错误，请重新输入");
-        }
-
-        /*密码加密与盐*/
-        passwordHelper.encryptPassword(gfsUser);
-        /*设置创建时间*/
-        gfsUser.setCreatTime(new Date());
-        /*设置状态正常*/
-        gfsUser.setStatus(1);
-        if (userMapper.insert(gfsUser) != 1) {
-            throw new IException("添加用户失败！");
-        }
-        return 1;
-    }
-
 
     @Override
     public boolean hasUserByPhone(String userPhone) {
@@ -159,6 +139,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(List<Long> ids) {
         userMapper.deleteUser(ids);
+    }
+
+    @Override
+    public void insertUser(GfsUser gfsUser) {
+        if (hasUserByPhone(gfsUser.getPhone())) {
+            throw new IException("手机号已存在，请重新输入");
+        }
+
+        if (!gfsUser.RightPhone()) {
+            throw new IException("手机号格式错误，请重新输入");
+        }
+
+
+
+
+        // 密码加密与盐
+        passwordHelper.encryptPassword(gfsUser);
+        // 设置创建时间
+        gfsUser.setCreatTime(new Date());
+        // 设置状态正常
+        gfsUser.setStatus(1);
+        if (userMapper.insert(gfsUser) != 1) {
+            throw new IException("添加用户失败！");
+        }
     }
 
 

@@ -38,7 +38,7 @@
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="hidden-xs" id="userName"></span>
+                            <span class="hidden-xs" id="userNameA"></span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
@@ -79,7 +79,7 @@
                     </a>
                     <ul class="treeview-menu">
                         <li class="active"><a href="user.html"><i class="fa fa-circle-o"></i> 用户列表</a></li>
-                        <li ><a href="online.html"><i class="fa fa-circle-o"></i> 在线用户</a></li>
+                        <li><a href="online.html"><i class="fa fa-circle-o"></i> 在线用户</a></li>
                     </ul>
                 </li>
             </ul>
@@ -108,9 +108,19 @@
                     <div class="box">
                         <div class="box-header">
                             <h3 class="box-title">系统用户列表</h3>
+
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
+                            <div class="box-body">
+                                <a class="btn btn-app" data-toggle="modal" data-target="#modal-userInfo"
+                                   onclick="getRoleList()">
+                                    <i class="fa fa-plus-circle"></i> 添加
+                                </a>
+                                <a class="btn btn-app">
+                                    <i class="fa  fa-trash-o"></i> 删除
+                                </a>
+                            </div>
                             <table id="onlineTable" class="table table-bordered table-striped" style="width:100%">
                                 <thead>
                                 <tr>
@@ -141,6 +151,77 @@
 </div>
 <!-- ./wrapper -->
 
+<div class="modal fade" id="modal-userInfo">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">新增用户</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="userInfoForm">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="username"><i class="fa  fa-certificate text-red"></i>用户名</label>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="输入用户名">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone"><i class="fa  fa-certificate text-red"></i>登录电话</label>
+                            <input type="text" class="form-control" id="phone" name="phone" placeholder="输入登录电话">
+                        </div>
+                        <div class="form-group">
+                            <label for="password"><i class="fa  fa-certificate text-red"></i>密码</label>
+                            <input type="password" class="form-control" name="password" id="password"
+                                   placeholder="输入密码">
+                        </div>
+                        <div class="form-group">
+                            <label for="passwordSure"><i class="fa  fa-certificate text-red"></i>重复密码</label>
+                            <input type="password" class="form-control" id="passwordSure"
+                                   placeholder="重复密码">
+                        </div>
+                        <div class="form-group">
+                            <label for="sex">角色</label>
+                            <select class="form-control" id="role">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sex">性别</label>
+                            <select class="form-control" id="sex" name="sex">
+                                <option>未知</option>
+                                <option>男</option>
+                                <option>女</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">地址</label>
+                            <div data-toggle="distpicker" id="address" class=" row">
+                                <div class="col-lg-4">
+                                    <select class="form-control" id="eprovinceName" data-province="重庆市"></select>
+                                </div>
+                                <div class="col-lg-4">
+                                    <select class="form-control" id="ecityName" data-city="重庆城区"></select>
+                                </div>
+                                <div class="col-lg-4">
+                                    <select class="col-lg-3 form-control" id="edistrictName"
+                                            data-district="渝中区"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
+                <button type="submit" class="btn btn-primary" onclick="addUser()">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
 <!-- jQuery 3 -->
 <script src="../bower_components/jquery/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
@@ -162,16 +243,19 @@
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../dist/js/pages/dashboard.js"></script>
+<!-- distpicker -->
+<script src="../plugins/distpicker/distpicker.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
 <!-- page script -->
 <script src="../dist/js/public.js"></script>
 <script>
 
+    var roles;
     /**
      * 初始化加载函数
      */
-    $(function(){
+    $(function () {
         var userInfo = loadUserInfo();
         showUserInfo(userInfo);
     });
@@ -225,9 +309,11 @@
             },
             {"data": "username"},
             {"data": "phone"},
-            {"data": function (data, type, full) {
+            {
+                "data": function (data, type, full) {
                     return data.role.name + "(" + data.role.description + ")";
-                }},
+                }
+            },
             {"data": "sex"},
             {"data": "address"},
             {"data": "creatTime"},
@@ -298,6 +384,138 @@
                 window.location.reload();
             }
         });
+    }
+
+    /**
+     * 添加用户
+     */
+    function addUser() {
+        var username = $("#username").val();
+        var phone = $("#phone").val();
+        var password = $("#password").val();
+        var passwordSure = $("#passwordSure").val();
+        var roleName = $("#role").find("option:selected").text();
+        var sex = $("#sex").find("option:selected").text();
+        var province = $("#eprovinceName").find("option:selected").text();
+        var city = $("#ecityName").find("option:selected").text();
+        var district = $("#edistrictName").find("option:selected").text();
+
+        var address = makeAddress(province, city, district);
+        var role = findInListByName(roles, roleName);
+        if (role === null) {
+            alert("角色选择错误！");
+            return;
+        }
+        // var roleString = JSON.stringify(role);
+        /* if (isNull(username)) {
+             alert("请输入用户名!");
+             return;
+         }
+         if (isNull(phone)) {
+             alert("请输入手机号码!");
+             return;
+         }
+         if (!validPhone(phone)) {
+             alert("请输入正确的手机号!");
+             return;
+         }
+         if (isNull(password)) {
+             alert("请输入密码!");
+             return;
+         }
+         if (!validPassword(password)) {
+             alert("请输入正确的密码!最少4位，最多20位字母或数字的组合");
+             return;
+         }
+         if (isNull(passwordSure)) {
+             alert("请输入密码!");
+             return;
+         }
+         if (!passwordIsSured(password,passwordSure)) {
+             alert("两次密码不相同，请重新输入");
+             return;
+         }*/
+        var data = {"username": username};
+        data.password = password;
+        data.phone = phone;
+        data.sex = sex;
+        data.address = address;
+        data.role = role;
+
+        sendAddUser(data);
+    }
+
+    /**
+     * 获取权限列表
+     */
+    function sendAddUser(data) {
+        $.ajax({
+            type: "POST",
+            url: "/user/insert",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (result) {
+                if (result.code === 200) {
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("发生未知错误");
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("发生未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+            }
+        })
+    }
+
+    /**
+     * 获取权限列表
+     */
+    function getRoleList() {
+        $.ajax({
+            type: "GET",
+            url: "/role/list",
+            async: false,
+            contentType: "application/json",
+            success: function (result) {
+                if (result.code === 200) {
+                    roles = result.data;
+                    setRoleInfo(result.data);
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("获取权限信息发生未知错误");
+                    } else {
+                        alert(result.message);
+                    }
+                    window.location.reload();
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("获取权限信息发生未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+                window.location.reload();
+            }
+        });
+    }
+
+    function setRoleInfo(data) {
+        var role = $("#role");
+        for (var i = 0; i < data.length; i++) {
+            role.append("<option>" + data[i].name + "</option>");
+        }
     }
 </script>
 </body>
