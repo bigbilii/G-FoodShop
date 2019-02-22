@@ -45,7 +45,7 @@ public interface UserService {
      * @return
      * @param dataTableDTO
      */
-    DataTableViewPageDTO<GfsUser> getUserList(DataTableDTO dataTableDTO);
+    DataTableViewPageDTO<GfsUser> listUsers(DataTableDTO dataTableDTO);
 
     /**
      * 获取在线用户
@@ -70,4 +70,10 @@ public interface UserService {
      * @param gfsUser 用户信息
      */
     void insertUser(GfsUser gfsUser);
+
+    /**
+     * 修改用户
+     * @param gfsUser 用户信息
+     */
+    void updateUser(GfsUser gfsUser);
 }

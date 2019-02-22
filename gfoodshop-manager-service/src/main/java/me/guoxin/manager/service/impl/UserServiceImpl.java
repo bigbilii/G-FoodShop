@@ -61,6 +61,17 @@ public class UserServiceImpl implements UserService {
         return list.size() != 0;
     }
 
+    public boolean hasUserByPhone(String userPhone, Long id) {
+        List<GfsUser> list = new ArrayList<>();
+        list = userMapper.selectByPhone(userPhone);
+        for (GfsUser user : list) {
+            if (!user.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public Set<String> getRolesByUserPhone(String userPhone) {
         return userMapper.getRolesByUserPhone(userPhone);
@@ -72,14 +83,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public DataTableViewPageDTO<GfsUser> getUserList(DataTableDTO dataTableDTO) {
+    public DataTableViewPageDTO<GfsUser> listUsers(DataTableDTO dataTableDTO) {
         DataTableViewPageDTO<GfsUser> dtoDataTableViewPageDTO = new DataTableViewPageDTO<>();
         int startIndex = dataTableDTO.getPage().getStart();
         int length = dataTableDTO.getPage().getLength();
         startIndex = startIndex / length + 1;
         PageHelper.startPage(startIndex, length);
 
-        List<GfsUser> list = userMapper.getUserList();
+        List<GfsUser> list = userMapper.listUsers();
+
+        for (GfsUser gfsUser : list) {
+            gfsUser.maskPasswordInfo();
+        }
 
         PageInfo<GfsUser> pageInfo = new PageInfo<>(list);
         long total = pageInfo.getTotal();
@@ -113,7 +128,7 @@ public class UserServiceImpl implements UserService {
         int endIndex = (startIndex * length) + length;
         long size = onlineUserList.size();
         if (endIndex > size) {
-            endIndex = (int)size;
+            endIndex = (int) size;
         }
 
         List<OnlineUserDTO> list = onlineUserList.subList(startIndex, endIndex);
@@ -150,10 +165,6 @@ public class UserServiceImpl implements UserService {
         if (!gfsUser.RightPhone()) {
             throw new IException("手机号格式错误，请重新输入");
         }
-
-
-
-
         // 密码加密与盐
         passwordHelper.encryptPassword(gfsUser);
         // 设置创建时间
@@ -165,5 +176,55 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public void updateUser(GfsUser gfsUser) {
+        if (hasUserByPhone(gfsUser.getPhone(), gfsUser.getId())) {
+            throw new IException("手机号已存在，请重新输入");
+        }
 
+        if (!gfsUser.RightPhone()) {
+            throw new IException("手机号格式错误，请重新输入");
+        }
+        List<GfsUser> list = userMapper.selectById(gfsUser.getId());
+        if (list == null || list.isEmpty()) {
+            throw new IException("更新用户发生错误，可能用户被删除，请刷新重试！");
+        }
+        GfsUser user = list.get(0);
+        if (gfsUser.getUsername() == null) {
+            gfsUser.setUsername(user.getUsername());
+        }
+        if (gfsUser.getPhone() == null) {
+            gfsUser.setPassword(user.getPhone());
+        }
+        if (gfsUser.getPassword() == null) {
+            gfsUser.setPassword(user.getPassword());
+        }
+        if (gfsUser.getSalt() == null) {
+            gfsUser.setSalt(user.getSalt());
+        }
+        if (gfsUser.getCreatTime() == null) {
+            gfsUser.setCreatTime(user.getCreatTime());
+        }
+        if (gfsUser.getLastLoginTime() == null) {
+            gfsUser.setLastLoginTime(user.getLastLoginTime());
+        }
+        if (gfsUser.getStatus() == null) {
+            gfsUser.setStatus(user.getStatus());
+        }
+        if (gfsUser.getRole() == null) {
+            gfsUser.setRole(user.getRole());
+        }
+        if (gfsUser.getSex() == null) {
+            gfsUser.setSex(user.getSex());
+        }
+        if (gfsUser.getAddress() == null) {
+            gfsUser.setAddress(user.getAddress());
+        }
+        if (gfsUser.getDescription() == null) {
+            gfsUser.setDescription(user.getDescription());
+        }
+        if (userMapper.updateUser(gfsUser) != 1) {
+            throw new IException("修改用户失败！");
+        }
+    }
 }

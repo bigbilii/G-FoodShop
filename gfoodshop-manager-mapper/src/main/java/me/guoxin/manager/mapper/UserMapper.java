@@ -12,13 +12,19 @@ public interface UserMapper {
 
     int insert(GfsUser user);
 
+    void deleteUser(List<Long> ids);
+
+    int updateUser(GfsUser gfsUser);
+
     List<GfsUser> selectByPhone(String userPhone);
+
+    List<GfsUser> selectById(Long id);
 
     Set<String> getRolesByUserPhone(@Param("userPhone")String userPhone);
 
     Set<String> getPermissionsByUserPhone(@Param("userPhone")String userPhone);
 
-    List<GfsUser> getUserList();
+    List<GfsUser> listUsers();
 
-    void deleteUser(List<Long> ids);
+
 }

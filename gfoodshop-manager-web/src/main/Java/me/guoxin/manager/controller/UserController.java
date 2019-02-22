@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -71,6 +72,9 @@ public class UserController {
             UsernamePasswordToken token = new UsernamePasswordToken(account.getPhone(), account.getPassword(), account.isRemember());
             Subject subject = SecurityUtils.getSubject();
             subject.login(token);
+            GfsUser user = userService.getUserByPhone(account.getPhone());
+            user.setLastLoginTime(new Date());
+            userService.updateUser(user);
             return new ResultUtil<Object>().setData(null, "登录成功");
         } else {
             return new ResultUtil<Object>().setMsg(401, "验证错误");
@@ -117,6 +121,19 @@ public class UserController {
         userService.insertUser(gfsUser);
         return new ResultUtil<Object>().setData(null, "添加成功");
     }
+    /**
+     * 新增用户
+     *
+     * @param gfsUser 用户实体
+     * @return
+     * @throws Exception
+     */
+    @RequiresPermissions("user:update")
+    @PutMapping(value = "/user/update")
+    public Result updateUser(@RequestBody GfsUser gfsUser) {
+        userService.updateUser(gfsUser);
+        return new ResultUtil<Object>().setData(null, "修改成功");
+    }
 
     /**
      * 查询用户列表
@@ -126,10 +143,10 @@ public class UserController {
      */
     @RequiresPermissions("user:list")
     @PostMapping(value = "/user/list")
-    public Result userList(String tbData) {
+    public Result listUsers(String tbData) {
         // 处理dataTable发送Json字符串参数
         DataTableDTO dataTableDTO = DataTableUtil.getDataTableDTO(tbData);
-        DataTableViewPageDTO<GfsUser> list = userService.getUserList(dataTableDTO);
+        DataTableViewPageDTO<GfsUser> list = userService.listUsers(dataTableDTO);
         return new ResultUtil<>().setData(list);
     }
 
@@ -154,7 +171,7 @@ public class UserController {
      */
     @PostMapping(value = "/user/list/online")
     @RequiresPermissions("onlineUser:list")
-    public Result getOnlineUsers(String tbData) {
+    public Result listOnlineUsers(String tbData) {
         // 处理dataTable发送Json字符串参数
         DataTableDTO dataTableDTO = DataTableUtil.getDataTableDTO(tbData);
         DataTableViewPageDTO<OnlineUserDTO> list = userService.getOnlineUser(dataTableDTO);

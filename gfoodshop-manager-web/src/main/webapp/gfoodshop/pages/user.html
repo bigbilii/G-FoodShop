@@ -164,15 +164,15 @@
                     <div class="box-body">
                         <div class="form-group">
                             <label for="username"><i class="fa  fa-certificate text-red"></i>用户名</label>
-                            <input type="text" class="form-control" id="username" name="username" placeholder="输入用户名">
+                            <input type="text" class="form-control" id="username" placeholder="输入用户名">
                         </div>
                         <div class="form-group">
                             <label for="phone"><i class="fa  fa-certificate text-red"></i>登录电话</label>
-                            <input type="text" class="form-control" id="phone" name="phone" placeholder="输入登录电话">
+                            <input type="text" class="form-control" id="phone" placeholder="输入登录电话">
                         </div>
                         <div class="form-group">
                             <label for="password"><i class="fa  fa-certificate text-red"></i>密码</label>
-                            <input type="password" class="form-control" name="password" id="password"
+                            <input type="password" class="form-control" id="password"
                                    placeholder="输入密码">
                         </div>
                         <div class="form-group">
@@ -181,13 +181,13 @@
                                    placeholder="重复密码">
                         </div>
                         <div class="form-group">
-                            <label for="sex">角色</label>
-                            <select class="form-control" id="role">
+                            <label for="role">角色</label>
+                            <select class="form-control role" id="role">
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="sex">性别</label>
-                            <select class="form-control" id="sex" name="sex">
+                            <select class="form-control" id="sex">
                                 <option>未知</option>
                                 <option>男</option>
                                 <option>女</option>
@@ -218,9 +218,70 @@
         </div>
         <!-- /.modal-content -->
     </div>
+</div>
+<!-- /.modal-dialog -->
+<div class="modal fade" id="modal-userUpdateInfo">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">修改用户信息</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="userUpdateInfoForm">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="usernameU"><i class="fa  fa-certificate text-red"></i>用户名</label>
+                            <input type="text" class="form-control" id="usernameU"
+                                   placeholder="输入用户名">
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneU"><i class="fa  fa-certificate text-red"></i>登录电话</label>
+                            <input type="text" class="form-control" id="phoneU" placeholder="输入登录电话">
+                        </div>
+                        <div class="form-group">
+                            <label for="roleU">角色</label>
+                            <select class="form-control role" id="roleU">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sexU">性别</label>
+                            <select class="form-control" id="sexU">
+                                <option>未知</option>
+                                <option>男</option>
+                                <option>女</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="addressU">地址</label>
+                            <div data-toggle="distpicker" id="addressU" class=" row">
+                                <div class="col-lg-4">
+                                    <select class="form-control" id="eprovinceNameU" data-province="重庆市"></select>
+                                </div>
+                                <div class="col-lg-4">
+                                    <select class="form-control" id="ecityNameU" data-city="重庆城区"></select>
+                                </div>
+                                <div class="col-lg-4">
+                                    <select class="col-lg-3 form-control" id="edistrictNameU"
+                                            data-district="渝中区"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
+                <button type="submit" class="btn btn-primary" onclick="updateUser()">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+
 
 <!-- jQuery 3 -->
 <script src="../bower_components/jquery/jquery.min.js"></script>
@@ -250,8 +311,9 @@
 <!-- page script -->
 <script src="../dist/js/public.js"></script>
 <script>
-
     var roles;
+
+    var selectId;
     /**
      * 初始化加载函数
      */
@@ -331,7 +393,7 @@
             {
                 "data": function (data, type, full) {
                     return "<div class=\"btn-group\">" +
-                        "<button type=\"button\" class=\"btn btn-primary btn-xs\" >修改</button>" +
+                        "<button type=\"button\" class=\"btn btn-primary btn-xs\" data-toggle=\"modal\" data-target=\"#modal-userUpdateInfo\"  onclick=\"setUserUpdateInfo(this)\">修改</button>" +
                         "<button type=\"button\" class=\"btn btn-danger btn-xs\" onclick='deleteOne(this)'>删除</button>" +
                         "</div>";
                 }
@@ -352,7 +414,7 @@
     }
 
     /**
-     * 踢出请求
+     * 删除请求
      * @param data
      */
     function deleteUser(data) {
@@ -406,52 +468,121 @@
             alert("角色选择错误！");
             return;
         }
-        // var roleString = JSON.stringify(role);
-        /* if (isNull(username)) {
-             alert("请输入用户名!");
-             return;
-         }
-         if (isNull(phone)) {
-             alert("请输入手机号码!");
-             return;
-         }
-         if (!validPhone(phone)) {
-             alert("请输入正确的手机号!");
-             return;
-         }
-         if (isNull(password)) {
-             alert("请输入密码!");
-             return;
-         }
-         if (!validPassword(password)) {
-             alert("请输入正确的密码!最少4位，最多20位字母或数字的组合");
-             return;
-         }
-         if (isNull(passwordSure)) {
-             alert("请输入密码!");
-             return;
-         }
-         if (!passwordIsSured(password,passwordSure)) {
-             alert("两次密码不相同，请重新输入");
-             return;
-         }*/
+        if (isNull(username)) {
+            alert("请输入用户名!");
+            return;
+        }
+        if (isNull(phone)) {
+            alert("请输入手机号码!");
+            return;
+        }
+        if (!validPhone(phone)) {
+            alert("请输入正确的手机号!");
+            return;
+        }
+        if (isNull(password)) {
+            alert("请输入密码!");
+            return;
+        }
+        if (!validPassword(password)) {
+            alert("请输入正确的密码!最少4位，最多20位字母或数字的组合");
+            return;
+        }
+        if (isNull(passwordSure)) {
+            alert("请输入密码!");
+            return;
+        }
+        if (!passwordIsSured(password, passwordSure)) {
+            alert("两次密码不相同，请重新输入");
+            return;
+        }
         var data = {"username": username};
         data.password = password;
         data.phone = phone;
         data.sex = sex;
         data.address = address;
         data.role = role;
-
         sendAddUser(data);
     }
 
     /**
-     * 获取权限列表
+     * 修改用户
+     */
+    function updateUser() {
+        var username = $("#usernameU").val();
+        var phone = $("#phoneU").val();
+        var roleName = $("#roleU").find("option:selected").text();
+        var sex = $("#sexU").find("option:selected").text();
+        var province = $("#eprovinceName").find("option:selected").text();
+        var city = $("#ecityName").find("option:selected").text();
+        var district = $("#edistrictName").find("option:selected").text();
+
+        var address = makeAddress(province, city, district);
+        var role = findInListByName(roles, roleName);
+        if (role === null) {
+            alert("角色选择错误！");
+            return;
+        }
+        if (isNull(username)) {
+            alert("请输入用户名!");
+            return;
+        }
+        if (isNull(phone)) {
+            alert("请输入手机号码!");
+            return;
+        }
+        if (!validPhone(phone)) {
+            alert("请输入正确的手机号!");
+            return;
+        }
+        var data = {"username": username};
+        data.phone = phone;
+        data.sex = sex;
+        data.address = address;
+        data.role = role;
+        data.id = selectId;
+        sendUpdateUser(data);
+    }
+
+    /**
+     * 添加用户请求
      */
     function sendAddUser(data) {
         $.ajax({
             type: "POST",
             url: "/user/insert",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (result) {
+                if (result.code === 200) {
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("发生未知错误");
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("发生未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+            }
+        })
+    }
+
+    /**
+     * 添加用户请求
+     */
+    function sendUpdateUser(data) {
+        $.ajax({
+            type: "PUT",
+            url: "/user/update",
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function (result) {
@@ -511,10 +642,34 @@
         });
     }
 
+    /**
+     * 设置角色信息
+     * @param data
+     */
     function setRoleInfo(data) {
-        var role = $("#role");
+        var role = $(".role");
+        role.empty();
         for (var i = 0; i < data.length; i++) {
             role.append("<option>" + data[i].name + "</option>");
+        }
+    }
+
+    /**
+     * 设置用户修改信息
+     * @param data
+     */
+    function setUserUpdateInfo(data) {
+        getRoleList();
+        var rowIndex = $(data).parents("tr").index();
+        var user = $('#onlineTable').DataTable().row(rowIndex).data();
+        selectId = user.id;
+        $("#usernameU").val(user.username);
+        $("#phoneU").val(user.phone);
+        $("#roleU").find("option[text='" + user.role.name + "']").attr("selected", true);
+        if (isNull(user.sex)) {
+            $("#sexU").find("option[text='未知']").attr("selected", true);
+        } else {
+            $("#roleU").find("option[text='" + user.sex + "']").attr("selected", true);
         }
     }
 </script>

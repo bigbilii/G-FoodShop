@@ -36,6 +36,15 @@ u.last_login_time, u.status, u.role_id, u.sex, u.address, u.description, r.id as
         WHERE u.phone = #{userPhone}
     </select>
 
+    <select id="selectById" parameterType="Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        gfs_user u
+        JOIN  gfs_role r ON u.role_id = r.id
+        WHERE u.id = #{id}
+    </select>
+
 
     <insert id="insert" parameterType="me.guoxin.pojo.GfsUser">
         INSERT INTO gfs_user(id, username, phone, password, salt, creat_time, last_login_time, status, role_id, sex, address, description)
@@ -62,7 +71,7 @@ u.last_login_time, u.status, u.role_id, u.sex, u.address, u.description, r.id as
         WHERE u.phone = #{userPhone}
     </select>
 
-    <select id="getUserList" resultMap="BaseResultMap">
+    <select id="listUsers" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -77,6 +86,10 @@ u.last_login_time, u.status, u.role_id, u.sex, u.address, u.description, r.id as
             #{item}
         </foreach>
     </delete>
+
+    <update id="updateUser" parameterType="me.guoxin.pojo.GfsUser">
+        update gfs_user set username = #{username}, phone = #{phone}, password = #{password}, salt = #{salt}, creat_time = #{creatTime}, last_login_time = #{lastLoginTime}, status = #{status}, role_id = #{role.id}, sex = #{sex}, address = #{address}, description = #{description} where id = #{id}
+    </update>
 
 
 
