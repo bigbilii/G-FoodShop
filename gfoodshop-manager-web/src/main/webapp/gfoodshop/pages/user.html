@@ -392,9 +392,15 @@
             },
             {
                 "data": function (data, type, full) {
+                    var opt;
+                    if (data.status === 1) {
+                        opt = "<button type=\"button\" class=\"btn btn-primary btn-xs\" onclick=\"disable(this)\">禁用</button>";
+                    } else {
+                        opt = "<button type=\"button\" class=\"btn btn-primary btn-xs\" onclick=\"restore(this)\">恢复</button>";
+                    }
                     return "<div class=\"btn-group\">" +
                         "<button type=\"button\" class=\"btn btn-primary btn-xs\" data-toggle=\"modal\" data-target=\"#modal-userUpdateInfo\"  onclick=\"setUserUpdateInfo(this)\">修改</button>" +
-                        "<button type=\"button\" class=\"btn btn-danger btn-xs\" onclick='deleteOne(this)'>删除</button>" +
+                        "<button type=\"button\" class=\"btn btn-primary btn-xs\" onclick=\"deleteOne(this)\">删除</button>" + opt +
                         "</div>";
                 }
             }
@@ -671,6 +677,69 @@
         } else {
             $("#roleU").find("option[text='" + user.sex + "']").attr("selected", true);
         }
+    }
+
+    function disable(data) {
+        var rowIndex = $(data).parents("tr").index();
+        var user = $('#onlineTable').DataTable().row(rowIndex).data();
+        $.ajax({
+            type: "PUT",
+            url: "/user/"+user.id+"/disable",
+            success: function (result) {
+                if (result.code === 200) {
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("获取权限信息发生未知错误");
+                    } else {
+                        alert(result.message);
+                    }
+                    window.location.reload();
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("获取权限信息发生未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+                window.location.reload();
+            }
+        });
+    }
+
+    function restore(data) {
+        var rowIndex = $(data).parents("tr").index();
+        var user = $('#onlineTable').DataTable().row(rowIndex).data();
+        $.ajax({
+            type: "PUT",
+            url: "/user/"+user.id+"/restore",
+            contentType: "application/json",
+            success: function (result) {
+                if (result.code === 200) {
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("获取权限信息发生未知错误");
+                    } else {
+                        alert(result.message);
+                    }
+                    window.location.reload();
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("获取权限信息发生未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+                window.location.reload();
+            }
+        });
     }
 </script>
 </body>

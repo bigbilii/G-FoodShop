@@ -76,4 +76,16 @@ public interface UserService {
      * @param gfsUser 用户信息
      */
     void updateUser(GfsUser gfsUser);
+
+    /**
+     * 恢复用户状态
+     * @param id
+     */
+    void restoreUser(Long id);
+
+    /**
+     * 禁止用户状态
+     * @param id
+     */
+    void disableUser(Long id);
 }

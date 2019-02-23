@@ -29,7 +29,6 @@ import java.util.List;
 
 @RestController()
 public class UserController {
-    private final static Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Resource
     private UserService userService;
@@ -121,8 +120,9 @@ public class UserController {
         userService.insertUser(gfsUser);
         return new ResultUtil<Object>().setData(null, "添加成功");
     }
+
     /**
-     * 新增用户
+     * 更新用户
      *
      * @param gfsUser 用户实体
      * @return
@@ -134,6 +134,7 @@ public class UserController {
         userService.updateUser(gfsUser);
         return new ResultUtil<Object>().setData(null, "修改成功");
     }
+
 
     /**
      * 查询用户列表
@@ -189,5 +190,33 @@ public class UserController {
     public Result kickOutOnlineUser(@RequestBody List<String> sessionIds) {
         userService.kickOutOnlineUser(sessionIds);
         return new ResultUtil<>().setData(null, "踢出成功");
+    }
+
+    /**
+     * 禁用用户
+     *
+     * @param id 用户id
+     * @return
+     * @throws Exception
+     */
+    @RequiresPermissions("user:update")
+    @PutMapping(value = "/user/{id}/disable")
+    public Result disableUser(@PathVariable Long id) {
+        userService.disableUser(id);
+        return new ResultUtil<Object>().setData(null, "修改成功");
+    }
+
+    /**
+     * 恢复用户
+     *
+     * @param id 用户id
+     * @return
+     * @throws Exception
+     */
+    @RequiresPermissions("user:update")
+    @PutMapping(value = "/user/{id}/restore")
+    public Result restoreUser(@PathVariable Long id) {
+        userService.restoreUser(id);
+        return new ResultUtil<Object>().setData(null, "修改成功");
     }
 }

@@ -227,4 +227,31 @@ public class UserServiceImpl implements UserService {
             throw new IException("修改用户失败！");
         }
     }
+
+    @Override
+    public void restoreUser(Long id) {
+        List<GfsUser> list = userMapper.selectById(id);
+        if (list == null || list.isEmpty()) {
+            throw new IException("更新用户发生错误，可能用户被删除，请刷新重试！");
+        }
+        GfsUser gfsUser = list.get(0);
+
+        gfsUser.setStatus(GfsUser._1);
+        if (userMapper.updateUser(gfsUser) != 1) {
+            throw new IException("修改用户失败！");
+        }
+    }
+
+    @Override
+    public void disableUser(Long id) {
+        List<GfsUser> list = userMapper.selectById(id);
+        if (list == null || list.isEmpty()) {
+            throw new IException("更新用户发生错误，可能用户被删除，请刷新重试！");
+        }
+        GfsUser gfsUser = list.get(0);
+        gfsUser.setStatus(GfsUser._0);
+        if (userMapper.updateUser(gfsUser) != 1) {
+            throw new IException("修改用户失败！");
+        }
+    }
 }
