@@ -117,13 +117,14 @@
                                    onclick="getRoleList()">
                                     <i class="fa fa-plus-circle"></i> 添加
                                 </a>
-                                <a class="btn btn-app">
+                                <a class="btn btn-app" onclick="deleteAll()">
                                     <i class="fa  fa-trash-o"></i> 删除
                                 </a>
                             </div>
-                            <table id="onlineTable" class="table table-bordered table-striped" style="width:100%">
+                            <table id="onlineTable" class="table table-bordered table-striped datatables" style="width:100%">
                                 <thead>
                                 <tr>
+                                    <th><input type="checkbox" class="checkall"/></th>
                                     <th>id</th>
                                     <th>用户名</th>
                                     <th>手机号</th>
@@ -310,6 +311,8 @@
 <script src="../dist/js/demo.js"></script>
 <!-- page script -->
 <script src="../dist/js/public.js"></script>
+<!-- datatables 工具-->
+<script src="../dist/js/datatablesUtils.js"></script>
 <script>
     var roles;
 
@@ -330,6 +333,7 @@
         "ordering": false,//关闭排序
         "serverSide": true,//这个用来指明是通过服务端来取数据
         "processing": true, //打开数据加载时的等待效果
+
         "oLanguage": {
             "sLengthMenu": "每页显示 _Menu_条记录",
             "sInfo": "当前显示_START_到_END_条,共_TOTAL_条记录",
@@ -365,6 +369,12 @@
             }
         },
         "columns": [
+            {
+                "sClass": "text-center",
+                "render": function (data, type, full, meta) {
+                    return '<input type="checkbox" class="checkchild"/>';
+                }, "bSortable": false
+            },
             {
                 "data": "id",
                 "visible": false
@@ -407,6 +417,10 @@
         ]
     });
 
+    /**
+     * 删除一个
+     * @param data
+     */
     function deleteOne(data) {
         var del = confirm("是否删除");
         if (!del) {
@@ -416,6 +430,25 @@
         var id = $('#onlineTable').DataTable().row(rowIndex).data().id;
         var datas = [];
         datas.push(id);
+        deleteUser(datas);
+    }
+
+    /**
+     * 删除多个
+     */
+    function deleteAll() {
+        var datas = [];
+        $('.checkchild').each(function () {
+            if($(this).is(':checked')){
+                var rowIndex = $(this).parents("tr").index();
+                var id = $('#onlineTable').DataTable().row(rowIndex).data().id;
+                datas.push(id);
+            }
+        });
+        var del = confirm("是否删除");
+        if (!del) {
+            return;
+        }
         deleteUser(datas);
     }
 
@@ -583,7 +616,7 @@
     }
 
     /**
-     * 添加用户请求
+     * 更新用户请求
      */
     function sendUpdateUser(data) {
         $.ajax({
@@ -684,7 +717,7 @@
         var user = $('#onlineTable').DataTable().row(rowIndex).data();
         $.ajax({
             type: "PUT",
-            url: "/user/"+user.id+"/disable",
+            url: "/user/" + user.id + "/disable",
             success: function (result) {
                 if (result.code === 200) {
                     alert(result.message);
@@ -715,7 +748,7 @@
         var user = $('#onlineTable').DataTable().row(rowIndex).data();
         $.ajax({
             type: "PUT",
-            url: "/user/"+user.id+"/restore",
+            url: "/user/" + user.id + "/restore",
             contentType: "application/json",
             success: function (result) {
                 if (result.code === 200) {
