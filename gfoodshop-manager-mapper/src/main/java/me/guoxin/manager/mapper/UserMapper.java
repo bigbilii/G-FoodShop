@@ -16,7 +16,7 @@ public interface UserMapper {
 
     int updateUser(GfsUser gfsUser);
 
-    List<GfsUser> selectByPhone(String userPhone);
+    List<GfsUser> selectByPhone(@Param("userPhone")String userPhone);
 
     List<GfsUser> selectById(Long id);
 
@@ -24,7 +24,7 @@ public interface UserMapper {
 
     Set<String> getPermissionsByUserPhone(@Param("userPhone")String userPhone);
 
-    List<GfsUser> listUsers();
+    List<GfsUser> listUsers(@Param("search")String search);
 
 
 }

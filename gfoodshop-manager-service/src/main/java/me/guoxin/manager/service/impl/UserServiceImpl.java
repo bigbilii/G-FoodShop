@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
         String OrderBy = DataTableUtil.getUserDataTableOrderBy(dataTableDTO.getOrder());
         PageHelper.startPage(startIndex, length, OrderBy);
 
-        List<GfsUser> list = userMapper.listUsers();
+        List<GfsUser> list = userMapper.listUsers(dataTableDTO.getSearch());
 
         for (GfsUser gfsUser : list) {
             gfsUser.maskPasswordInfo();

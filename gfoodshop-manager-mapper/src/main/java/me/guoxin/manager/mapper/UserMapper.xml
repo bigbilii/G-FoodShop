@@ -71,12 +71,18 @@ u.last_login_time, u.status, u.role_id, u.sex, u.address, u.description, r.id as
         WHERE u.phone = #{userPhone}
     </select>
 
-    <select id="listUsers" resultMap="BaseResultMap">
+    <select id="listUsers" resultMap="BaseResultMap" parameterType="String">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
         gfs_user u
         LEFT JOIN  gfs_role r ON u.role_id = r.id
+        <where>
+            <if test="search != null and search != ''">
+                u.phone LIKE CONCAT('%',#{search},'%')
+                OR u.username LIKE CONCAT('%',#{search},'%')
+            </if>
+        </where>
     </select>
 
     <delete id="deleteUser" parameterType="java.util.List">
