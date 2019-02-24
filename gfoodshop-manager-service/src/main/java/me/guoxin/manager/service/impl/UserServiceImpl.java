@@ -13,6 +13,7 @@ import me.guoxin.manager.mapper.UserMapper;
 import me.guoxin.manager.service.UserService;
 import me.guoxin.pojo.GfsUser;
 import me.guoxin.manager.utils.PasswordHelper;
+import me.guoxin.utils.DataTableUtil;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.DefaultSessionKey;
 import org.apache.shiro.session.mgt.SessionManager;
@@ -88,7 +89,8 @@ public class UserServiceImpl implements UserService {
         int startIndex = dataTableDTO.getPage().getStart();
         int length = dataTableDTO.getPage().getLength();
         startIndex = startIndex / length + 1;
-        PageHelper.startPage(startIndex, length);
+        String OrderBy = DataTableUtil.getUserDataTableOrderBy(dataTableDTO.getOrder());
+        PageHelper.startPage(startIndex, length, OrderBy);
 
         List<GfsUser> list = userMapper.listUsers();
 

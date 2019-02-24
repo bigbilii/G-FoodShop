@@ -77,7 +77,6 @@ u.last_login_time, u.status, u.role_id, u.sex, u.address, u.description, r.id as
         FROM
         gfs_user u
         LEFT JOIN  gfs_role r ON u.role_id = r.id
-        ORDER BY u.id
     </select>
 
     <delete id="deleteUser" parameterType="java.util.List">
@@ -88,7 +87,9 @@ u.last_login_time, u.status, u.role_id, u.sex, u.address, u.description, r.id as
     </delete>
 
     <update id="updateUser" parameterType="me.guoxin.pojo.GfsUser">
-        update gfs_user set username = #{username}, phone = #{phone}, password = #{password}, salt = #{salt}, creat_time = #{creatTime}, last_login_time = #{lastLoginTime}, status = #{status}, role_id = #{role.id}, sex = #{sex}, address = #{address}, description = #{description} where id = #{id}
+        update gfs_user
+        set username = #{username}, phone = #{phone}, password = #{password}, salt = #{salt}, creat_time = #{creatTime}, last_login_time = #{lastLoginTime}, status = #{status}, role_id = #{role.id}, sex = #{sex}, address = #{address}, description = #{description}
+        where id = #{id}
     </update>
 
 

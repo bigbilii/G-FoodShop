@@ -121,7 +121,8 @@
                                     <i class="fa  fa-trash-o"></i> 删除
                                 </a>
                             </div>
-                            <table id="onlineTable" class="table table-bordered table-striped datatables" style="width:100%">
+                            <table id="onlineTable" class="table table-bordered table-striped datatables"
+                                   style="width:100%">
                                 <thead>
                                 <tr>
                                     <th><input type="checkbox" class="checkall"/></th>
@@ -328,25 +329,25 @@
      * 在线用户列表初始化
      */
     $('#onlineTable').DataTable({
-        "searching": false,//关闭自带搜索
-        "bLengthChange": false,//关闭自带分页选项
-        "ordering": false,//关闭排序
-        "serverSide": true,//这个用来指明是通过服务端来取数据
-        "processing": true, //打开数据加载时的等待效果
-
+        "searching": true,// 关闭自带搜索
+        "bLengthChange": false,// 关闭自带分页选项
+        "ordering": true,// 关闭排序
+        "serverSide": true,// 这个用来指明是通过服务端来取数据
+        "processing": true, // 打开数据加载时的等待效果
+        "order": [[1, "desc"]],// 设置默认排序为 id
         "oLanguage": {
             "sLengthMenu": "每页显示 _Menu_条记录",
             "sInfo": "当前显示_START_到_END_条,共_TOTAL_条记录",
             "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
             "sZeroRecords": "对不起,查询不到相关的数据",
-            "sInfoFiltered": "",//"(从 _MAX_ 条记录过滤)"此项为显示过滤信息
+            "sInfoFiltered": "",// "(从 _MAX_ 条记录过滤)"此项为显示过滤信息
             "oPaginate": {
                 "sFirst": "首页",
                 "sPrevious": "上一页",
                 "sNext": "下一页",
                 "sLast": "尾页"
             },
-            "sSearch": "查找"
+            "sSearch": "查找用户名或手机"
         },
         "ajax": {
             "url": "/user/list",
@@ -412,7 +413,7 @@
                         "<button type=\"button\" class=\"btn btn-primary btn-xs\" data-toggle=\"modal\" data-target=\"#modal-userUpdateInfo\"  onclick=\"setUserUpdateInfo(this)\">修改</button>" +
                         "<button type=\"button\" class=\"btn btn-primary btn-xs\" onclick=\"deleteOne(this)\">删除</button>" + opt +
                         "</div>";
-                }
+                }, "bSortable": false
             }
         ]
     });
@@ -439,7 +440,7 @@
     function deleteAll() {
         var datas = [];
         $('.checkchild').each(function () {
-            if($(this).is(':checked')){
+            if ($(this).is(':checked')) {
                 var rowIndex = $(this).parents("tr").index();
                 var id = $('#onlineTable').DataTable().row(rowIndex).data().id;
                 datas.push(id);

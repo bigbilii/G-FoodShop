@@ -1,18 +1,28 @@
 package me.guoxin.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import me.guoxin.pojo.DataTableDTO;
+import me.guoxin.pojo.Order;
 import me.guoxin.pojo.Page;
+import me.guoxin.pojo.UserColumn;
 
-import java.util.Map;
+import java.util.List;
 
 public class DataTableUtil {
 
+    /**
+     * 获取 DataTableDTO实例
+     *
+     * @param tbData tbData Json字符串
+     * @return DataTableDTO实例
+     */
     public static DataTableDTO getDataTableDTO(String tbData) {
         DataTableDTO dataTableDTO = new DataTableDTO();
-        Map data = (Map) JSON.parse(tbData);
+        JSONObject data = (JSONObject) JSON.parse(tbData);
         // 获取search字段
-        Map searchData = (Map) JSON.parse(data.get("search").toString());
+        JSONObject searchData = (JSONObject) data.get("search");
         String search = searchData.get("value").toString();
         // 获取start字段
         int start = Integer.valueOf(data.get("start").toString());
@@ -21,8 +31,32 @@ public class DataTableUtil {
         Page page = new Page();
         page.setStart(start);
         page.setLength(length);
+        // 获取排序字段
+        List orderDatas = (JSONArray) data.get("order");
+        JSONObject orderData = (JSONObject) orderDatas.get(0);
+        Order order = orderData.toJavaObject(Order.class);
+
         dataTableDTO.setSearch(search);
         dataTableDTO.setPage(page);
+        dataTableDTO.setOrder(order);
         return dataTableDTO;
+    }
+
+    public static String getUserDataTableOrderBy(Order order) {
+        String pre = "u.";
+        if (order == null) {
+            return pre + UserColumn.ID.getColumn() + " " + "desc";
+        }
+        int column = order.getColumn();
+        String dir = order.getDir();
+        String columnName = UserColumn.getColunm(column);
+        if (columnName == null || "".equalsIgnoreCase(columnName.trim())) {
+            columnName = UserColumn.ID.getColumn();
+        }
+        return pre + columnName + " " + dir;
+    }
+
+    public static void main(String[] args) {
+        getDataTableDTO(" {\"draw\":10,\"columns\":[{\"data\":0,\"name\":\"\",\"searchable\":true,\"orderable\":false,\"search\":{\"value\":\"\",\"regex\":false}},{\"data\":\"id\",\"name\":\"\",\"searchable\":true,\"orderable\":true,\"search\":{\"value\":\"\",\"regex\":false}},{\"data\":\"username\",\"name\":\"\",\"searchable\":true,\"orderable\":true,\"search\":{\"value\":\"\",\"regex\":false}},{\"data\":\"phone\",\"name\":\"\",\"searchable\":true,\"orderable\":true,\"search\":{\"value\":\"\",\"regex\":false}},{\"data\":\"function\",\"name\":\"\",\"searchable\":true,\"orderable\":true,\"search\":{\"value\":\"\",\"regex\":false}},{\"data\":\"sex\",\"name\":\"\",\"searchable\":true,\"orderable\":true,\"search\":{\"value\":\"\",\"regex\":false}},{\"data\":\"address\",\"name\":\"\",\"searchable\":true,\"orderable\":true,\"search\":{\"value\":\"\",\"regex\":false}},{\"data\":\"creatTime\",\"name\":\"\",\"searchable\":true,\"orderable\":true,\"search\":{\"value\":\"\",\"regex\":false}},{\"data\":\"lastLoginTime\",\"name\":\"\",\"searchable\":true,\"orderable\":true,\"search\":{\"value\":\"\",\"regex\":false}},{\"data\":\"description\",\"name\":\"\",\"searchable\":true,\"orderable\":true,\"search\":{\"value\":\"\",\"regex\":false}},{\"data\":\"function\",\"name\":\"\",\"searchable\":true,\"orderable\":true,\"search\":{\"value\":\"\",\"regex\":false}},{\"data\":\"function\",\"name\":\"\",\"searchable\":true,\"orderable\":false,\"search\":{\"value\":\"\",\"regex\":false}}],\"order\":[{\"column\":2,\"dir\":\"asc\"}],\"start\":0,\"length\":10,\"search\":{\"value\":\"\",\"regex\":false}}");
     }
 }
