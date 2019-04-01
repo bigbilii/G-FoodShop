@@ -16,7 +16,8 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="gfoodshop-common" target="1.8" />
-      <module name="gfoodshop-front-web" target="1.7" />
+      <module name="gfoodshop-content" target="1.5" />
+      <module name="gfoodshop-front-web" target="1.8" />
       <module name="gfoodshop-manager" target="1.8" />
       <module name="gfoodshop-manager-mapper" target="1.8" />
       <module name="gfoodshop-manager-pojo" target="1.8" />

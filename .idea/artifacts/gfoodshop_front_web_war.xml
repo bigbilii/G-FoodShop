@@ -7,7 +7,7 @@
         <packaging>war</packaging>
       </options>
     </properties>
-    <root id="archive" name="gfoodshop-front-web.war">
+    <root id="archive" name="gfoodshop-front-web-1.0.0.war">
       <element id="artifact" artifact-name="gfoodshop-front-web:war exploded" />
     </root>
   </artifact>

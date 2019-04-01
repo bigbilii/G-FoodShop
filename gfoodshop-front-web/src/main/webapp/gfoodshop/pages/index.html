@@ -1,0 +1,200 @@
+<html lang="en">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>GFoodShop官方</title>
+<meta name="keywords" content="GFoodShop官方订餐外卖网站">
+<meta name="description" content="GFoodShop官方订餐外卖网站">
+
+
+<link href="../bower_components/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../dist/css/common.css"/>
+<link rel="stylesheet" href="../dist/css/main.css"/>
+<link rel="stylesheet" href="../dist/css/index.css"/>
+
+<body class="" avalonctrl="root">
+<div id="rootLoading" class="loading-wrap" style="display: none;">
+    <div class="loading-icon"></div>
+</div>
+<div class="grid-box">
+    <!-- header部分 start -->
+    <div id="header" avalonctrl="header">
+        <div class="base-wrap">
+            <div class="header-1-lang clearfix">
+            </div>
+            <div class="header-2-logo clearfix">
+                <div class="box-logo f-l relative">
+                    <a class="brand-skip">
+                        <img class="barand-logo"
+                             src="http://51wm-pic1.oss-cn-hangzhou.aliyuncs.com/null9a9036af-3044-46c9-b33d-1337e5d1d24f.png">
+                    </a>
+                    <a href="./index.html" class="wm-skip">首页</a>
+                </div>
+                <div class="box-nav f-r">
+                    <div class="user-login-before">
+                        <a class="bold" href="javascript:void(0);">登录</a>
+                        <a class="bold" href="javascript:void(0);">注册</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- header部分 end -->
+
+    <!-- main start -->
+    <div id="main">
+        <div id="mainLoading" class="loading-wrap">
+            <div class="loading-icon"></div>
+        </div>
+        <!--ms-view:main-->
+        <div ui-view="main" data-current-cache="false">
+            <div class="base-wrap" avalonctrl="index-view">
+                <div class="index-menu-list">
+                    <ul id="categoriesList">
+                    </ul>
+                </div>
+
+                <div class="store-menu-wrap" id="store-menu" style="display: none">
+
+                </div>
+
+                <!-- 首页轮播图 -->
+                <div id="carousel-example-generic" class="carousel slide slider" data-ride="carousel"
+                     style="overflow: hidden; margin: 20px;">
+                    <div class="slidesjs-container" style="overflow: hidden; position: relative; width: 800px;">
+                        <!-- Indicators -->
+                        <ol class="carousel-indicators">
+                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                        </ol>
+
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner" role="listbox">
+                            <div class="item active">
+                                <img
+                                        src="http://51wm-pic1.oss-cn-hangzhou.aliyuncs.com/test/1fb40208-baa5-4b5e-a667-5207f9baa6ff.jpg">
+
+                            </div>
+                            <div class="item">
+                                <img
+                                        src="http://51wm-pic1.oss-cn-hangzhou.aliyuncs.com/test/1fb40208-baa5-4b5e-a667-5207f9baa6ff.jpg">
+                            </div>
+                            <div class="item">
+                                <img
+                                        src="http://51wm-pic1.oss-cn-hangzhou.aliyuncs.com/test/1fb40208-baa5-4b5e-a667-5207f9baa6ff.jpg">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 首页右侧登录框 -->
+                <div class="indexLoginWrap">
+                    <!-- 未登录状态 -->
+                    <div class="" avalonctrl="login">
+                        <h3>欢迎来到吉野家</h3>
+                    </div>
+                </div>
+                <!-- 底部按钮 -->
+                <div class="docsBox">
+                    <!-- 订餐须知 -->
+                    <a href="javascript:void(0);"><img
+                            src="http://51wm-pic1.oss-cn-hangzhou.aliyuncs.com/test/543cca49-f139-4480-b7ba-8a7f3b67962e.png"></a>
+                    <!-- 开始订餐 -->
+                    <a href="javascript:void(0)"><img
+                            src="http://51wm-pic1.oss-cn-hangzhou.aliyuncs.com/test/fbef428f-9c93-4388-bf30-fbad16281f2e.png"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- main end -->
+</div>
+<!-- end start -->
+<div id="footer">
+    <div class="base-wrap">
+        <img src="../dist/images/navbg2.png" alt="">
+        <div class="link">
+            <a href="./index.jsp#!/page/agreement">法律声明 </a>
+            <a href="./index.jsp#!/page/privacyStatement">隐私声明 </a>
+            <a href="./index.jsp#!/page/orderNotice">订餐须知 </a>
+            <a href="./index.jsp#!/page/help">常见问题 </a>
+        </div>
+    </div>
+</div>
+<!-- end end -->
+</body>
+<!-- jQuery 3 -->
+<script src="../bower_components/jquery/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="../bower_components/bootstrap/bootstrap.min.js"></script>
+
+<script>
+    var categories;
+    $(function () {
+        $.ajax({
+            type: "GET",
+            url: "/front/homeFood/list",
+            async: false,
+            contentType: "application/json",
+            success: function (result) {
+                if (result.code === 200) {
+                    categories = result.data;
+                    makeCategoriesList(categories);
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("未知错误");
+                    } else {
+                        alert(result.message);
+                    }
+                    window.location.reload();
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+                window.location.reload();
+            }
+        });
+    });
+
+    function makeCategoriesList(data) {
+        var list = $("#categoriesList");
+        for (var i = 0; i < data.length; i++) {
+            list.append("<li><a href=\"javascript:;\" onclick='makeProduct(" + i + ")'>" + data[i].name + "</a></li>");
+        }
+
+    }
+
+    function makeProduct(index) {
+        $(".slider").css("display", "none");
+        $(".docsBox").css("display", "none");
+        var menu = $("#store-menu");
+        menu.css("display", "block");
+        menu.empty();
+        menu.append("<div id=\"products-box\">");
+        var products = categories[index].products;
+        for (var i = 0; i < products.length; i++) {
+            menu.append("<div class=\"product-box\">\n" +
+                "<div class=\"product-img\">" +
+                "<img src=\"http://51wm-pic1.oss-cn-hangzhou.aliyuncs.com/product/22169ee2-7eff-4164-b2f1-4f18abb4ae46.png\">" +
+                "</div>" +
+                "<div style=\"overflow: hidden;\" class=\"product-textbox\">" +
+                "<h4 class=\"product-name\" title=\"" + products[i].name + "\">" + products[i].name + "</h4>" +
+                "<div class=\"product-pricebox\">" +
+                "<div class=\"product-price\">" +
+                "￥<span>" + products[i].price + "</span>" +
+                "</div>" +
+                "<a href=\"javascript:void(0)\" class=\"orderNow\">立即订餐</a>" +
+                "</div>" +
+                "</div>")
+        }
+        menu.append("</div>");
+
+    }
+
+</script>
+
+</html>

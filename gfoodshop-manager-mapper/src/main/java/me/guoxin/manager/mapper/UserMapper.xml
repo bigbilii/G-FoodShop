@@ -9,21 +9,21 @@
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
         <result column="password" jdbcType="VARCHAR" property="password"/>
         <result column="salt" jdbcType="VARCHAR" property="salt"/>
-        <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime"/>
-        <result column="status" jdbcType="BIGINT" property="status"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
         <result column="sex" jdbcType="VARCHAR" property="sex"/>
         <result column="address" jdbcType="VARCHAR" property="address"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <association property="role" javaType="me.guoxin.pojo.GfsRole">
-            <id column="r_id" jdbcType="BIGINT" property="id"/>
+            <id column="r_id" jdbcType="INTEGER" property="id"/>
             <result column="r_name" jdbcType="VARCHAR" property="name"/>
             <result column="r_description" jdbcType="VARCHAR" property="description"/>
         </association>
     </resultMap>
 
     <sql id="Base_Column_List">
-        u.id, u.username, u.phone, u.password, u.salt, u.creat_time,
+        u.id, u.username, u.phone, u.password, u.salt, u.create_time,
 u.last_login_time, u.status, u.role_id, u.sex, u.address, u.description, r.id as r_id, r.name as r_name, r.description as r_description
     </sql>
 
@@ -48,7 +48,7 @@ u.last_login_time, u.status, u.role_id, u.sex, u.address, u.description, r.id as
 
     <insert id="insert" parameterType="me.guoxin.pojo.GfsUser">
         INSERT INTO gfs_user(id, username, phone, password, salt, creat_time, last_login_time, status, role_id, sex, address, description)
-        VALUES (#{id}, #{username}, #{phone}, #{password}, #{salt}, #{creatTime}, #{lastLoginTime}, #{status}, #{role.id}, #{sex}, #{address}, #{description});
+        VALUES (#{id}, #{username}, #{phone}, #{password}, #{salt}, #{createTime}, #{lastLoginTime}, #{status}, #{role.id}, #{sex}, #{address}, #{description});
     </insert>
 
     <select id="getRolesByUserPhone" resultType="String">
@@ -94,7 +94,7 @@ u.last_login_time, u.status, u.role_id, u.sex, u.address, u.description, r.id as
 
     <update id="updateUser" parameterType="me.guoxin.pojo.GfsUser">
         update gfs_user
-        set username = #{username}, phone = #{phone}, password = #{password}, salt = #{salt}, creat_time = #{creatTime}, last_login_time = #{lastLoginTime}, status = #{status}, role_id = #{role.id}, sex = #{sex}, address = #{address}, description = #{description}
+        set username = #{username}, phone = #{phone}, password = #{password}, salt = #{salt}, creat_time = #{createTime}, last_login_time = #{lastLoginTime}, status = #{status}, role_id = #{role.id}, sex = #{sex}, address = #{address}, description = #{description}
         where id = #{id}
     </update>
 

@@ -6,7 +6,6 @@ import me.guoxin.pojo.Result;
 import me.guoxin.utils.ResultUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;

@@ -170,7 +170,7 @@ public class UserServiceImpl implements UserService {
         // 密码加密与盐
         passwordHelper.encryptPassword(gfsUser);
         // 设置创建时间
-        gfsUser.setCreatTime(new Date());
+        gfsUser.setCreateTime(new Date());
         // 设置状态正常
         gfsUser.setStatus(1);
         if (userMapper.insert(gfsUser) != 1) {
@@ -204,8 +204,8 @@ public class UserServiceImpl implements UserService {
         if (gfsUser.getSalt() == null) {
             gfsUser.setSalt(user.getSalt());
         }
-        if (gfsUser.getCreatTime() == null) {
-            gfsUser.setCreatTime(user.getCreatTime());
+        if (gfsUser.getCreateTime() == null) {
+            gfsUser.setCreateTime(user.getCreateTime());
         }
         if (gfsUser.getLastLoginTime() == null) {
             gfsUser.setLastLoginTime(user.getLastLoginTime());

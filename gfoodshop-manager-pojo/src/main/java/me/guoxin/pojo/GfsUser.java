@@ -16,7 +16,7 @@ public class GfsUser implements Serializable {
     private String phone;
     private String password;
     private String salt;
-    private Date creatTime;
+    private Date createTime;
     private Date lastLoginTime;
     private Integer status;
     private GfsRole role;
@@ -27,13 +27,13 @@ public class GfsUser implements Serializable {
     public GfsUser() {
     }
 
-    public GfsUser(Long id, String username, String phone, String password, String salt, Date creatTime, Date lastLoginTime, Integer status, GfsRole role, String sex, String address, String description) {
+    public GfsUser(Long id, String username, String phone, String password, String salt, Date createTime, Date lastLoginTime, Integer status, GfsRole role, String sex, String address, String description) {
         this.id = id;
         this.username = username;
         this.phone = phone;
         this.password = password;
         this.salt = salt;
-        this.creatTime = creatTime;
+        this.createTime = createTime;
         this.lastLoginTime = lastLoginTime;
         this.status = status;
         this.role = role;
@@ -48,7 +48,7 @@ public class GfsUser implements Serializable {
         this.phone = gfsUser.getPhone();
         this.password = gfsUser.getPassword();
         this.salt = gfsUser.getSalt();
-        this.creatTime = gfsUser.getCreatTime();
+        this.createTime = gfsUser.getCreateTime();
         this.lastLoginTime = gfsUser.getLastLoginTime();
         this.status = gfsUser.getStatus();
         this.role = gfsUser.getRole();
@@ -97,12 +97,12 @@ public class GfsUser implements Serializable {
         this.salt = salt;
     }
 
-    public Date getCreatTime() {
-        return creatTime;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreatTime(Date creatTime) {
-        this.creatTime = creatTime;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public Date getLastLoginTime() {

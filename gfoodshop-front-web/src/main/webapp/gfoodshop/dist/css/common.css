@@ -1,0 +1,545 @@
+/*
+ * >> 餐道·餐饮外卖解决之道 http://www.can-dao.com | Dev-Frontend Team.
+ * >> =================================================================================
+ * >> 整个项目的通用样式 将被以下文件依次合并 本样式包同级优先级【最低】
+ * >> /[project]/common/common.css
+ * >> 合并后的文件名为 /dist/[project]/static/css/common.css
+*/
+
+html {
+	font-family: "Microsoft YaHei", "微软雅黑", "Helvetica Neue", Helvetica, STHeiTi, tahoma, Arial, sans-serif;
+	font-size: 12px;
+}
+
+body {
+	margin: 0;
+	font-size: 12px;
+	line-height: 1.5;
+	color: #333333;
+	background-color: white;
+	height: 100%;
+	overflow-x: hidden;
+}
+
+html,
+button,
+input,
+select,
+textarea {
+	font-family: "Microsoft YaHei", "微软雅黑", "Helvetica Neue", Helvetica, STHeiTi, tahoma, Arial, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+form {
+	margin: 0;
+}
+
+ul,
+ol,
+li,
+dl,
+dd {
+	margin: 0;
+	padding: 0;
+}
+
+ul,
+ol {
+	list-style: none outside none;
+}
+
+h1,
+h2,
+h3 {
+	line-height: 2;
+	font-weight: normal;
+}
+
+h1 {
+	font-size: 18px;
+}
+
+h2 {
+	font-size: 16px;
+}
+
+h3 {
+	font-size: 14px;
+}
+
+b,
+strong {
+	font-weight: bold;
+}
+
+sub,
+sup {
+	font-size: 75%;
+	line-height: 0;
+	position: relative;
+	vertical-align: baseline;
+}
+
+sup {
+	top: -0.5em;
+}
+
+sub {
+	bottom: -0.25em;
+}
+
+img {
+	border: 0;
+	vertical-align: middle;
+}
+
+hr {
+	box-sizing: content-box;
+	height: 0;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+	color: inherit;
+	font: inherit;
+	margin: 0;
+}
+
+button {
+	overflow: visible;
+	outline: none;
+}
+
+button,
+select {
+	text-transform: none;
+}
+
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+	-webkit-appearance: button;
+	cursor: pointer;
+}
+
+button[disabled],
+html input[disabled] {
+	cursor: default;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+	border: 0;
+	padding: 0;
+}
+
+input {
+	line-height: normal;
+	outline: none;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+	box-sizing: border-box;
+	padding: 0;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+	height: auto;
+}
+
+input[type="search"] {
+	-webkit-appearance: textfield;
+	box-sizing: border-box;
+}
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+	-webkit-appearance: none;
+}
+
+input,
+textarea,
+select {
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+	*font-size: 100%;
+}
+
+textarea {
+	font-size: 13px;
+	resize: none;
+	outline: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+td,
+th {
+	padding: 0;
+}
+
+li {
+	list-style: none;
+}
+
+a {
+	background: transparent;
+	text-decoration: none;
+	-webkit-tap-highlight-color: transparent;
+}
+
+/*
+ * >> 餐道·餐饮外卖解决之道 http://www.can-dao.com | Dev-Frontend Team.
+ * >> =================================================================================
+ * >> 整个项目的通用样式 将与以下文件合并 本样式包同级优先级【高】
+ * >> /[project]/common/common.css
+ * >> 合并后的文件名为 /dist/[project]/static/css/common.css
+*/
+
+body,
+html {
+	min-width: 1150px;
+}
+
+body {
+	background-color: #fff;
+	color: #333;
+}
+
+li {
+	list-style: none;
+}
+
+a {
+	color: #fe8a01;
+	text-decoration: none;
+}
+
+a:focus {
+	outline: none;
+}
+
+a:active {
+	outline: 0;
+}
+
+a:hover,
+a:focus,
+a:active {
+	text-decoration: none;
+}
+
+a.underline,
+a.underline:hover {
+	text-decoration: underline;
+}
+
+a.disabled {
+	pointer-events: none;
+	cursor: not-allowed;
+}
+
+hr {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	border: 0;
+	border-top: 1px solid #eee;
+	height: 0;
+	box-sizing: content-box;
+}
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: inherit;
+	font-weight: 500;
+	line-height: 1.1;
+	color: inherit;
+}
+
+h4 {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.h5,
+h5 {
+	font-size: 14px;
+}
+
+dt {
+	font-weight: 700;
+}
+
+.f-l {
+	float: left;
+}
+
+.f-r {
+	float: right;
+}
+
+.clearfix:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+.clearfix::after,
+.clearfix::before {
+	content: " ";
+	display: table;
+	clear: both;
+}
+
+.clearfix {
+	_height: 1%;
+}
+
+i[class^="icon-"] {
+	display: block;
+}
+
+.show {
+	display: block!important;
+}
+
+.hide {
+	display: none!important;
+}
+
+.absolute {
+	position: absolute;
+}
+
+.relative {
+	position: relative;
+}
+
+.fixed {
+	position: fixed;
+}
+
+.center-block {
+	display: block;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.pointer {
+	cursor: pointer;
+}
+
+/* >>>>> font >>>>> */
+
+.text-left {
+	text-align: left!important;
+}
+
+.text-center {
+	text-align: center!important;
+}
+
+.text-right {
+	text-align: right!important;
+}
+
+.normal {
+	font-weight: normal!important;
+	font-style: normal!important;
+}
+
+.bold {
+	font-weight: bold!important;
+}
+
+.fs-10 {
+	font-size: 10px!important;
+}
+
+.fs-12 {
+	font-size: 12px!important;
+}
+
+.fs-14 {
+	font-size: 14px!important;
+}
+
+.fs-16 {
+	font-size: 16px!important;
+}
+
+.v-top {
+	vertical-align: top!important;
+}
+
+/* >>>>> box >>>>> */
+
+.auto {
+	margin: auto;
+}
+
+.w-43 {
+	width: 43px;
+}
+
+.w-60 {
+	width: 60px;
+}
+
+.w-66 {
+	width: 66px;
+}
+
+.w-114 {
+	width: 114px;
+}
+
+.w-280 {
+	width: 280px;
+}
+
+.pl-5 {
+	padding-left: 5px;
+}
+
+.pl-7 {
+	padding-left: 7px;
+}
+
+.pl-8 {
+	padding-left: 8px;
+}
+
+.ml-8 {
+	margin-left: 8px;
+}
+
+.pl-10 {
+	padding-left: 10px;
+}
+
+.ml-10 {
+	margin-left: 10px;
+}
+
+.mt-10 {
+	margin-top: 10px;
+}
+
+.ml-12 {
+	margin-left: 12px;
+}
+
+.ml-14 {
+	margin-left: 14px;
+}
+
+.mb-14 {
+	margin-bottom: 14px;
+}
+
+.mr-16 {
+	margin-right: 16px;
+}
+
+.pl-18 {
+	padding-left: 18px;
+}
+
+.mt-20 {
+	margin-top: 20px;
+}
+
+.mr-20 {
+	margin-right: 20px;
+}
+
+.mt-28 {
+	margin-top: 28px;
+}
+
+.ml-29 {
+	margin-left: 29px;
+}
+
+.mr-29 {
+	margin-right: 29px;
+}
+
+.pb-60 {
+	padding-bottom: 60px;
+}
+
+.ml-85 {
+	margin-left: 85px;
+}
+
+/* >>>>> style >>>>> */
+
+.bg-efefef {
+	background-color: #efefef!important;
+}
+
+.bg-fff {
+	background-color: #fff!important;
+}
+
+.bg-6f3c2f {
+	background-color: #6f3c2f!important;
+}
+
+.co-7a7a7a {
+	color: #7a7a7a!important;
+}
+
+.co-6f3c2f {
+	color: #6f3c2f!important;
+}
+
+.co-ff8b00 {
+	color: #ff8b00!important;
+}
+
+.co-494949 {
+	color: #494949!important;
+}
+
+.co-f9851d {
+	color: #f9851d!important;
+}
+
+.co-f0604c {
+	color: #f0604c!important;
+}
+
+.co-f99b1d {
+	color: #f99b1d!important;
+}

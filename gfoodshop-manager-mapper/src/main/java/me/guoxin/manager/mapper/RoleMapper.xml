@@ -4,7 +4,7 @@
 
 <mapper namespace="me.guoxin.manager.mapper.RoleMapper">
     <resultMap id="BaseResultMap" type="me.guoxin.pojo.GfsRole">
-        <id column="id" jdbcType="BIGINT" property="id"/>
+        <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
     </resultMap>
