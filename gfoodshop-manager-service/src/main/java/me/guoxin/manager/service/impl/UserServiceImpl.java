@@ -4,9 +4,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import me.guoxin.dto.DataTableViewPageDTO;
 import me.guoxin.dto.OnlineUserDTO;
+import me.guoxin.dto.RegisterUserDTO;
 import me.guoxin.manager.mapper.RoleMapper;
 import me.guoxin.manager.utils.SessionUtils;
 import me.guoxin.pojo.DataTableDTO;
+import me.guoxin.pojo.GfsRole;
 import me.guoxin.pojo.IException;
 import me.guoxin.manager.mapper.UserMapper;
 
@@ -47,7 +49,7 @@ public class UserServiceImpl implements UserService {
         try {
             list = userMapper.selectByPhone(userPhone);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new IException("服务器错误");
         }
         if (!list.isEmpty()) {
             return list.get(0);
@@ -255,5 +257,17 @@ public class UserServiceImpl implements UserService {
         if (userMapper.updateUser(gfsUser) != 1) {
             throw new IException("修改用户失败！");
         }
+    }
+
+    @Override
+    public void register(RegisterUserDTO account) {
+        GfsUser gfsUser = account;
+        List<GfsRole> list = roleMapper.getUserRole(GfsRole.USER);
+        if (!list.isEmpty()) {
+            gfsUser.setRole(list.get(0));
+        } else {
+            throw new IException("注册发生错误，不允许普通用户注册");
+        }
+        insertUser(gfsUser);
     }
 }

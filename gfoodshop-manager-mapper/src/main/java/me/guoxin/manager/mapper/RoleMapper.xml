@@ -19,4 +19,12 @@
         FROM
         gfs_role r
     </select>
+
+    <select id="getUserRole" resultMap="BaseResultMap" parameterType="INTEGER">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        gfs_role r
+        WHERE r.id = #{id}
+    </select>
 </mapper>

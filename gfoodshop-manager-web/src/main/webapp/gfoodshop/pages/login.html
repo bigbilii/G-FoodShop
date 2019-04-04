@@ -8,7 +8,7 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
-    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../bower_components/bootstrap/dist/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- Theme style -->
@@ -69,9 +69,9 @@
 <!-- /.login-box -->
 
 <!-- jQuery 3 -->
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="../bower_components/jquery/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
-<script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="../bower_components/bootstrap/dist/bootstrap.min.js"></script>
 <!-- iCheck -->
 <script src="../plugins/iCheck/icheck.min.js"></script>
 <!-- Geetest 验证码 -->
@@ -92,7 +92,7 @@
         $("#submit").click(function (e) {
             var result = captchaObj.getValidate();
             if (!result) {
-                swal("", "请完成验证", "error");
+                alter("请完成验证");
             } else {
                 login(result);
             }

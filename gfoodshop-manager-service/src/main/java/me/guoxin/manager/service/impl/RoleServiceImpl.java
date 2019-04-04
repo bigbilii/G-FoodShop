@@ -18,7 +18,7 @@ public class RoleServiceImpl implements RoleService {
     public List<GfsRole> getRoleListWithoutAdmin() {
         List<GfsRole> list = getRoleList();
         for (GfsRole gfsRole : list) {
-            if (gfsRole.getId() == 1) {
+            if (gfsRole.getId() == GfsRole.ADMIN) {
                 list.remove(gfsRole);
                 break;
             }
@@ -29,5 +29,10 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<GfsRole> getRoleList() {
         return roleMapper.getRoleList();
+    }
+
+    @Override
+    public List<GfsRole> getUserRole() {
+        return roleMapper.getUserRole(GfsRole.USER);
     }
 }

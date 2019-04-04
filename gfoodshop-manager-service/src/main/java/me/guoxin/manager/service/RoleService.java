@@ -9,4 +9,6 @@ public interface RoleService {
     List<GfsRole> getRoleListWithoutAdmin();
 
     List<GfsRole> getRoleList();
+
+    List<GfsRole> getUserRole();
 }

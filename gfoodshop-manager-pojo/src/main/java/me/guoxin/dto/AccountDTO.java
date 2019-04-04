@@ -1,5 +1,6 @@
 package me.guoxin.dto;
 
+import me.guoxin.pojo.GfsUser;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -7,15 +8,7 @@ import java.io.Serializable;
 /**
  * 登录
  */
-public class AccountDTO implements Serializable {
-    /**
-     * 账号 | 手机号
-     */
-    private String phone;
-    /**
-     * 密码
-     */
-    private String password;
+public class AccountDTO extends GfsUser implements Serializable {
     /**
      * 记住我
      */
@@ -28,22 +21,6 @@ public class AccountDTO implements Serializable {
     private String geetest_validate;
     private String geetest_seccode;
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String username) {
-        this.phone = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public boolean isRemember() {
         return remember;
     }
@@ -53,9 +30,9 @@ public class AccountDTO implements Serializable {
     }
 
     public boolean checkEnmpyInfo() {
-        if (StringUtils.isBlank(phone))
+        if (StringUtils.isBlank(super.getPhone()))
             return true;
-        return StringUtils.isBlank(password);
+        return StringUtils.isBlank(super.getPassword());
     }
 
     public String getGeetest_challenge() {

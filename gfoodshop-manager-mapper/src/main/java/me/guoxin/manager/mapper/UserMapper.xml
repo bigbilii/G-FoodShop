@@ -47,7 +47,7 @@ u.last_login_time, u.status, u.role_id, u.sex, u.address, u.description, r.id as
 
 
     <insert id="insert" parameterType="me.guoxin.pojo.GfsUser">
-        INSERT INTO gfs_user(id, username, phone, password, salt, creat_time, last_login_time, status, role_id, sex, address, description)
+        INSERT INTO gfs_user(id, username, phone, password, salt, create_time, last_login_time, status, role_id, sex, address, description)
         VALUES (#{id}, #{username}, #{phone}, #{password}, #{salt}, #{createTime}, #{lastLoginTime}, #{status}, #{role.id}, #{sex}, #{address}, #{description});
     </insert>
 
@@ -94,7 +94,7 @@ u.last_login_time, u.status, u.role_id, u.sex, u.address, u.description, r.id as
 
     <update id="updateUser" parameterType="me.guoxin.pojo.GfsUser">
         update gfs_user
-        set username = #{username}, phone = #{phone}, password = #{password}, salt = #{salt}, creat_time = #{createTime}, last_login_time = #{lastLoginTime}, status = #{status}, role_id = #{role.id}, sex = #{sex}, address = #{address}, description = #{description}
+        set username = #{username}, phone = #{phone}, password = #{password}, salt = #{salt}, create_time = #{createTime}, last_login_time = #{lastLoginTime}, status = #{status}, role_id = #{role.id}, sex = #{sex}, address = #{address}, description = #{description}
         where id = #{id}
     </update>
 

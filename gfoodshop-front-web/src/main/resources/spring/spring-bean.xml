@@ -52,4 +52,9 @@
     <!-- 配置基于注解的申明式事务 -->
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
+    <bean id="geetestLib" class="me.guoxin.utils.GeetestLib">
+        <constructor-arg index="0" value="281989e5e36c7433cc6aceca6140f339"/>
+        <constructor-arg index="1" value="22592b082694a67783130cd9a8dc99c2"/>
+        <constructor-arg index="2" value="true"/>
+    </bean>
 </beans>

@@ -3,6 +3,7 @@ package me.guoxin.manager.service;
 
 import me.guoxin.dto.DataTableViewPageDTO;
 import me.guoxin.dto.OnlineUserDTO;
+import me.guoxin.dto.RegisterUserDTO;
 import me.guoxin.pojo.DataTableDTO;
 import me.guoxin.pojo.GfsUser;
 
@@ -99,4 +100,11 @@ public interface UserService {
      * @param id 用户id
      */
     void disableUser(Long id);
+
+    /**
+     * 用户注册
+     *
+     * @param account
+     */
+    void register(RegisterUserDTO account);
 }

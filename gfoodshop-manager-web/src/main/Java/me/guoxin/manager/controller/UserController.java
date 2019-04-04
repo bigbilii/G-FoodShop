@@ -103,7 +103,9 @@ public class UserController {
     @GetMapping(value = "/user/myInfo")
     public Result getMyUserInfo() {
         GfsUser gfsUser = (GfsUser) SecurityUtils.getSubject().getPrincipal();
-        gfsUser.maskPasswordInfo();
+        if (gfsUser != null) {
+            gfsUser.maskPasswordInfo();
+        }
         return new ResultUtil<>().setData(gfsUser);
     }
 

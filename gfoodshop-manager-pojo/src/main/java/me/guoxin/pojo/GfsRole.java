@@ -3,6 +3,8 @@ package me.guoxin.pojo;
 import java.io.Serializable;
 
 public class GfsRole implements Serializable {
+    public static Integer ADMIN = 1;
+    public static Integer USER = 2;
 
     private int id;
     private String name;

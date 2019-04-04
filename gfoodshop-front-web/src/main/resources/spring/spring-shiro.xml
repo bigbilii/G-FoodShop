@@ -7,8 +7,51 @@
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <!-- 安全认证管理器 -->
         <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/gfoodshop/pages/home.html"/>
+        <property name="filters">
+            <util:map>
+                <entry key="kickout" value-ref="kickoutSessionFilter"/>
+            </util:map>
+        </property>
+        <property name="filterChainDefinitions">
+            <value>
+                <!-- 静态资源 -->
+                /gfoodshop/bower_components/** = anon
+                /gfoodshop/dist/** = anon
+                /gfoodshop/plugins/** = anon
+
+                <!-- 主页 -->
+                /gfoodshop/pages/home.html = anon
+                /gfoodshop/pages/agreement.html = anon
+                /gfoodshop/pages/privacyStatement.html = anon
+                /homeFood/list = anon
+                /user/myInfo = anon
+                <!-- 验证码 -->
+                /getValidate = anon
+                <!-- 踢出 -->
+                /gfoodshop/pages/kickout.html = anon
+                <!-- 注册 -->
+                /gfoodshop/pages/register.html= anon
+                /user/register = anon
+                <!-- 登录 -->
+                /user/login = kickout
+                /gfoodshop/pages/login.html= kickout
+                /user/logout = logout
+                <!-- 所有请求 -->
+                /gfoodshop/pages/** = user,kickout
+                /** = authc,kickout
+            </value>
+        </property>
     </bean>
 
+    <!-- 自定义拦截器 -->
+    <bean id="kickoutSessionFilter" class="me.guoxin.front.shiro.KickoutSessionFilter">
+        <property name="cacheManager" ref="cacheManager"/>
+        <property name="sessionManager" ref="sessionManager"/>
+        <property name="maxSession" value="1"/>
+        <property name="kickoutAfter" value="false"/>
+        <property name="kickoutUrl" value="/gfoodshop/pages/kickout.html"/>
+    </bean>
 
     <!-- 配置Shiro RedisManager  -->
     <bean id="redisManager" class="org.crazycake.shiro.RedisManager">
@@ -54,12 +97,28 @@
 
     <!-- Shiro安全管理器 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="myRealm"/>
         <property name="cacheManager" ref="cacheManager"/>
         <property name="sessionManager" ref="sessionManager"/>
         <property name="rememberMeManager" ref="rememberMeManager"/>
     </bean>
 
+    <!-- 自定义Realm -->
+    <bean id="myRealm" class="me.guoxin.front.shiro.MyRealm">
+        <!-- 使用credentialsMatcher实现密码验证服务 -->
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
+    </bean>
 
+    <bean id="credentialsMatcher" class="me.guoxin.front.shiro.RetryLimitHashedCredentialsMatcher">
+        <!-- 加密算法名称 -->
+        <property name="hashAlgorithmName" value="md5"/>
+        <!-- 加盐次数 -->
+        <property name="hashIterations" value="2"/>
+        <!-- 是否储存散列后的密码为16进制 -->
+        <property name="storedCredentialsHexEncoded" value="true"/>
+        <!-- 缓存管理器 -->
+        <constructor-arg index="0" ref="cacheManager"/>
+    </bean>
 
     <!-- Shiro生命周期处理器 -->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>

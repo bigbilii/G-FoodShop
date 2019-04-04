@@ -503,7 +503,7 @@
 .page-wrap {
 	width: 1088px;
 	min-height: 640px;
-	border: 3px solid #ff8a00;
+	border: 3px solid #99CCFF;
 	border-radius: 8px;
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
@@ -520,7 +520,7 @@
 	font-size: 20px;
 	margin-bottom: 66px;
 	font-weight: bold;
-	color: #ff8a00;
+	color: #99CCFF;
 }
 
 /*storeList.html*/
@@ -778,7 +778,7 @@
 }
 
 .addressInputBox a.btn-51wm-1:hover {
-	color: #ff8a00;
+	color: #99CCFF;
 }
 
 #cityListBox,
@@ -1445,7 +1445,7 @@
 }
 
 .addr-ls-box.active {
-	border: 1px #ff8a00 solid;
+	border: 1px #99CCFF solid;
 }
 
 .addr-ls-addrmsg {

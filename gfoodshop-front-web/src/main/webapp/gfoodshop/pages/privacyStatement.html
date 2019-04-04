@@ -1,0 +1,88 @@
+<html lang="en">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>GFoodShop官方</title>
+<meta name="keywords" content="GFoodShop官方订餐外卖网站">
+<meta name="description" content="GFoodShop官方订餐外卖网站">
+
+
+<link href="../bower_components/bootstrap/dist/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../dist/css/common.css"/>
+<link rel="stylesheet" href="../dist/css/main.css"/>
+<link rel="stylesheet" href="../dist/css/index.css"/>
+
+<body class="" avalonctrl="root">
+<div id="rootLoading" class="loading-wrap" style="display: none;">
+    <div class="loading-icon"></div>
+</div>
+<div class="grid-box">
+    <!-- header部分 start -->
+    <div id="header" avalonctrl="header">
+        <div class="base-wrap">
+            <div class="header-1-lang clearfix">
+            </div>
+            <div class="header-2-logo clearfix">
+                <div class="box-logo f-l relative">
+                    <a class="brand-skip">
+                        <img class="barand-logo"
+                             src="http://51wm-pic1.oss-cn-hangzhou.aliyuncs.com/null9a9036af-3044-46c9-b33d-1337e5d1d24f.png">
+                    </a>
+                    <a href="./home.html" class="wm-skip">首页</a>
+                </div>
+                <div class="box-nav f-r">
+                    <div class="user-login-before" style="display: block">
+                        <a class="bold" href="./login.html">登录</a>
+                        <a class="bold" href="./register.html">注册</a>
+                    </div>
+                    <div class="user-login" style="display: none">
+                        <a class="bold">Hi!!&nbsp;&nbsp;&nbsp;<span id="username"></span></a>
+                        <ul class="overlist">
+                            <li><a href="./userCenter.jsp#!/userInfo">我的信息</a></li>
+                            <li><a href="./userCenter.jsp#!/orderList">我的订单</a></li>
+                            <li><a href="./userCenter.jsp#!/changePassword">修改密码</a></li>
+                            <li><a href="/user/logout;">退出登录</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- header部分 end -->
+    <div id="main">
+        <div id="mainLoading" class="loading-wrap" style="display: none;">
+            <div class="loading-icon"></div>
+        </div>
+        <!--ms-view:main-->
+        <div ui-view="main" data-current-cache="false">
+            <div class="page-wrap" avalonctrl="page">
+                <h1>隐私声明</h1>
+                以下内容可能会不时修改，请定期查阅。<br><br>1.您可自行选择是否在本网站进行注册成为会员。如果您在本网站注册成为会员，您将向本网站提供一些您的个人信息资料，对于您的个人信息和隐私权本网站将予以尊重和保密。<br>2.在使用本网站的过程中，您需要提供一些个人信息，包括订餐人姓氏、性别、送餐联系电话、送餐地址、电子邮箱等，以便本网站及时准确地提供送餐服务，请予以理解和配合。如需要更新时，也请确保资料的准确性和及时性，以免影响送餐。您在使用本网站时传送的任何其他资料、信息，包括但不限于意见、客户反馈、喜好、建议、支持、请求、问题等内容，将被当作非保密资料和非专有资料处理；而当您将这些资料传送至本网站并被接收时，即被视为您同意这些资料用作本网站调查、统计等目的而由本公司无偿使用。<br>3.当您在使用本网站时，某些信息可以通过各种技术和方法不经您主动提供而被收集，这些方法包括IP地址、Cookies、设备信息及日志数据收集等。这些信息不足以使他人辨认您个人的身份，收集上述信息的目的旨在为您提供更完善的服务。<br>4.您的个人信息资料将仅用作送餐服务、统计资料、消费行为调查或研究、或其它与本网站服务相关的合法使用，以便本公司向您提供更完善的服务，也使您有更好的用户体验从而提高我们的总体服务质量。基于上述目的，本公司可能会将您的个人信息提供给本公司的母公司、附属公司、本公司其他关联公司或商业伙伴及为我们提供业务支持的供应商（包括但不限于网站运营、技术支持、客服等），在该等情况下，我们将要求本公司的母公司、附属公司、本公司其他关联公司或商业伙伴及上述第三方遵守本隐私权条款。除隐私权条款另有说明，未经您的同意，我们不会将您的个人信息用于隐私权条款载明的其它用途。<br>5.对于您的个人信息资料，我们将严格保密，不会泄露、篡改、出售或非法提供给他人。但以下情况的披露无需您的同意，且我们不承担任何责任。<br>•满足适用法律、法规、法律程序的要求或强制性的政府要求所做的披露。<br>•执行适用的服务条款（包括调查可能存在的违规情况）所做的披露。<br>•查找、预防或处理欺诈、安全或技术方面的问题所做的披露。<br>•在法律要求或允许的范围内，保护其他用户或公众的权利、财产或安全免遭损害所做的披露。<br>6.我们的服务无需对下列情况承担任何责任：<br>•由于您将个人信息告知他人或与他人共享账户，而导致的任何个人信息泄露；<br>•任何由于黑客攻击，计算机病毒、手机病毒侵入或发作，因政府管制而造成的暂时性关闭等影响网络正常经营之不可抗力而造成的个人信息泄露、丢失、误用，变更或毁坏；<br>•由于与我们的服务链接的其它互联网网站，手机网站或其他手机APP客户端所造成之个人信息泄露及由此而导致的任何法律争议和后果。<br>7.本网站对网站内的讨论、传送、聊天及公布板上的内容不承担任何责任，但本网站禁止您传送和发放带有中伤、诽谤、造谣、色情及其他违法的资料和言论，本网站有权对此进行管理和监督，但并不对此承担任何责任。<br>8.本网站无意向18岁以下未成年人搜集任何个人信息资料，也不会向任何第三方透露任何未成年人的信息，并请家长对于子女在使用互联网时对个人信息的运用进行监管和负责，如未成年人通过公告版或类似形式自愿提供及公开的个人信息资料被他人使用或透过邮件发放或转送，与本网站无关。<br>9.个人信息搜集告知义务：<br>•您同意将个人信息资料
+                (含姓名、性别、联络电话、电子邮箱、地址及出生年月日等)
+                供本公司、本公司母公司、附属公司、本公司其他关联公司或商业伙伴及委托之第三人于中华人民共和国境内作为餐饮服务、与您联络、进行商品营销活动、寄送DM广告数据、提供商品信息、统计与分析、信息与数据管理、宣传营销及管理，其他经营合于本公司营业登记项目所定业务等之目的范围内使用。<br>•您同意本公司保留您个人信息资料之期间，以完成本网站特定目的之必要期间及本公司运营之期间为准，惟法律如另有规定或许可更长之期间者，则不在此限。<br>•您可自由选择是否提供您的个人信息资料予本公司，若您所提供的个人信息资料无法确认您的真实身份或有遭冒用、盗用、数据不实等情事，或您选择不提供个人信息资料时，您将无法享有本公司于本网站提供之相关优惠或服务。<br>•您已详细阅读本项说明之全部内容，如您依本网站相关指示而提供您的个人信息资料，即具有书面同意本公司搜集、处理及利用您的个人信息资料之效果。
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- end start -->
+<div id="footer">
+    <div class="base-wrap">
+        <img src="../dist/images/navbg2.png" alt="">
+        <div class="link">
+            <a href="./agreement.html">法律声明 </a>
+            <a href="./privacyStatement.html">隐私政策 </a>
+        </div>
+    </div>
+</div>
+<!-- end end -->
+</body>
+<!-- jQuery 3 -->
+<script src="../bower_components/jquery/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="../bower_components/bootstrap/dist/bootstrap.min.js"></script>
+<script src="../dist/js/public.js"></script>
+
+<script src="../dist/js/home.js"></script>
+
+</html>

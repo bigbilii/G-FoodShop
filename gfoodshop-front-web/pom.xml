@@ -26,6 +26,10 @@
             <groupId>me.guoxin</groupId>
             <artifactId>gfoodshop-manager-service</artifactId>
             <version>1.0.0</version>
+        </dependency>  <dependency>
+            <groupId>me.guoxin</groupId>
+            <artifactId>gfoodshop-common</artifactId>
+            <version>1.0.0</version>
         </dependency>
 
         <!-- Spring -->
