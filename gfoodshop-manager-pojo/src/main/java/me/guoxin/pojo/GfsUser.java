@@ -21,13 +21,12 @@ public class GfsUser implements Serializable {
     private Integer status;
     private GfsRole role;
     private String sex;
-    private String address;
     private String description;
 
     public GfsUser() {
     }
 
-    public GfsUser(Long id, String username, String phone, String password, String salt, Date createTime, Date lastLoginTime, Integer status, GfsRole role, String sex, String address, String description) {
+    public GfsUser(Long id, String username, String phone, String password, String salt, Date createTime, Date lastLoginTime, Integer status, GfsRole role, String sex, String description) {
         this.id = id;
         this.username = username;
         this.phone = phone;
@@ -38,7 +37,6 @@ public class GfsUser implements Serializable {
         this.status = status;
         this.role = role;
         this.sex = sex;
-        this.address = address;
         this.description = description;
     }
 
@@ -53,7 +51,6 @@ public class GfsUser implements Serializable {
         this.status = gfsUser.getStatus();
         this.role = gfsUser.getRole();
         this.sex = gfsUser.getSex();
-        this.address = gfsUser.getAddress();
         this.description = gfsUser.getDescription();
     }
 
@@ -129,13 +126,6 @@ public class GfsUser implements Serializable {
         this.sex = sex;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     public String getDescription() {
         return description;

@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import me.guoxin.dto.DataTableViewPageDTO;
 import me.guoxin.dto.OnlineUserDTO;
+import me.guoxin.dto.PasswordDTO;
 import me.guoxin.dto.RegisterUserDTO;
 import me.guoxin.manager.mapper.RoleMapper;
 import me.guoxin.manager.utils.SessionUtils;
@@ -221,9 +222,6 @@ public class UserServiceImpl implements UserService {
         if (gfsUser.getSex() == null) {
             gfsUser.setSex(user.getSex());
         }
-        if (gfsUser.getAddress() == null) {
-            gfsUser.setAddress(user.getAddress());
-        }
         if (gfsUser.getDescription() == null) {
             gfsUser.setDescription(user.getDescription());
         }
@@ -269,5 +267,39 @@ public class UserServiceImpl implements UserService {
             throw new IException("注册发生错误，不允许普通用户注册");
         }
         insertUser(gfsUser);
+    }
+
+    @Override
+    public void changePassword(Long id, PasswordDTO passwordDTO) {
+        if (passwordDTO == null) {
+            throw new IException("服务器错误");
+        }
+        if (passwordDTO.getOldPassword() == null) {
+            throw new IException("旧密码不为空");
+        }
+        if (!passwordDTO.newPasswordIsSure()) {
+            throw new IException("两次输入密码不相同，请重新输入");
+        }
+        // 获取当前用户
+        List<GfsUser> list = new ArrayList<>();
+        try {
+            list = userMapper.selectById(id);
+        } catch (Exception e) {
+            throw new IException("服务器错误");
+        }
+        if (list.isEmpty()) {
+            throw new IException("当前用户不存在，请刷新页面重试");
+        }
+        GfsUser gfsUser = list.get(0);
+        // 判断旧密码是否正确
+        if (!passwordHelper.usreOldPassword(gfsUser, passwordDTO.getOldPassword())) {
+            throw new IException("旧密码输入错误！");
+        }
+        gfsUser.setPassword(passwordDTO.getNewPassword());
+        // 密码加密与盐
+        passwordHelper.encryptPassword(gfsUser);
+        if (userMapper.updateUser(gfsUser) != 1) {
+            throw new IException("修改密码失败，请重试！");
+        }
     }
 }

@@ -1,6 +1,7 @@
 document.write("<script type='text/javascript' src='./public.js'></script>");
 
 var userInfo;
+
 $(function () {
     userInfo = loadUserInfo();
     if (userInfo == null) {

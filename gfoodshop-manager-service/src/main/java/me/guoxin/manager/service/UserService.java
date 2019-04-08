@@ -3,6 +3,7 @@ package me.guoxin.manager.service;
 
 import me.guoxin.dto.DataTableViewPageDTO;
 import me.guoxin.dto.OnlineUserDTO;
+import me.guoxin.dto.PasswordDTO;
 import me.guoxin.dto.RegisterUserDTO;
 import me.guoxin.pojo.DataTableDTO;
 import me.guoxin.pojo.GfsUser;
@@ -10,6 +11,9 @@ import me.guoxin.pojo.GfsUser;
 import java.util.List;
 import java.util.Set;
 
+/**
+ *
+ */
 public interface UserService {
 
     /**
@@ -107,4 +111,12 @@ public interface UserService {
      * @param account
      */
     void register(RegisterUserDTO account);
+
+
+    /**
+     * 修改密码
+     *
+     * @param id 用户id
+     */
+    void changePassword(Long id, PasswordDTO passwordDTO);
 }

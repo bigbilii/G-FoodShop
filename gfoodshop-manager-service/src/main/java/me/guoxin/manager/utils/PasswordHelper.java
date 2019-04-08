@@ -2,6 +2,7 @@ package me.guoxin.manager.utils;
 
 
 import me.guoxin.pojo.GfsUser;
+import me.guoxin.pojo.IException;
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -28,6 +29,26 @@ public class PasswordHelper {
                     ByteSource.Util.bytes(user.CredentialsSalt()),
                     hashInterations).toHex();
             user.setPassword(newPassword);
+        }
+    }
+
+    //加密算法
+    public boolean usreOldPassword(GfsUser user, String oldPassword) {
+        if (user.getPassword() != null && user.getSalt() != null) {
+            String salt = user.CredentialsSalt();
+
+            //调用SimpleHash指定散列算法参数：1、算法名称；2、用户输入的密码；3、盐值（随机生成的）；4、迭代次数
+            String passwordSure = new SimpleHash(
+                    algorithName,
+                    oldPassword,
+                    salt,
+                    hashInterations).toHex();
+            if (passwordSure.equals(user.getPassword())) {
+                return true;
+            } else
+                return false;
+        } else {
+            throw new IException("用户未曾设置密码");
         }
     }
 }

@@ -1,0 +1,226 @@
+<html lang="en">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>GFoodShop官方</title>
+<meta name="keywords" content="GFoodShop官方订餐外卖网站">
+<meta name="description" content="GFoodShop官方订餐外卖网站">
+
+
+<link href="../bower_components/bootstrap/dist/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../dist/css/common.css"/>
+<link rel="stylesheet" href="../dist/css/main.css"/>
+<link rel="stylesheet" href="../dist/css/index.css"/>
+<link rel="stylesheet" href="../dist/css/userCenter.css"/>
+
+<body class="" avalonctrl="root">
+<div id="rootLoading" class="loading-wrap" style="display: none;">
+    <div class="loading-icon"></div>
+</div>
+<div class="grid-box">
+    <!-- header部分 start -->
+    <div id="header" avalonctrl="header">
+        <div class="base-wrap">
+            <div class="header-1-lang clearfix">
+            </div>
+            <div class="header-2-logo clearfix">
+                <div class="box-logo f-l relative">
+                    <a class="brand-skip">
+                        <img class="barand-logo"
+                             src="http://51wm-pic1.oss-cn-hangzhou.aliyuncs.com/null9a9036af-3044-46c9-b33d-1337e5d1d24f.png">
+                    </a>
+                    <a href="./home.html" class="wm-skip">首页</a>
+                </div>
+                <div class="box-nav f-r">
+                    <div class="user-login-before" style="display: block">
+                        <a class="bold" href="./login.html">登录</a>
+                        <a class="bold" href="./register.html">注册</a>
+                    </div>
+                    <div class="user-login" style="display: none">
+                        <a class="bold">Hi!!&nbsp;&nbsp;&nbsp;<span id="username"></span></a>
+                        <ul class="overlist">
+                            <li><a href="./userCenter.html?type=userInfo">我的信息</a></li>
+                            <li><a href="./userCenter.html?type=order">我的订单</a></li>
+                            <li><a href="./userCenter.html?type=password">修改密码</a></li>
+                            <li><a href="/user/logout;">退出登录</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- header部分 end -->
+
+    <div id="main">
+        <div id="mainLoading" class="loading-wrap">
+            <div class="loading-icon"></div>
+        </div>
+        <!--ms-view:main-->
+        <div ui-view="main" data-current-cache="false">
+            <div class="base-wrap clearfix" avalonctrl="user-center">
+                <!-- 左侧 start -->
+                <div class="uesr-left">
+                    <!-- 已登录 start -->
+                    <div class="user-login-dk">
+                        <h3>欢迎回来</h3>
+                    </div>
+                    <ul class="user-nav" id="tab">
+                        <li>
+                            <a href="#userInfo" data-toggle="tab">我的信息</a>
+                        </li>
+                        <li>
+                            <a href="#order" data-toggle="tab">我的订单</a>
+                        </li>
+                        <li>
+                            <a href="#password" data-toggle="tab">修改密码</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- 左侧 end -->
+                <!-- 右侧 start -->
+                <div id="userCenterMain" class="user-right co-494949 userInfo-wrap" avalonctrl="user-info">
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="userInfo">
+                            <div class="form-userInfo">
+                                <!-- 姓名 -->
+                                <div class="inputBox clearfix">
+                                    <span>用户名:</span><span id="myUsername"></span>
+                                </div>
+                                <div class="inputBox clearfix">
+                                    <span>电话:</span><span id="phone"></span>
+                                </div>
+                                <div class="inputBox clearfix">
+                                    <span>创建时间:</span><span id="creatTime"></span>
+                                </div>
+                                <!-- 性别 -->
+                                <div class="inputBox clearfix">
+                                    <span>性别:</span><span id="sex"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="order">订单信息</div>
+                        <div role="tabpanel" class="tab-pane" id="password">
+                            <div class="changePwd-box" avalonctrl="changePassword">
+                                <div class="inputBox">
+                                    <span class="input-txt">原密码 :</span>
+                                    <input type="password" id="oldPassword">
+                                </div>
+                                <div class="inputBox">
+                                    <span class="input-txt">新密码 :</span>
+                                    <input type="password" name="password" id="newPassword">
+                                </div>
+                                <div class="inputBox">
+                                    <span class="input-txt">确认密码 :</span>
+                                    <input type="password" name="password" id="newPasswordSure">
+                                </div>
+                                <div class="inputBox">
+                                </div>
+                                <p class="p-submit-change">
+                                    <button class="btn-51wm-1" onclick="changePassword()">提交更新</button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 右侧 end -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end start -->
+<div id="footer">
+    <div class="base-wrap">
+        <img src="../dist/images/navbg2.png" alt="">
+        <div class="link">
+            <a href="./agreement.html">法律声明 </a>
+            <a href="./privacyStatement.html">隐私政策 </a>
+        </div>
+    </div>
+</div>
+<!-- end end -->
+</body>
+<!-- jQuery 3 -->
+<script src="../bower_components/jquery/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="../bower_components/bootstrap/dist/bootstrap.min.js"></script>
+<script src="../dist/js/public.js"></script>
+<script src="../dist/js/home.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#tab").tab('show');
+
+        var ur = location.href;
+        var type = ur.split('?')[1].split("=")[1];
+        switch (type) {
+            case 'userInfo':
+                $('#tab a[href="#userInfo"]').tab('show');
+                break;
+            case 'order':
+                $('#tab a[href="#order"]').tab('show');
+                break;
+            case 'password':
+                $('#tab a[href="#password"]').tab('show');
+                break;
+        }
+
+        $("#myUsername").text(userInfo.username);
+        $("#phone").text(userInfo.phone);
+        $("#sex").text(userInfo.sex);
+        $("#creatTime").text(userInfo.createTime);
+    });
+
+    function changePassword() {
+        var oldp = $("#oldPassword").val();
+        var newp = $("#newPassword").val();
+        var newps = $("#newPasswordSure").val();
+        if (isNull(oldp)) {
+            alert("请输入原密码!");
+            return;
+        }
+        if (isNull(newp)) {
+            alert("请输入新密码!");
+            return;
+        }
+        if (isNull(newps)) {
+            alert("请输入重复输入新密码!");
+            return;
+        }
+        if (newp !== newps) {
+            alert("请输入两次相同的新密码");
+            return;
+        }
+        var data = {"oldPassword": oldp};
+        data.newPassword = newp;
+        data.newPasswordSure = newps;
+        var url = "/" + userInfo.id + "/changePassword";
+
+        $.ajax({
+            type: "PUT",
+            url: url,
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (result) {
+                if (result.code === 200) {
+                    alert("修改密码成功");
+                    $(location).prop('href', '/user/logout');
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("发生未知错误");
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("发生未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+            }
+        })
+    }
+</script>
+
+</html>

@@ -1,6 +1,7 @@
 package me.guoxin.front.controller;
 
 import me.guoxin.dto.AccountDTO;
+import me.guoxin.dto.PasswordDTO;
 import me.guoxin.dto.RegisterUserDTO;
 import me.guoxin.manager.service.UserService;
 import me.guoxin.pojo.GfsUser;
@@ -10,10 +11,7 @@ import me.guoxin.utils.ResultUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -100,6 +98,7 @@ public class UserController {
         }
         return new ResultUtil<>().setData(gfsUser);
     }
+
     /**
      * 注册用户
      *
@@ -135,6 +134,18 @@ public class UserController {
         } else {
             return new ResultUtil<Object>().setMsg(401, "验证错误");
         }
+    }
+
+    /**
+     * 获取当前用户信息
+     *
+     * @return
+     * @throws Exception
+     */
+    @PutMapping(value = "/{id}/changePassword")
+    public Result changePassword(@PathVariable("id") Long id, @RequestBody PasswordDTO passwordDTO) {
+        userService.changePassword(id,passwordDTO);
+        return new ResultUtil<>().setData(null);
     }
 
 }

@@ -1,10 +1,8 @@
 package me.guoxin.dto;
 
-import me.guoxin.pojo.GfsRole;
 import me.guoxin.pojo.GfsUser;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class RegisterUserDTO extends GfsUser implements Serializable {
     /**

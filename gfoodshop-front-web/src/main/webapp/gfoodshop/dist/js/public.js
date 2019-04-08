@@ -180,9 +180,6 @@ function isEmptyResult(resultMsg) {
     return false;
 }
 
-function makeAddress(province, city, district) {
-    return province + city + district;
-}
 
 function findInListByName(list, data) {
     for (var i = 0; i < list.length; i++) {
