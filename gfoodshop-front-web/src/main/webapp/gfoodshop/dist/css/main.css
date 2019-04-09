@@ -1070,9 +1070,11 @@ input[type=radio] {
 	border: 1px #dedede solid;
 	background-color: #fff;
 	left: 80px;
-	top: 32px;
+	top: 136px;
 	z-index: 9999;
 	overflow-y: auto;
+	display: none;
+
 }
 
 .address-wrap .addressList-ul.en {

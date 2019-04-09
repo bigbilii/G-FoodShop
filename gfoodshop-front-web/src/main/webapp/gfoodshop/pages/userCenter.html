@@ -1,17 +1,37 @@
 <html lang="en">
 <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-
 <title>GFoodShop官方</title>
 <meta name="keywords" content="GFoodShop官方订餐外卖网站">
 <meta name="description" content="GFoodShop官方订餐外卖网站">
-
-
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+<link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css"/>
 <link href="../bower_components/bootstrap/dist/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="../dist/css/common.css"/>
 <link rel="stylesheet" href="../dist/css/main.css"/>
 <link rel="stylesheet" href="../dist/css/index.css"/>
 <link rel="stylesheet" href="../dist/css/userCenter.css"/>
+<style>
+
+    .addr-msg-box .addr-box-close-btn {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        background: white;
+        line-height: 50px;
+        text-align: center;
+        font-size: 37px;
+        color: black !important;
+        cursor: pointer;
+        position: absolute;
+        right: 0px;
+        top: 10px;
+    }
+
+    .amap-sug-result {
+        z-index: 9999;
+    }
+</style>
 
 <body class="" avalonctrl="root">
 <div id="rootLoading" class="loading-wrap" style="display: none;">
@@ -39,9 +59,7 @@
                     <div class="user-login" style="display: none">
                         <a class="bold">Hi!!&nbsp;&nbsp;&nbsp;<span id="username"></span></a>
                         <ul class="overlist">
-                            <li><a href="./userCenter.html?type=userInfo">我的信息</a></li>
-                            <li><a href="./userCenter.html?type=order">我的订单</a></li>
-                            <li><a href="./userCenter.html?type=password">修改密码</a></li>
+                            <li><a href="./userCenter.html">个人中心</a></li>
                             <li><a href="/user/logout;">退出登录</a></li>
                         </ul>
                     </div>
@@ -69,7 +87,10 @@
                             <a href="#userInfo" data-toggle="tab">我的信息</a>
                         </li>
                         <li>
-                            <a href="#order" data-toggle="tab">我的订单</a>
+                            <a href="#addressList" data-toggle="tab" onclick="addressList()">我的送餐地址</a>
+                        </li>
+                        <li>
+                            <a href="#order" data-toggle="tab" onclick="">我的订单</a>
                         </li>
                         <li>
                             <a href="#password" data-toggle="tab">修改密码</a>
@@ -99,6 +120,13 @@
                             </div>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="order">订单信息</div>
+                        <div role="tabpanel" class="tab-pane" id="addressList">
+                            <div class="addresses-box">
+                                <ul class="addresses-ul clearfix" id="addr-box">
+                                </ul>
+
+                            </div>
+                        </div>
                         <div role="tabpanel" class="tab-pane" id="password">
                             <div class="changePwd-box" avalonctrl="changePassword">
                                 <div class="inputBox">
@@ -137,8 +165,52 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="addAddress" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+     data-backdrop="static">
+    <div class="modal-dialog modal-address" role="document">
+        <div class="modal-content">
+            <div class="modal-header notitle" style="border-bottom: 0px">
+               <span aria-hidden="true" data-dismiss="modal" aria-label="Close"
+                     class="dk-dialog-close-btn">×</span>
+            </div>
+            <div class="modal-body" style="padding: 0">
+                <div data-include-rendered="rendered" data-include-loaded="loaded">
+                    <div class="address-wrap" avalonctrl="address">
+                        <div class="inputBox">
+                            <span class="map-span">姓名 :</span>
+                            <input type="text" name="receiverName" data-duplex-event="change" placeholder="请输入您的姓名"
+                                   id="receiverName">
+                        </div>
+                        <div class="inputBox">
+                            <span class="map-span">手机 : </span>
+                            <input type="text" name="receiverPhone" placeholder="请输入您的手机号码" id="receiverPhone">
+                        </div>
+                        <div class="inputBox relative">
+                            <span class="map-span">地址 :</span>
+                            <input type="text" style="width:326px;" placeholder="请输入您的地址" id="receiverAddress">
+                        </div>
+                        <div class="inputBox">
+                            <span class="map-span mr-16">补全地址 :</span>
+                            <input type="text" style="width:302px;" name="appendReceiverAddress" placeholder="请补充详细地址"
+                                   id="appendReceiverAddress">
+                        </div>
+
+                        <div id="addressMap" style="width: 100%;height: 50%;"></div>
+                        <div class="inputBox submitBox">
+                            <a class="btn btn-51wm-1" href="javascript:void(0);" onclick="saveAddressInfo()">保存</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- end end -->
 </body>
+<script src="https://webapi.amap.com/maps?v=1.4.14&key=	9440df7c20021787f82fee47fcae58c2&plugin=AMap.Autocomplete,AMap.PlaceSearch"></script>
+<script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
 <!-- jQuery 3 -->
 <script src="../bower_components/jquery/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
@@ -146,22 +218,28 @@
 <script src="../dist/js/public.js"></script>
 <script src="../dist/js/home.js"></script>
 <script>
+    var selectAddress;
+    var map = new AMap.Map('addressMap', {
+        resizeEnable: true, //是否监控地图容器尺寸变化
+        zoom: 11, //初始化地图层级
+    });
+    //输入提示
+    var autoOptions = {
+        input: "receiverAddress"
+    };
+    var auto = new AMap.Autocomplete(autoOptions);
+    var placeSearch = new AMap.PlaceSearch({
+        map: map
+    });  //构造地点查询类
+    AMap.event.addListener(auto, "select", select);//注册监听，当选中某条记录时会触发
+    function select(e) {
+        placeSearch.setCity(e.poi.adcode);
+        placeSearch.search(e.poi.name);  //关键字查询查询
+        selectAddress = e.poi;
+    }
+
     $(document).ready(function () {
         $("#tab").tab('show');
-
-        var ur = location.href;
-        var type = ur.split('?')[1].split("=")[1];
-        switch (type) {
-            case 'userInfo':
-                $('#tab a[href="#userInfo"]').tab('show');
-                break;
-            case 'order':
-                $('#tab a[href="#order"]').tab('show');
-                break;
-            case 'password':
-                $('#tab a[href="#password"]').tab('show');
-                break;
-        }
 
         $("#myUsername").text(userInfo.username);
         $("#phone").text(userInfo.phone);
@@ -203,6 +281,155 @@
                 if (result.code === 200) {
                     alert("修改密码成功");
                     $(location).prop('href', '/user/logout');
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("发生未知错误");
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("发生未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+            }
+        })
+    }
+
+    function saveAddressInfo() {
+        var name = $("#receiverName").val().trim();
+        var phone = $("#receiverPhone").val().trim();
+        var address = $("#receiverAddress").val().trim();
+        var appAddress = $("#appendReceiverAddress").val().trim();
+        if (isNull(name)) {
+            alert("请输入姓名!");
+            return;
+        }
+        if (isNull(phone)) {
+            alert("请输入手机号!");
+            return;
+        }
+        if (!validPhone(phone)) {
+            alert("请输入正确格式的手机号!");
+            return;
+        }
+        if (isNull(address)) {
+            alert("请输入地址!");
+            return;
+        }
+        if (isNull(appAddress)) {
+            alert("请输入详细地址!");
+            return;
+        }
+        var data = {"receiverName": name};
+        data.receiverPhone = phone;
+        data.receiverAddress = address;
+        data.appendReceiverAddress = appAddress;
+        data.longitude = selectAddress.location.lng;
+        data.latitude = selectAddress.location.lat;
+        data.cityName = selectAddress.district;
+        var url = "/" + userInfo.id + "/address/insert";
+        console.log(data);
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (result) {
+                if (result.code === 200) {
+                    alert("添加成功");
+                    window.location.reload();
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("发生未知错误");
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("发生未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+            }
+        })
+    }
+
+    function addressList() {
+        $("#addr-box").empty();
+        var url = "/" + userInfo.id + "/address/select";
+        $.ajax({
+            type: "GET",
+            url: url,
+            contentType: "application/json",
+            success: function (result) {
+                if (result.code === 200) {
+                    listAddressDOM(result.data);
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("发生未知错误");
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("发生未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+            }
+        })
+    }
+
+    var address;
+
+    function listAddressDOM(data) {
+        address = data;
+        for (var i = 0; i < data.length; i++) {
+            $("#addr-box").prepend("<li class=\"addr-msg-box\">" +
+                "<span data-dismiss=\"modal\" aria-label=\"Close\" aria-hidden=\"true\"" +
+                "style=\"color:black;\" class=\"addr-box-close-btn\" onclick='deleteAddress(" + i + ")'>×</span>" +
+                "<div class=\"receiverName-box\">" +
+                "<h4 title=\"郭鑫\">" + data[i].receiverName + "</h4>" +
+                "</div>" +
+                "<div class=\"addreinfo\">" +
+                "<p>电话: " + data[i].receiverPhone + "</p>" +
+                "<p class=\"addr_detail\">" +
+                "地址：" + data[i].receiverAddress + data[i].appendReceiverAddress + "</p>" +
+                "</div>" +
+                "</li>")
+        }
+        $("#addr-box").append("<li class=\"addr-add-box\">" +
+            "<span class=\"btn-addr-add\" data-toggle=\"modal\" data-target=\"#addAddress\"></span>" +
+            "<span class=\"btn-addr-msg\" data-toggle=\"modal\"" +
+            "data-target=\"#addAddress\">添加送餐地址</span>" +
+            "</li>");
+    }
+
+    function deleteAddress(index) {
+        if (!confirm("是否删除")) {
+            return;
+        }
+        var url = "/address/" + address[index].id + "/delete";
+        $.ajax({
+            type: "DELETE",
+            url: url,
+            contentType: "application/json",
+            success: function (result) {
+                if (result.code === 200) {
+                    alert("删除成功");
+                    window.location.reload();
                 } else {
                     if (isEmptyResult(result)) {
                         alert("发生未知错误");

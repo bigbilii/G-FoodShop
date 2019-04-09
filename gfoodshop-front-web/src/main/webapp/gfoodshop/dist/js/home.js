@@ -1,4 +1,4 @@
-document.write("<script type='text/javascript' src='./public.js'></script>");
+document.write("<script type='text/javascript' src='../dist/js/public.js'></script>");
 
 var userInfo;
 

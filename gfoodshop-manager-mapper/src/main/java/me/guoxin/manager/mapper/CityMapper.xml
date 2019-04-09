@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="me.guoxin.manager.mapper.CityMapper">
+    <resultMap id="BaseResultMap" type="me.guoxin.pojo.GfsCity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">c.id,c.name</sql>
+
+    <select id="selectByName" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gfs_city c
+        where c.name = #{cityName}
+    </select>
+
+    <select id="selectCityByAddressId" resultMap="BaseResultMap" parameterType="INTEGER">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        gfs_address a
+        JOIN gfs_city c ON a.city_id = c.id
+        WHERE a.id = #{id}
+    </select>
+</mapper>
