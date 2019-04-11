@@ -1,0 +1,333 @@
+<html lang="en">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>GFoodShop官方</title>
+<meta name="keywords" content="GFoodShop官方订餐外卖网站">
+<meta name="description" content="GFoodShop官方订餐外卖网站">
+
+
+<link href="../bower_components/bootstrap/dist/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../dist/css/common.css"/>
+<link rel="stylesheet" href="../dist/css/main.css"/>
+<link rel="stylesheet" href="../dist/css/booking.css"/>
+<link rel="stylesheet" href="../dist/css/index.css"/>
+
+<body class="" avalonctrl="root">
+<div id="rootLoading" class="loading-wrap" style="display: none;">
+    <div class="loading-icon"></div>
+</div>
+<div class="grid-box">
+    <!-- header部分 start -->
+    <div id="header" avalonctrl="header">
+        <div class="base-wrap">
+            <div class="header-1-lang clearfix">
+            </div>
+            <div class="header-2-logo clearfix">
+                <div class="box-logo f-l relative">
+                    <a class="brand-skip">
+                        <img class="barand-logo"
+                             src="http://51wm-pic1.oss-cn-hangzhou.aliyuncs.com/null9a9036af-3044-46c9-b33d-1337e5d1d24f.png">
+                    </a>
+                    <a href="./home.html" class="wm-skip">首页</a>
+                </div>
+                <div class="box-nav f-r">
+                    <div class="user-login-before" style="display: block">
+                        <a class="bold" href="./login.html">登录</a>
+                        <a class="bold" href="./register.html">注册</a>
+                    </div>
+                    <div class="user-login" style="display: none">
+                        <a class="bold">Hi!!&nbsp;&nbsp;&nbsp;<span id="username"></span></a>
+                        <ul class="overlist">
+                            <li><a href="./userCenter.html">个人中心</a></li>
+                            <li><a href="/user/logout;">退出登录</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- header部分 end -->
+
+    <!-- main start -->
+    <div id="main">
+        <div id="mainLoading" class="loading-wrap" style="display: none;">
+            <div class="loading-icon"></div>
+        </div>
+        <!--ms-view:main-->
+        <div ui-view="main" data-current-cache="false">
+            <div class="base-wrap order-wrap clearfix" avalonctrl="order-view">
+                <div class="order-box_l f-l order-box_l-1">
+                    <div class="takeout-orders relative">
+                        <div class="orders-box">
+                            <div class="title">
+                                <h3 class="f-l">餐&nbsp;&nbsp;&nbsp;品&nbsp;&nbsp;&nbsp;信&nbsp;&nbsp;&nbsp;息</h3>
+                            </div>
+                            <ul class="orders-tab">
+                                <li class="canpinList-title" style="width: 365px;">餐品</li>
+                                <li style="width: 192px;">金额</li>
+                                <li style="width: 100px;">份数</li>
+                            </ul>
+                            <div class="order-list clearfix">
+                                <div avalonctrl="cart">
+                                    <table class="tb-orders-el" cellpadding="0" cellspacing="0">
+                                        <tbody>
+                                        <tr class="normal-con">
+                                            <td>
+                                            </td>
+                                            <td class="canpinList-title-td" style="width: 380px;">
+                                                板烧双拼饭
+                                            </td>
+                                            <td style="width: 80px;">¥28.0</td>
+                                            <td style="width: 180px;">
+                                                <span class="current-price border-free">1</span>
+                                            </td>
+                                        </tr>
+                                        <tr class="detail-con" style="display: none;">
+                                            <td class="tb-requirement" colspan="5">
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 点餐单 end -->
+                    <!-- 各项费用 -->
+                    <div class="fees-box clearfix">
+                        <p avalonctrl="cart">
+                            <span style="margin-left: 386px;">小计：</span>
+                            <em>¥63.5</em>
+                        </p>
+                        <p>
+                            <span>餐盒费</span>
+                            <em>¥2.0</em>
+                        </p>
+
+                        <p>
+                            <span><!-- 外送费: -->外送费 : </span>
+                            <em>¥8</em>
+                        </p>
+                    </div>
+
+                </div>
+                <div class="order-box_r f-r">
+                    <!-- 送餐信息 - start -->
+                    <div class="deliver-info-box">
+                        <h3 class="title-h">送餐信息</h3>
+                        <div class="address-located">
+                            <span class="addNewAddr-span f-r">+新增地址</span>
+                        </div>
+                    </div>
+                    <div class="address-list-box">
+                        <dl class="address-user_dl err-address">
+                            <dt class="address_name">郭鑫</dt>
+                            <dd class="address_phone">11111111111</dd>
+                            <dd class="address_txt">清华大学23</dd>
+                        </dl>
+                        <dl class="address-user_dl err-address">
+                            <dt class="address_name">郭鑫</dt>
+                            <dd class="address_phone">15102397367</dd>
+                            <dd class="address_txt">重庆理工大学花溪校区竹轩401</dd>
+                        </dl>
+
+                    </div>
+                    <div class="pay-type_box other-info-box clearfix">
+                        <span class="title f-l">支付方式:</span>
+                        <div class="f-l">
+                            <div class="pay-type_btn">
+                                <a class="a-btn active" href="javascript:void(0);">货到付款</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="invoice_box other-info-box clearfix">
+                        <span class="title f-l">餐具数量:</span>
+                        <div class="f-l">
+                            <div class="jiaobanbisa_standard">
+                                <img src="../dist/images/booking/small-cart-minus.png">
+                                <span class="product-num">0</span>
+                                <img src="../dist/images/booking/small-cart-plus.png">
+                                </div>
+                            <div class="f-r" style="display:inline-block">
+                                <a class="a-btn active" href="javascript:void(0);">不需要</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="user-note_box other-info-box clearfix">
+                        <span class="title f-l">备注信息:</span>
+                        <div class="f-l">
+                            <textarea maxlength="60" class="user-note_textarea" name="userNote_jiaobanbisa"
+                                      id="userNote_jiaobanbisa" data-duplex-event="change"></textarea>
+                        </div>
+                    </div>
+                    <div class="submit-btn_box">
+                        <div class="show-price-box1">
+                            <span>总额 : </span>
+                            <span>¥73.5</span>
+                        </div>
+                        <div class="show-btn-box1">
+                            <button class="submit-order_btn">确认下单</button>
+                            <button>返回点餐单</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+    <!-- main end -->
+</div>
+<!-- end start -->
+<div id="footer">
+    <div class="base-wrap">
+        <img src="../dist/images/navbg2.png" alt="">
+        <div class="link">
+            <a href="./agreement.html">法律声明 </a>
+            <a href="./privacyStatement.html">隐私政策 </a>
+        </div>
+    </div>
+</div>
+<!-- end end -->
+</body>
+<!-- jQuery 3 -->
+<script src="../bower_components/jquery/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="../bower_components/bootstrap/dist/bootstrap.min.js"></script>
+<script src="../dist/js/public.js"></script>
+<script src="../dist/js/home.js"></script>
+
+<script>
+    var cart = new Array();
+    $(function () {
+        $.ajax({
+            type: "GET",
+            url: "/" + userInfo.id + "/cart/list",
+            contentType: "application/json",
+            success: function (result) {
+                if (result.code === 200) {
+                    cart = result.data.products;
+                    flashCart();
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("未知错误");
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+            }
+        });
+
+    });
+
+
+    function addToCart(index, i) {
+        var product = categories[index].products[i];
+        var j = exitCart(product);
+        if (j >= 0) {
+            cart[j].num++;
+        } else {
+            product.num = 1;
+            cart.push(product);
+
+        }
+        flashCart();
+    }
+
+    function flashCart() {
+        $("#cartMenu").empty();
+        var totalPrice = 0;
+        for (var i = 0; i < cart.length; i++) {
+            totalPrice += cart[i].price * cart[i].num;
+            $("#cartMenu").append("<table class=\"tb-orders-el\" cellpadding=\"0\" cellspacing=\"0\">" +
+                "<tbody>" +
+                "<tr class=\"normal-con\">" +
+                "<td>" +
+                "</td>" +
+                "<td class=\"canpinList-title-td\" style=\"width: 380px;\">" + cart[i].name +
+                "</td>" +
+                "<td style=\"width: 80px;\">¥" + cart[i].price + "</td>" +
+                "<td style=\"width: 180px;\">" +
+                "<img src=\"../dist/images/booking/small-cart-minus.png\" onclick='deletcCartNum(" + i + ")'>" +
+                "<span class=\"current-price\">" + cart[i].num + "</span>" +
+                "<img src=\"../dist/images/booking/small-cart-plus.png\" onclick='addCartNum(" + i + ")'>" +
+                "</td>" +
+                "</tr>" +
+                "<tr class=\"detail-con\" style=\"display: none;\">" +
+                "<td class=\"tb-requirement\" colspan=\"5\">" +
+                "</td>" +
+                "</tr>" +
+                "</tbody>" +
+                "</table>")
+        }
+        $("#totalPrice").text("￥" + totalPrice);
+
+    }
+
+    function exitCart(product) {
+        for (var j = 0; j < cart.length; j++) {
+            if (cart[j].id === product.id) {
+                return j;
+            }
+        }
+        return -1;
+    }
+
+    function addCartNum(index) {
+        cart[index].num++;
+        settlement();
+    }
+
+    function deletcCartNum(index) {
+        var product = cart[index];
+        if (product.num > 1) {
+            product.num--;
+        } else {
+            cart.splice(index, 1);
+        }
+        settlement();
+    }
+
+    function settlement() {
+        var url = "/" + userInfo.id + "/cart/insert";
+        $.ajax({
+            type: "POST",
+            url: url,
+            async: false,
+            contentType: "application/json",
+            data: JSON.stringify(cart),
+            success: function (result) {
+                if (result.code === 200) {
+                    window.location.reload();
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("未知错误");
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+            }
+        });
+    }
+</script>
+
+</html>

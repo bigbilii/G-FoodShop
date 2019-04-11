@@ -1,6 +1,7 @@
 package me.guoxin.pojo;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class GfsProduct {
     private Long id;
@@ -84,5 +85,18 @@ public class GfsProduct {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GfsProduct)) return false;
+        GfsProduct that = (GfsProduct) o;
+        return Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

@@ -1,0 +1,320 @@
+<html lang="en">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>GFoodShop官方</title>
+<meta name="keywords" content="GFoodShop官方订餐外卖网站">
+<meta name="description" content="GFoodShop官方订餐外卖网站">
+
+
+<link href="../bower_components/bootstrap/dist/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../dist/css/common.css"/>
+<link rel="stylesheet" href="../dist/css/main.css"/>
+<link rel="stylesheet" href="../dist/css/booking.css"/>
+<link rel="stylesheet" href="../dist/css/index.css"/>
+
+<body class="" avalonctrl="root">
+<div id="rootLoading" class="loading-wrap" style="display: none;">
+    <div class="loading-icon"></div>
+</div>
+<div class="grid-box">
+    <!-- header部分 start -->
+    <div id="header" avalonctrl="header">
+        <div class="base-wrap">
+            <div class="header-1-lang clearfix">
+            </div>
+            <div class="header-2-logo clearfix">
+                <div class="box-logo f-l relative">
+                    <a class="brand-skip">
+                        <img class="barand-logo"
+                             src="http://51wm-pic1.oss-cn-hangzhou.aliyuncs.com/null9a9036af-3044-46c9-b33d-1337e5d1d24f.png">
+                    </a>
+                    <a href="./home.html" class="wm-skip">首页</a>
+                </div>
+                <div class="box-nav f-r">
+                    <div class="user-login-before" style="display: block">
+                        <a class="bold" href="./login.html">登录</a>
+                        <a class="bold" href="./register.html">注册</a>
+                    </div>
+                    <div class="user-login" style="display: none">
+                        <a class="bold">Hi!!&nbsp;&nbsp;&nbsp;<span id="username"></span></a>
+                        <ul class="overlist">
+                            <li><a href="./userCenter.html">个人中心</a></li>
+                            <li><a href="/user/logout;">退出登录</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- header部分 end -->
+
+    <!-- main start -->
+    <div id="main">
+        <div id="mainLoading" class="loading-wrap" style="display: none;">
+            <div class="loading-icon"></div>
+        </div>
+        <!--ms-view:main-->
+        <div ui-view="main" data-current-cache="false">
+            <div class="base-wrap order-wrap clearfix" avalonctrl="order-view">
+                <div class="order-box_l f-l">
+                    <div class="takeout-orders relative takeout-orders-orderpage1">
+                        <!-- 餐品列表 start -->
+                        <div class="orders-box">
+                            <div class="title">
+                                <h3 class="f-l">餐&nbsp;&nbsp;&nbsp;品&nbsp;&nbsp;&nbsp;信&nbsp;&nbsp;&nbsp;息</h3>
+                            </div>
+                            <ul class="orders-tab">
+                                <li class="canpinList-title" style="width: 365px;">餐品</li>
+                                <li style="width: 192px;">金额</li>
+                                <li style="width: 100px;">份数</li>
+                            </ul>
+                            <div class="order-list clearfix">
+                                <div id="cartMenu">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div>
+
+                        <div class="clearfix dk-fee-box-order">
+                            <p class="fee1" avalonctrl="cart">
+                                <span>小计</span>
+                                <em id="totalPrice">¥</em>
+                            </p>
+                            <div class="all-kind-of-feebox">
+                                <p>
+                                    <span>+外送费 : </span>
+                                    <em>¥8</em>
+                                </p>
+                                <p>
+                                    <span>+餐盒费</span>
+                                    <em>¥2.0</em>
+                                </p>
+                            </div>
+                            <div class="fee3">
+                                <p><a href="./home.html">继续选购</a></p>
+                                <p>去结算</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="dk-recom-box">
+                    <p>为您推荐</p>
+                    <div class="dk-rem-main">
+                        <div class="product-box-rem">
+                            <div class="product-img">
+                                <img src="http://51wm-pic1.oss-cn-hangzhou.aliyuncs.com/product/c2096979-2cf3-47cf-9537-a8ccd3e87bc1.png">
+                            </div>
+                            <div style="overflow: hidden;padding:10px;">
+                                <div class="product-name-rem" title="玫瑰果子">
+                                    玫瑰果子
+                                </div>
+                                <div class="detail">
+                                </div>
+                            </div>
+                            <div avalonctrl="cart">
+                                <span style="position: relative;">
+
+			        	</span><span style="position: relative;">
+			        	</span>
+                            </div>
+                            <div class="product-price-rem">¥8</div>
+
+                            <div class="product-change relative">
+                                <div>
+                                    <button class="product-opr single-chose0">+</button>
+                                </div>
+                            </div>
+                            <div class="product-btn relative">
+
+                            </div>
+                        </div>
+                        <div class="product-box-rem">
+                            <div class="product-img">
+                                <img src="http://51wm-pic1.oss-cn-hangzhou.aliyuncs.com/product/6cb9dc18-a51f-4300-9a68-bd560247c3b0.png">
+                            </div>
+                            <div style="overflow: hidden;padding:10px;">
+                                <div class="product-name-rem" title="西柚果子">
+                                    西柚果子
+                                </div>
+                                <div class="detail">
+                                </div>
+                            </div>
+                            <div avalonctrl="cart">
+                                <span style="position: relative;">
+
+			        	</span><span style="position: relative;">
+			        	</span>
+                            </div>
+                            <div class="product-price-rem">
+                                ¥8
+                            </div>
+                            <div class="product-change relative">
+                                <div>
+                                    <button class="product-opr single-chose0">+</button>
+                                </div>
+                            </div>
+                            <div class="product-btn relative">
+                            </div>
+                        </div>
+                    </div>
+                    <button class="togetmore-btn">更多</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- main end -->
+</div>
+<!-- end start -->
+<div id="footer">
+    <div class="base-wrap">
+        <img src="../dist/images/navbg2.png" alt="">
+        <div class="link">
+            <a href="./agreement.html">法律声明 </a>
+            <a href="./privacyStatement.html">隐私政策 </a>
+        </div>
+    </div>
+</div>
+<!-- end end -->
+</body>
+<!-- jQuery 3 -->
+<script src="../bower_components/jquery/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="../bower_components/bootstrap/dist/bootstrap.min.js"></script>
+<script src="../dist/js/public.js"></script>
+<script src="../dist/js/home.js"></script>
+
+<script>
+    var cart = new Array();
+    $(function () {
+        $.ajax({
+            type: "GET",
+            url: "/" + userInfo.id + "/cart/list",
+            contentType: "application/json",
+            success: function (result) {
+                if (result.code === 200) {
+                    cart = result.data.products;
+                    flashCart();
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("未知错误");
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+            }
+        });
+
+    });
+
+
+    function addToCart(index, i) {
+        var product = categories[index].products[i];
+        var j = exitCart(product);
+        if (j >= 0) {
+            cart[j].num++;
+        } else {
+            product.num = 1;
+            cart.push(product);
+
+        }
+        flashCart();
+    }
+
+    function flashCart() {
+        $("#cartMenu").empty();
+        var totalPrice = 0;
+        for (var i = 0; i < cart.length; i++) {
+            totalPrice += cart[i].price * cart[i].num;
+            $("#cartMenu").append("<table class=\"tb-orders-el\" cellpadding=\"0\" cellspacing=\"0\">" +
+                "<tbody>" +
+                "<tr class=\"normal-con\">" +
+                "<td>" +
+                "</td>" +
+                "<td class=\"canpinList-title-td\" style=\"width: 380px;\">" + cart[i].name +
+                "</td>" +
+                "<td style=\"width: 80px;\">¥" + cart[i].price + "</td>" +
+                "<td style=\"width: 180px;\">" +
+                "<img src=\"../dist/images/booking/small-cart-minus.png\" onclick='deletcCartNum(" + i + ")'>" +
+                "<span class=\"current-price\">" + cart[i].num + "</span>" +
+                "<img src=\"../dist/images/booking/small-cart-plus.png\" onclick='addCartNum(" + i + ")'>" +
+                "</td>" +
+                "</tr>" +
+                "<tr class=\"detail-con\" style=\"display: none;\">" +
+                "<td class=\"tb-requirement\" colspan=\"5\">" +
+                "</td>" +
+                "</tr>" +
+                "</tbody>" +
+                "</table>")
+        }
+        $("#totalPrice").text("￥" + totalPrice);
+
+    }
+
+    function exitCart(product) {
+        for (var j = 0; j < cart.length; j++) {
+            if (cart[j].id === product.id) {
+                return j;
+            }
+        }
+        return -1;
+    }
+
+    function addCartNum(index) {
+        cart[index].num++;
+        settlement();
+    }
+
+    function deletcCartNum(index) {
+        var product = cart[index];
+        if (product.num > 1) {
+            product.num--;
+        } else {
+            cart.splice(index, 1);
+        }
+        settlement();
+    }
+
+    function settlement() {
+        var url = "/" + userInfo.id + "/cart/insert";
+        $.ajax({
+            type: "POST",
+            url: url,
+            async: false,
+            contentType: "application/json",
+            data: JSON.stringify(cart),
+            success: function (result) {
+                if (result.code === 200) {
+                    window.location.reload();
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("未知错误");
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+            }
+        });
+    }
+</script>
+
+</html>

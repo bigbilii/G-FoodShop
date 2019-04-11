@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="me.guoxin.manager.mapper.CartMapper">
+
+    <resultMap id="BaseResultMap" type="me.guoxin.pojo.GfsCart">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <association property="user" javaType="me.guoxin.pojo.GfsUser">
+            <id column="u_id" jdbcType="BIGINT" property="id"/>
+            <result column="u_username" jdbcType="VARCHAR" property="username"/>
+            <result column="u_phone" jdbcType="VARCHAR" property="phone"/>
+            <result column="u_password" jdbcType="VARCHAR" property="password"/>
+            <result column="u_salt" jdbcType="VARCHAR" property="salt"/>
+            <result column="u_create_time" jdbcType="TIMESTAMP" property="createTime"/>
+            <result column="u_last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime"/>
+            <result column="u_status" jdbcType="INTEGER" property="status"/>
+            <result column="u_sex" jdbcType="VARCHAR" property="sex"/>
+            <result column="u_description" jdbcType="VARCHAR" property="description"/>
+            <association column="u_id" property="role" javaType="me.guoxin.pojo.GfsRole" select="me.guoxin.manager.mapper.RoleMapper.getRolesByUserId">
+            </association>
+        </association>
+        <collection property="products" ofType="me.guoxin.pojo.GfsProductCart">
+            <id column="p_id" jdbcType="BIGINT" property="id"/>
+            <result column="p_name" jdbcType="VARCHAR" property="name"/>
+            <result column="p_price" jdbcType="DECIMAL" property="price"/>
+            <result column="p_description" jdbcType="VARCHAR" property="description"/>
+            <result column="p_image" jdbcType="VARCHAR" property="image"/>
+            <result column="p_status" jdbcType="INTEGER" property="status"/>
+            <result column="p_num" jdbcType="INTEGER" property="num"/>
+            <result column="p_create_time" jdbcType="TIMESTAMP" property="createTime"/>
+            <result column="p_update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        c.id, c.status, c.create_time, c.update_time, u.id as u_id, u.username as u_username, u.phone as u_phone, u.password as u_password, u.salt as u_salt, u.create_time as u_create_time, u.last_login_time as u_last_login_time, u.status as u_status, u.role_id as u_role_id, u.sex as u_sex, u.description as u_description,p.id as p_id, p.name as p_name, p.price as p_price, p.description as p_description,p.image as p_image,p.status as p_status,p.create_time as p_create_time,p.update_time as p_update_time,cp.num as p_num
+    </sql>
+
+    <insert id="insertCart" parameterType="me.guoxin.pojo.GfsCart" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO gfs_cart(id, user_id,status,create_time,update_time) VALUES (#{id},#{user.id},#{status},#{createTime},#{updateTime})
+    </insert>
+
+    <insert id="insertCartProduct" parameterType="java.util.List">
+        INSERT INTO gfs_cart_product(id, cart_id,product_id,num) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.myId} ,#{item.cart.id},#{item.id},#{item.num})
+        </foreach>
+    </insert>
+
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        gfs_cart c
+        LEFT JOIN  gfs_user u ON c.user_id = u.id
+        LEFT JOIN  gfs_cart_product cp ON c.id = cp.cart_id
+        LEFT JOIN  gfs_product p ON cp.product_id = p.id
+        WHERE c.user_id = #{id}
+    </select>
+
+    <delete id="deleteCartProduct" parameterType="java.lang.Long">
+        DELETE from gfs_cart_product where cart_id = #{id}
+    </delete>
+
+</mapper>

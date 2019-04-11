@@ -10,6 +10,7 @@
 <link href="../bower_components/bootstrap/dist/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="../dist/css/common.css"/>
 <link rel="stylesheet" href="../dist/css/main.css"/>
+<link rel="stylesheet" href="../dist/css/booking.css"/>
 <link rel="stylesheet" href="../dist/css/index.css"/>
 
 <body class="" avalonctrl="root">
@@ -95,10 +96,24 @@
                     </div>
                 </div>
                 <!-- 首页右侧登录框 -->
-                <div class="indexLoginWrap">
-                    <!-- 未登录状态 -->
-                    <div class="" avalonctrl="login">
-                        <h3>欢迎来到吉野家</h3>
+                <div class="indexCartWrap">
+                    <div class="">
+                        <h3>外卖篮子</h3>
+                    </div>
+                    <div class="cart" id="cart">
+                        <div class="cart-menu" id="cartMenu">
+                        </div>
+
+                        <div class="gotocheckout">
+                            <div class="cart-total">
+			                <span class="icon-cart-bg">
+                                <span class="cartCount" id="totalNumber">0</span>
+                                <img src="../dist/images/booking/newcart.png" style="cursor: pointer;">
+                            </span>
+                                <span class="total-price-txt" id="totalPrice">¥0</span>
+                            </div>
+                            <button type="button" class="cart-submit" onclick="settlement()">结　算</button>
+                        </div>
                     </div>
                 </div>
                 <!-- 底部按钮 -->
@@ -140,7 +155,6 @@
         $.ajax({
             type: "GET",
             url: "/homeFood/list",
-            async: false,
             contentType: "application/json",
             success: function (result) {
                 if (result.code === 200) {
@@ -172,6 +186,33 @@
             $(".user-login").css("display", "block");
             $("#username").text(userInfo.username);
         }
+
+        $.ajax({
+            type: "GET",
+            url: "/" + userInfo.id + "/cart/list",
+            contentType: "application/json",
+            success: function (result) {
+                if (result.code === 200) {
+                    cart = result.data.products;
+                    flashCart();
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("未知错误");
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+            }
+        });
+
     });
 
     function makeCategoriesList(data) {
@@ -191,7 +232,7 @@
         menu.append("<div id=\"products-box\">");
         var products = categories[index].products;
         for (var i = 0; i < products.length; i++) {
-            menu.append("<div class=\"product-box\">\n" +
+            menu.append("<div class=\"product-box\">" +
                 "<div class=\"product-img\">" +
                 "<img src=\"http://51wm-pic1.oss-cn-hangzhou.aliyuncs.com/product/22169ee2-7eff-4164-b2f1-4f18abb4ae46.png\">" +
                 "</div>" +
@@ -201,13 +242,106 @@
                 "<div class=\"product-price\">" +
                 "￥<span>" + products[i].price + "</span>" +
                 "</div>" +
-                "<a href=\"javascript:void(0)\" class=\"orderNow\">立即订餐</a>" +
+                "<a href=\"javascript:void(0)\" class=\"orderNow\" onclick='addToCart(" + index + "," + i + ")'>立即订餐</a>" +
                 "</div>" +
                 "</div>")
         }
         menu.append("</div>");
     }
 
+    var cart = new Array();
+
+    function addToCart(index, i) {
+        var product = categories[index].products[i];
+        var j = exitCart(product);
+        if (j >= 0) {
+            cart[j].num++;
+        } else {
+            product.num = 1;
+            cart.push(product);
+
+        }
+        flashCart();
+    }
+
+    function flashCart() {
+        $("#cartMenu").empty();
+        var totalPrice = 0;
+        var totalNumber = 0;
+        for (var i = 0; i < cart.length; i++) {
+            totalNumber += cart[i].num;
+            totalPrice += cart[i].price * cart[i].num;
+            $("#cartMenu").append("<div class=\"cart-info\">" +
+                "<div class=\"cart-name\">" + cart[i].name + "</div>" +
+                "<div class=\"cart-price\">¥" + cart[i].price + "</div>" +
+                "<div class=\"cart-change\">" +
+                "<img src=\"../dist/images/booking/small-cart-minus.png\" class=\"cart-opr\" onclick='deletcCartNum(" + i + ")'>" +
+                "<span class=\"product-num\">" + cart[i].num + "</span>" +
+                "<img src=\"../dist/images/booking/small-cart-plus.png\" class=\"cart-opr\" onclick='addCartNum(" + i + ")'>" +
+                "</div>" +
+                "</div>")
+        }
+        $("#totalNumber").text(totalNumber);
+        $("#totalPrice").text("￥" + totalPrice);
+
+    }
+
+    function exitCart(product) {
+        for (var j = 0; j < cart.length; j++) {
+            if (cart[j].id === product.id) {
+                return j;
+            }
+        }
+        return -1;
+    }
+
+    function addCartNum(index) {
+        cart[index].num++;
+        flashCart()
+    }
+
+    function deletcCartNum(index) {
+        var product = cart[index];
+        if (product.num > 1) {
+            product.num--;
+        } else {
+            cart.splice(index, 1);
+        }
+        flashCart()
+    }
+
+    function settlement() {
+        if (userInfo === null) {
+            $(location).prop('href', './login.html');
+        }
+        var url = "/" + userInfo.id + "/cart/insert";
+        $.ajax({
+            type: "POST",
+            url: url,
+            async: false,
+            contentType: "application/json",
+            data: JSON.stringify(cart),
+            success: function (result) {
+                if (result.code === 200) {
+                    $(location).prop('href', './booking.html');
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("未知错误");
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+            }
+        });
+    }
 </script>
 
 </html>

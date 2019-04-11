@@ -369,6 +369,7 @@
         $.ajax({
             type: "GET",
             url: url,
+            async: false,
             contentType: "application/json",
             success: function (result) {
                 if (result.code === 200) {

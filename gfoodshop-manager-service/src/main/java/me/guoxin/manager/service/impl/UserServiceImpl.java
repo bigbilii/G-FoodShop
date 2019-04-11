@@ -76,6 +76,17 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+    public boolean hasUserByid(Long id) {
+        List<GfsUser> list = new ArrayList<>();
+        list = userMapper.selectById(id);
+        for (GfsUser user : list) {
+            if (!user.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public Set<String> getRolesByUserPhone(String userPhone) {
         return userMapper.getRolesByUserPhone(userPhone);

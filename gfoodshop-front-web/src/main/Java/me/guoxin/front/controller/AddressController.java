@@ -27,6 +27,7 @@ public class AddressController {
         List<GfsAddress> list = addressService.selectByUserId(id);
         return new ResultUtil<>().setData(list);
     }
+
     @DeleteMapping(value = "/address/{id}/delete")
     public Result delete(@PathVariable("id") Long id) {
         addressService.deleteById(id);
