@@ -7,6 +7,7 @@
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
 <link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css"/>
 <link href="../bower_components/bootstrap/dist/bootstrap.min.css" rel="stylesheet">
+<link href="../bower_components/datatables.net-bs/dataTables.bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="../dist/css/common.css"/>
 <link rel="stylesheet" href="../dist/css/main.css"/>
 <link rel="stylesheet" href="../dist/css/index.css"/>
@@ -90,7 +91,7 @@
                             <a href="#addressList" data-toggle="tab" onclick="addressList()">我的送餐地址</a>
                         </li>
                         <li>
-                            <a href="#order" data-toggle="tab" onclick="">我的订单</a>
+                            <a href="#order" data-toggle="tab" onclick="addOrderList()">我的订单</a>
                         </li>
                         <li>
                             <a href="#password" data-toggle="tab">修改密码</a>
@@ -99,7 +100,7 @@
                 </div>
                 <!-- 左侧 end -->
                 <!-- 右侧 start -->
-                <div id="userCenterMain" class="user-right co-494949 userInfo-wrap" avalonctrl="user-info">
+                <div id="userCenterMain" class="user-right co-494949 userInfo-wrap">
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="userInfo">
                             <div class="form-userInfo">
@@ -119,7 +120,19 @@
                                 </div>
                             </div>
                         </div>
-                        <div role="tabpanel" class="tab-pane" id="order">订单信息</div>
+                        <div role="tabpanel" class="tab-pane" id="order">
+                            <table id="orderTable" class="table table-bordered table-striped" style="width: 100%">
+                                <thead>
+                                <tr>
+                                    <th>餐厅</th>
+                                    <th>订单号</th>
+                                    <th>状态</th>
+                                    <th>金额</th>
+                                    <th>下单时间</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
                         <div role="tabpanel" class="tab-pane" id="addressList">
                             <div class="addresses-box">
                                 <ul class="addresses-ul clearfix" id="addr-box">
@@ -177,7 +190,7 @@
             </div>
             <div class="modal-body" style="padding: 0">
                 <div data-include-rendered="rendered" data-include-loaded="loaded">
-                    <div class="address-wrap" avalonctrl="address">
+                    <div class="address-wrap" >
                         <div class="inputBox">
                             <span class="map-span">姓名 :</span>
                             <input type="text" name="receiverName" data-duplex-event="change" placeholder="请输入您的姓名"
@@ -211,10 +224,14 @@
 </body>
 <script src="https://webapi.amap.com/maps?v=1.4.14&key=	9440df7c20021787f82fee47fcae58c2&plugin=AMap.Autocomplete,AMap.PlaceSearch"></script>
 <script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+
 <!-- jQuery 3 -->
 <script src="../bower_components/jquery/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="../bower_components/bootstrap/dist/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="../bower_components/datatables.net/jquery.dataTables.min.js"></script>
+<script src="../bower_components/datatables.net-bs/dataTables.bootstrap.min.js"></script>
 <script src="../dist/js/public.js"></script>
 <script src="../dist/js/home.js"></script>
 <script>
@@ -238,6 +255,7 @@
         selectAddress = e.poi;
     }
 
+    var table;
     $(document).ready(function () {
         $("#tab").tab('show');
 
@@ -245,6 +263,68 @@
         $("#phone").text(userInfo.phone);
         $("#sex").text(userInfo.sex);
         $("#creatTime").text(userInfo.createTime);
+
+
+        var tableurl = "/" + userInfo.id + "/order/select";
+        table = $('#orderTable').DataTable({
+            "searching": false,// 关闭自带搜索
+            "bLengthChange": false,// 关闭自带分页选项
+            "ordering": false,// 关闭排序
+            "serverSide": true,// 这个用来指明是通过服务端来取数据
+            "processing": true, // 打开数据加载时的等待效果
+            "oLanguage": {
+                "sLengthMenu": "每页显示 _Menu_条记录",
+                "sInfo": "当前显示_START_到_END_条,共_TOTAL_条记录",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sZeroRecords": "对不起,查询不到相关的数据",
+                "sInfoFiltered": "",//"(从 _MAX_ 条记录过滤)"此项为显示过滤信息
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上一页",
+                    "sNext": "下一页",
+                    "sLast": "尾页"
+                },
+                "sSearch": "查找"
+            },
+            "ajax": {
+                "url": tableurl,
+                "type": "GET",
+                "data": function (d) {
+                    return {"tbData": JSON.stringify(d)};
+                },
+                "dataSrc": function (json) {
+                    json.iTotalDisplayRecords = json.data.iTotalDisplayRecords;
+                    json.iTotalRecords = json.data.iTotalRecords;
+                    return json.data.data;
+                },
+                error: function (result) {
+                    var resultMsg = result.responseJSON;
+                    if (isEmptyResult(resultMsg)) {
+                        alert("未知错误");
+                    } else {
+                        alert(resultMsg.message);
+                    }
+                }
+            },
+            "columns": [
+                {"data": "store.address"},
+                {"data": "id"},
+                { "data": function (data, type, full) {
+                        if (data.status === 1) {
+                            return "<small class=\"label label-success\">以下单</small>";
+                        }
+                        if (data.status === 2) {
+                            return "<small class=\"label label-success\">商家已接单</small>";
+                        }
+                        if (data.status === 3) {
+                            return "<small class=\"label label-success\">正在配送</small>";
+                        }
+                        return "<small class=\"label label-success\">已完成</small>";
+                    }},
+                {"data": "allPrice"},
+                {"data": "createTime"}
+            ]
+        });
     });
 
     function changePassword() {
@@ -299,6 +379,8 @@
             }
         })
     }
+
+
 
     function saveAddressInfo() {
         var name = $("#receiverName").val().trim();
@@ -448,6 +530,10 @@
                 }
             }
         })
+    }
+
+    function addOrderList() {
+        table.ajax.reload();
     }
 </script>
 

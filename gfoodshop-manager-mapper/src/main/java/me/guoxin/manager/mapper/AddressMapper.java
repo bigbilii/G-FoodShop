@@ -10,5 +10,9 @@ public interface AddressMapper {
 
     List<GfsAddress> selectByUserId(@Param("id")Long id);
 
+    List<GfsAddress> selectById(@Param("id")Long id);
+
     void delete(Long id);
+
+    void setUserIdNull(Long id);
 }

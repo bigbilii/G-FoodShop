@@ -33,8 +33,11 @@ public class DataTableUtil {
         page.setLength(length);
         // 获取排序字段
         List orderDatas = (JSONArray) data.get("order");
-        JSONObject orderData = (JSONObject) orderDatas.get(0);
-        Order order = orderData.toJavaObject(Order.class);
+        Order order = null;
+        if (orderDatas != null && orderDatas.size() > 0) {
+            JSONObject orderData = (JSONObject) orderDatas.get(0);
+            order = orderData.toJavaObject(Order.class);
+        }
 
         dataTableDTO.setSearch(search);
         dataTableDTO.setPage(page);

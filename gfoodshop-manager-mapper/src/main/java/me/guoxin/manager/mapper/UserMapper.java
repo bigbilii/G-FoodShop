@@ -18,7 +18,7 @@ public interface UserMapper {
 
     List<GfsUser> selectByPhone(@Param("userPhone")String userPhone);
 
-    List<GfsUser> selectById(Long id);
+    List<GfsUser> selectById(@Param("id")Long id);
 
     Set<String> getRolesByUserPhone(@Param("userPhone")String userPhone);
 

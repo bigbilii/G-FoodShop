@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="me.guoxin.manager.mapper.OrderMapper">
+
+    <resultMap id="BaseResultMap" type="me.guoxin.pojo.GfsOrder">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="box_price" jdbcType="DOUBLE" property="boxPrice"/>
+        <result column="all_price" jdbcType="DOUBLE" property="allPrice"/>
+        <result column="delivery_price" jdbcType="DOUBLE" property="deliveryPrice"/>
+        <result column="tablewareNum" jdbcType="INTEGER" property="tablewareNum"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="send_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="arrive_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <association column="user_id" property="user" javaType="me.guoxin.pojo.GfsUser" select="me.guoxin.manager.mapper.UserMapper.selectById"/>
+        <association column="address_id" property="address" javaType="me.guoxin.pojo.GfsAddress" select="me.guoxin.manager.mapper.AddressMapper.selectById"/>
+        <association column="store_id" property="store" javaType="me.guoxin.pojo.GfsStore" select="me.guoxin.manager.mapper.StoreMapper.selectById"/>
+        <collection property="productOrders" ofType="me.guoxin.pojo.GfsProductOrder">
+            <id column="p_id" jdbcType="BIGINT" property="id"/>
+            <result column="p_name" jdbcType="VARCHAR" property="name"/>
+            <result column="p_price" jdbcType="DECIMAL" property="price"/>
+            <result column="p_description" jdbcType="VARCHAR" property="description"/>
+            <result column="p_image" jdbcType="VARCHAR" property="image"/>
+            <result column="p_status" jdbcType="INTEGER" property="status"/>
+            <result column="p_num" jdbcType="INTEGER" property="num"/>
+            <result column="p_create_time" jdbcType="TIMESTAMP" property="createTime"/>
+            <result column="p_update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        o.id,o.user_id,o.store_id,o.address_id,o.box_price, o.all_price, o.delivery_price, o.tablewareNum, o.status, o.description, o.type, o.create_time, o.send_time, o.arrive_time, p.id as p_id, p.name as p_name, p.price as p_price, p.description as p_description,p.image as p_image,p.status as p_status,p.create_time as p_create_time,p.update_time as p_update_time,op.num as p_num
+    </sql>
+
+    <sql id="Base_Column_List_Without_Product">
+        o.id,o.user_id,o.store_id,o.address_id,o.box_price, o.all_price, o.delivery_price, o.tablewareNum, o.status, o.description, o.type, o.create_time, o.send_time, o.arrive_time
+    </sql>
+
+    <insert id="insertOrder" parameterType="me.guoxin.pojo.GfsOrder" useGeneratedKeys="true" keyProperty="id"
+            keyColumn="id">
+        INSERT INTO gfs_order(id, user_id,all_price,box_price,delivery_price,tablewareNum,address_id,store_id,status,type,description,create_time,send_time,arrive_time) VALUES (#{id},#{user.id},#{allPrice},#{boxPrice},#{deliveryPrice},#{tablewareNum},#{address.id},#{store.id},#{status},#{type},#{description},#{createTime},#{sendTime},#{arriveTime})
+    </insert>
+
+    <insert id="insertOrderProduct" parameterType="java.util.List">
+        INSERT INTO gfs_order_product(id, order_id,product_id,num) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.myId} ,#{item.order.id},#{item.id},#{item.num})
+        </foreach>
+    </insert>
+
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gfs_order o
+        LEFT JOIN gfs_order_product op ON op.order_id = o.id
+        left join gfs_product p on op.product_id = p.id
+        where o.user_id = #{id}
+    </select>
+
+    <select id="selectByUserIdWithoutProduct" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List_Without_Product"/>
+        FROM gfs_order o
+        where o.user_id = #{id}
+    </select>
+
+
+</mapper>

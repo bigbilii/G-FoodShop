@@ -11,4 +11,6 @@ public interface AddressService {
     List<GfsAddress> selectByUserId(Long id);
 
     void deleteById(Long id);
+
+    void deleteByUserId(Long id);
 }

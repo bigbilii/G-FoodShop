@@ -11,14 +11,14 @@
 .uesr-left {
     float: left;
     width: 1100px;
-    min-height: 750px;
+    min-height: 930px;
     box-sizing: border-box;
 }
 
 .user-right {
     float: left;
     width: 1107px;
-    height: 760px;
+    height: 930px;
     box-sizing: border-box;
     overflow-y: auto;
     overflow-x: hidden;

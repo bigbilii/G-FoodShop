@@ -83,4 +83,9 @@ public class AddressServiceImpl implements AddressService {
     public void deleteById(Long id) {
         addressMapper.delete(id);
     }
+
+    @Override
+    public void deleteByUserId(Long id) {
+        addressMapper.setUserIdNull(id);
+    }
 }

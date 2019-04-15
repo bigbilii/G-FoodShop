@@ -178,7 +178,7 @@
     margin-left: 286px;
     /* min-height: 800px; */
     /* margin-bottom:60px; */
-    /* border-left: 3px solid #ef7f1c; */
+    /* border-left: 3px solid #99CCFF; */
 }
 
 .takeout-orders-orderpage1 {
@@ -215,7 +215,7 @@
 .orders-box .title h3 {
     width: 100%;
     height: 40px;
-    background: #ef7f1c;
+    background: #99CCFF;
     text-align: center;
     line-height: 40px;
     color: white;
@@ -264,7 +264,7 @@
 .orders-box .title h3 {
     width: 100%;
     height: 40px;
-    background: #ef7f1c;
+    background: #99CCFF;
     text-align: center;
     line-height: 40px;
     color: white;
@@ -374,19 +374,19 @@
     line-height: 68px;
     text-align: center;
     font-size: 18px;
-    color: #ef7f1c;
+    color: #99CCFF;
     cursor: pointer;
 }
 
 .fee3 p:first-of-type {
-    border-right: 2px solid #ef7f1c;
+    border-right: 2px solid #99CCFF;
     color: gray;
 }
 
 .orders-box .title h3 {
     width: 100%;
     height: 40px;
-    background: #ef7f1c;
+    background: #99CCFF;
     text-align: center;
     line-height: 40px;
     color: white;
@@ -440,7 +440,7 @@
 }
 
 .taocan-detail {
-    background: #ef7f1c;
+    background: #99CCFF;
     margin-left: 15px;
     color: white !important;
 }
@@ -476,7 +476,7 @@
     /* overflow-y: auto; */
     overflow-x: hidden;
     margin-bottom: 60px;
-    border-right: 3px solid #ef7f1c;
+    border-right: 3px solid #99CCFF;
     padding-right: 15px;
 }
 
@@ -521,7 +521,7 @@
 }
 
 .chose-other-time {
-    background: #ef7f1c;
+    background: #99CCFF;
     font-size: 18px;
     color: white;
     border: none;
@@ -579,7 +579,7 @@
 }
 
 .submit-btn_box .show-btn-box1 button:first-of-type {
-    background: #ef7f1c;
+    background: #99CCFF;
 }
 
 .submit-btn_box .show-btn-box1 button:last-of-type {
@@ -682,7 +682,7 @@ label input[type="radio"]:checked + span {
     width: 252px;
     height: 40px;
     line-height: 40px;
-    background: #ef7f1c;
+    background: #99CCFF;
     color: white;
     font-size: 23px;
     text-align: center;
@@ -742,7 +742,7 @@ label input[type="radio"]:checked + span {
 .togetmore-btn {
     width: 200px;
     height: 32px;
-    background: #ef7f1c;
+    background: #99CCFF;
     color: white;
     line-height: 30px;
     text-align: center;
@@ -753,7 +753,7 @@ label input[type="radio"]:checked + span {
 }
 
 .single-chose0 {
-    background: #ef7f1c;
+    background: #99CCFF;
     width: 30px;
     height: 30px;
     background: black;
@@ -770,7 +770,7 @@ label input[type="radio"]:checked + span {
     width: 90px;
     height: 30px !important;
     line-height: 30px;
-    background: #ef7f1c !important;
+    background: #99CCFF !important;
     text-align: center;
     border: none;
     color: white !important;
@@ -793,7 +793,7 @@ label input[type="radio"]:checked + span {
 }
 
 .single-chose0 {
-    background: #ef7f1c;
+    background: #99CCFF;
     width: 30px;
     height: 30px;
     background: black;
@@ -831,8 +831,8 @@ label input[type="radio"]:checked + span {
 
 .fees-box {
     font-weight: bold;
-    border-top: 2px solid #ef7f1c;
-    border-bottom: 2px solid #ef7f1c;
+    border-top: 2px solid #99CCFF;
+    border-bottom: 2px solid #99CCFF;
     width: 642px;
     margin-left: 50px;
 }
@@ -840,7 +840,7 @@ label input[type="radio"]:checked + span {
 .fees-box p em {
     font-size: 20px;
     font-style: normal;
-    color: #ff8b00;
+    color: #99CCFF;
     float: right;
     margin-right: 50px;
 }
@@ -851,7 +851,7 @@ label input[type="radio"]:checked + span {
 }
 
 .fees-box p:first-child {
-    border-bottom: 2px solid #ef7f1c;
+    border-bottom: 2px solid #99CCFFon;
 }
 
 .coupon_l,
@@ -941,14 +941,9 @@ label input[type="radio"]:checked + span {
 
 .addNewAddr-span {
     padding-bottom: 7px;
-    color: #ff8b00;
+    color: #99CCFF;
     margin-right: 14px;
     cursor: pointer;
-}
-
-.err-address {
-    /* @meta {"spritesheet":{"include":false}} */
-    background: url(../images/booking/err-addr.png) no-repeat 370px 20px;
 }
 
 .other-info-box {
@@ -977,8 +972,8 @@ label input[type="radio"]:checked + span {
 
 .a-btn.active,
 .a-btn.hover {
-    border: 1px solid #ff8a00 !important;
-    color: #ff8a00;
+    border: 1px solid #99CCFF !important;
+    color: #99CCFF;
 }
 
 .jiaobanbisa_standard {
@@ -1010,7 +1005,7 @@ label input[type="radio"]:checked + span {
 }
 
 .jiaobanbisa_standard span.product-num {
-    color: #ff8a00;
+    color: #99CCFF;
     background-color: #f4f3f3;
     border: 1px solid #e1e1e1;
 }

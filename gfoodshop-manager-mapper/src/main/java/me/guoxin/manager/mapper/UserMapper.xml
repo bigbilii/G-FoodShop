@@ -14,16 +14,12 @@
         <result column="status" jdbcType="INTEGER" property="status"/>
         <result column="sex" jdbcType="VARCHAR" property="sex"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
-        <association property="role" javaType="me.guoxin.pojo.GfsRole">
-            <id column="r_id" jdbcType="INTEGER" property="id"/>
-            <result column="r_name" jdbcType="VARCHAR" property="name"/>
-            <result column="r_description" jdbcType="VARCHAR" property="description"/>
-        </association>
+        <association column="id" property="role" javaType="me.guoxin.pojo.GfsRole" select="me.guoxin.manager.mapper.RoleMapper.getRolesByUserId"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         u.id, u.username, u.phone, u.password, u.salt, u.create_time,
-u.last_login_time, u.status, u.role_id, u.sex, u.description, r.id as r_id, r.name as r_name, r.description as r_description
+u.last_login_time, u.status, u.role_id, u.sex, u.description
     </sql>
 
     <select id="selectByPhone" parameterType="String" resultMap="BaseResultMap">

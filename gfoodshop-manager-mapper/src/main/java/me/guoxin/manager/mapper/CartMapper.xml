@@ -66,4 +66,8 @@
         DELETE from gfs_cart_product where cart_id = #{id}
     </delete>
 
+    <delete id="deleteCartProductByUserId" parameterType="java.lang.Long">
+        DELETE  from gfs_cart_product WHERE cart_id in (select cart_id from gfs_cart where user_id = #{id})
+    </delete>
+
 </mapper>

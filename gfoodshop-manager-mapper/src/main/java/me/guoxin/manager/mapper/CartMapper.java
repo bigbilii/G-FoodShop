@@ -15,4 +15,6 @@ public interface CartMapper {
     Long insertCart(GfsCart gfsCart);
 
     void deleteCartProduct(@Param("id")Long id);
+
+    void deleteCartProductByUserId(@Param("id")Long id);
 }

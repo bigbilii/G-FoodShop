@@ -17,6 +17,13 @@
         where c.name = #{cityName}
     </select>
 
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gfs_city c
+        where c.id = #{id}
+    </select>
+
     <select id="selectCityByAddressId" resultMap="BaseResultMap" parameterType="INTEGER">
         SELECT
         <include refid="Base_Column_List"/>

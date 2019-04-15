@@ -14,30 +14,13 @@
         <result column="latitude" jdbcType="DOUBLE" property="latitude"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <association property="user" javaType="me.guoxin.pojo.GfsUser">
-            <id column="u_id" jdbcType="BIGINT" property="id"/>
-            <result column="u_username" jdbcType="VARCHAR" property="username"/>
-            <result column="u_phone" jdbcType="VARCHAR" property="phone"/>
-            <result column="u_password" jdbcType="VARCHAR" property="password"/>
-            <result column="u_salt" jdbcType="VARCHAR" property="salt"/>
-            <result column="u_create_time" jdbcType="TIMESTAMP" property="createTime"/>
-            <result column="u_last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime"/>
-            <result column="u_status" jdbcType="INTEGER" property="status"/>
-            <result column="u_sex" jdbcType="VARCHAR" property="sex"/>
-            <result column="u_description" jdbcType="VARCHAR" property="description"/>
-            <association column="u_id" property="role" javaType="me.guoxin.pojo.GfsRole" select="me.guoxin.manager.mapper.RoleMapper.getRolesByUserId">
-            </association>
-        </association>
-        <association column="id" property="city" javaType="me.guoxin.pojo.GfsCity" select="me.guoxin.manager.mapper.CityMapper.selectCityByAddressId">
-        </association>
+        <association column="user_id" property="user" javaType="me.guoxin.pojo.GfsUser" select="me.guoxin.manager.mapper.UserMapper.selectById"/>
+        <association column="id" property="city" javaType="me.guoxin.pojo.GfsCity" select="me.guoxin.manager.mapper.CityMapper.selectCityByAddressId"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        a.id, a.receiver_name, a.receiver_phone, a.receiver_address, a.append_receiver_address, a.longitude, a.latitude, a.create_time, a.update_time, u.id as u_id, u.username as u_username, u.phone as u_phone,  u.password as u_password, u.salt as u_salt, u.create_time as u_create_time, u.last_login_time as u_last_login_time, u.status as u_status, u.role_id as u_role_id, u.sex as u_sex, u.description as u_description
+    <sql id="Base_Column_List_WITHOUT_USER">
+        a.id, a.receiver_name, a.receiver_phone, a.receiver_address, a.append_receiver_address, a.longitude, a.latitude, a.create_time, a.update_time, a.user_id
     </sql>
-    <!--<sql id="Base_Column_List">-->
-        <!--a.id, a.receiver_name, a.receiver_phone, a.receiver_address, a.append_receiver_address, a.longitude, a.latitude, a.create_time, a.update_time, u.id as u_id, u.username as u_username, u.phone as u_phone,  u.password as u_password, u.salt as u_salt, u.create_time as u_create_time, u.last_login_time as u_last_login_time, u.status as u_status, u.role_id as u_role_id, u.sex as u_sex, u.description as u_description, r.id as r_id, r.name as r_name, r.description as r_description,c.id as c_id,c.name as c_name-->
-    <!--</sql>-->
 
     <insert id="insert" parameterType="me.guoxin.pojo.GfsAddress">
         INSERT INTO gfs_address(id, user_id,receiver_name,receiver_phone,receiver_address,append_receiver_address,longitude,latitude,city_id,create_time,update_time) VALUES (#{id},#{user.id},#{receiverName},#{receiverPhone},#{receiverAddress},#{appendReceiverAddress},#{longitude},#{latitude},#{city.id},#{createTime},#{updateTime})
@@ -45,7 +28,7 @@
 
     <select id="selectByUserId" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List_WITHOUT_USER"/>
         FROM
         gfs_address a
         JOIN  gfs_user u ON a.user_id = u.id
@@ -55,5 +38,16 @@
     <delete id="delete" parameterType="java.lang.Long">
         DELETE from gfs_address where id = #{id}
     </delete>
+
+    <update id="setUserIdNull" parameterType="java.lang.Long">
+        UPDATE gfs_address SET user_id = NULL where id = #{id}
+    </update>
+    
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List_WITHOUT_USER"/>
+        FROM gfs_address a
+        WHERE a.id = #{id}
+    </select>
 
 </mapper>

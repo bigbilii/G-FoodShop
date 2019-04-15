@@ -12,6 +12,11 @@
 <link rel="stylesheet" href="../dist/css/main.css"/>
 <link rel="stylesheet" href="../dist/css/booking.css"/>
 <link rel="stylesheet" href="../dist/css/index.css"/>
+<style>
+    .amap-sug-result {
+        z-index: 9999;
+    }
+</style>
 
 <body class="" avalonctrl="root">
 <div id="rootLoading" class="loading-wrap" style="display: none;">
@@ -69,26 +74,7 @@
                                 <li style="width: 100px;">份数</li>
                             </ul>
                             <div class="order-list clearfix">
-                                <div avalonctrl="cart">
-                                    <table class="tb-orders-el" cellpadding="0" cellspacing="0">
-                                        <tbody>
-                                        <tr class="normal-con">
-                                            <td>
-                                            </td>
-                                            <td class="canpinList-title-td" style="width: 380px;">
-                                                板烧双拼饭
-                                            </td>
-                                            <td style="width: 80px;">¥28.0</td>
-                                            <td style="width: 180px;">
-                                                <span class="current-price border-free">1</span>
-                                            </td>
-                                        </tr>
-                                        <tr class="detail-con" style="display: none;">
-                                            <td class="tb-requirement" colspan="5">
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                <div id="cartMenu">
                                 </div>
                             </div>
                         </div>
@@ -96,17 +82,16 @@
                     <!-- 点餐单 end -->
                     <!-- 各项费用 -->
                     <div class="fees-box clearfix">
-                        <p avalonctrl="cart">
+                        <p>
                             <span style="margin-left: 386px;">小计：</span>
-                            <em>¥63.5</em>
+                            <em id="totalPrice">¥0</em>
                         </p>
                         <p>
                             <span>餐盒费</span>
                             <em>¥2.0</em>
                         </p>
-
                         <p>
-                            <span><!-- 外送费: -->外送费 : </span>
+                            <span>外送费 : </span>
                             <em>¥8</em>
                         </p>
                     </div>
@@ -115,23 +100,12 @@
                 <div class="order-box_r f-r">
                     <!-- 送餐信息 - start -->
                     <div class="deliver-info-box">
-                        <h3 class="title-h">送餐信息</h3>
+                        <h3 class="title-h">送餐地址</h3>
                         <div class="address-located">
-                            <span class="addNewAddr-span f-r">+新增地址</span>
+                            <span class="addNewAddr-span f-r" data-toggle="modal" data-target="#addAddress">+新增地址</span>
                         </div>
                     </div>
-                    <div class="address-list-box">
-                        <dl class="address-user_dl err-address">
-                            <dt class="address_name">郭鑫</dt>
-                            <dd class="address_phone">11111111111</dd>
-                            <dd class="address_txt">清华大学23</dd>
-                        </dl>
-                        <dl class="address-user_dl err-address">
-                            <dt class="address_name">郭鑫</dt>
-                            <dd class="address_phone">15102397367</dd>
-                            <dd class="address_txt">重庆理工大学花溪校区竹轩401</dd>
-                        </dl>
-
+                    <div class="address-list-box" id="addrBox">
                     </div>
                     <div class="pay-type_box other-info-box clearfix">
                         <span class="title f-l">支付方式:</span>
@@ -145,12 +119,9 @@
                         <span class="title f-l">餐具数量:</span>
                         <div class="f-l">
                             <div class="jiaobanbisa_standard">
-                                <img src="../dist/images/booking/small-cart-minus.png">
-                                <span class="product-num">0</span>
-                                <img src="../dist/images/booking/small-cart-plus.png">
-                                </div>
-                            <div class="f-r" style="display:inline-block">
-                                <a class="a-btn active" href="javascript:void(0);">不需要</a>
+                                <img src="../dist/images/booking/small-cart-minus.png" onclick="removeTableWare()">
+                                <span class="product-num" id="tablewareNum">0</span>
+                                <img src="../dist/images/booking/small-cart-plus.png" onclick="addTableWare()">
                             </div>
                         </div>
                     </div>
@@ -165,11 +136,11 @@
                     <div class="submit-btn_box">
                         <div class="show-price-box1">
                             <span>总额 : </span>
-                            <span>¥73.5</span>
+                            <span id="allPrice">¥0</span>
                         </div>
                         <div class="show-btn-box1">
-                            <button class="submit-order_btn">确认下单</button>
-                            <button>返回点餐单</button>
+                            <button class="submit-order_btn" onclick="submitOrder()">确认下单</button>
+                            <button onclick="location.href='./booking.html'">返回点餐单</button>
                         </div>
                     </div>
                 </div>
@@ -191,8 +162,50 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="addAddress" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+     data-backdrop="static">
+    <div class="modal-dialog modal-address" role="document">
+        <div class="modal-content">
+            <div class="modal-header notitle" style="border-bottom: 0px">
+               <span aria-hidden="true" data-dismiss="modal" aria-label="Close"
+                     class="dk-dialog-close-btn">×</span>
+            </div>
+            <div class="modal-body" style="padding: 0">
+                <div data-include-rendered="rendered" data-include-loaded="loaded">
+                    <div class="address-wrap">
+                        <div class="inputBox">
+                            <span class="map-span">姓名 :</span>
+                            <input type="text" name="receiverName" data-duplex-event="change" placeholder="请输入您的姓名"
+                                   id="receiverName">
+                        </div>
+                        <div class="inputBox">
+                            <span class="map-span">手机 : </span>
+                            <input type="text" name="receiverPhone" placeholder="请输入您的手机号码" id="receiverPhone">
+                        </div>
+                        <div class="inputBox relative">
+                            <span class="map-span">地址 :</span>
+                            <input type="text" style="width:326px;" placeholder="请输入您的地址" id="receiverAddress">
+                        </div>
+                        <div class="inputBox">
+                            <span class="map-span mr-16">补全地址 :</span>
+                            <input type="text" style="width:302px;" name="appendReceiverAddress" placeholder="请补充详细地址"
+                                   id="appendReceiverAddress">
+                        </div>
+
+                        <div id="addressMap" style="width: 100%;height: 50%;"></div>
+                        <div class="inputBox submitBox">
+                            <a class="btn btn-51wm-1" href="javascript:void(0);" onclick="saveAddressInfo()">保存</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- end end -->
 </body>
+<script src="https://webapi.amap.com/maps?v=1.4.14&key=	9440df7c20021787f82fee47fcae58c2&plugin=AMap.Autocomplete,AMap.PlaceSearch"></script>
+<script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
 <!-- jQuery 3 -->
 <script src="../bower_components/jquery/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
@@ -201,15 +214,52 @@
 <script src="../dist/js/home.js"></script>
 
 <script>
-    var cart = new Array();
+    var order = {
+        productOrders: new Array(),
+        address: null,
+        tablewareNum: 0,
+        description: "",
+        boxPrice: 2,
+        deliveryPrice: 8,
+        allPrice: 0,
+        type: "货到付款"
+    };
+
+    var addrs = new Array();
+    var map = new AMap.Map('addressMap', {
+        resizeEnable: true, //是否监控地图容器尺寸变化
+        zoom: 11, //初始化地图层级
+    });
+    //输入提示
+    var autoOptions = {
+        input: "receiverAddress"
+    };
+    var auto = new AMap.Autocomplete(autoOptions);
+    var placeSearch = new AMap.PlaceSearch({
+        map: map
+    });  //构造地点查询类
+    AMap.event.addListener(auto, "select", select);//注册监听，当选中某条记录时会触发
+    function select(e) {
+        placeSearch.setCity(e.poi.adcode);
+        placeSearch.search(e.poi.name);  //关键字查询查询
+        selectAddress = e.poi;
+    }
+
     $(function () {
+
+        getCart();
+        getAddress();
+
+    });
+
+    function getCart() {
         $.ajax({
             type: "GET",
             url: "/" + userInfo.id + "/cart/list",
             contentType: "application/json",
             success: function (result) {
                 if (result.code === 200) {
-                    cart = result.data.products;
+                    order.productOrders = result.data.products;
                     flashCart();
                 } else {
                     if (isEmptyResult(result)) {
@@ -228,25 +278,73 @@
                 }
             }
         });
+    }
 
-    });
+    function getAddress() {
+        var url = "/" + userInfo.id + "/address/select";
+        $.ajax({
+            type: "GET",
+            url: url,
+            contentType: "application/json",
+            success: function (result) {
+                if (result.code === 200) {
+                    addrs = result.data;
+                    listAddressDOM();
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("发生未知错误");
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("发生未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+            }
+        })
+    }
 
-
-    function addToCart(index, i) {
-        var product = categories[index].products[i];
-        var j = exitCart(product);
-        if (j >= 0) {
-            cart[j].num++;
-        } else {
-            product.num = 1;
-            cart.push(product);
-
+    function listAddressDOM() {
+        $("#addrBox").empty();
+        var data = addrs;
+        for (var i = 0; i < data.length; i++) {
+            $("#addrBox").append("<dl class=\"address-user_dl\" onclick='selectAddr(this," + i + ")'>" +
+                "<dt class=\"address_name\">" + data[i].receiverName + "</dt>" +
+                "<dd class=\"address_phone\">" + data[i].receiverPhone + "</dd>" +
+                "<dd class=\"address_txt\">" + data[i].receiverAddress + data[i].appendReceiverAddress + "</dd>" +
+                "</dl>")
         }
-        flashCart();
+    }
+
+    function removeTableWare() {
+        var num = $("#tablewareNum").text();
+        if (num > 0) {
+            $("#tablewareNum").text(--num);
+            order.tablewareNum = num;
+        } else {
+            $("#tablewareNum").text(0);
+            order.tablewareNum = 0;
+        }
+    }
+
+    function addTableWare() {
+        var num = $("#tablewareNum").text();
+        if (num >= 10) {
+            alert("最多10份餐具");
+            return;
+        }
+        $("#tablewareNum").text(++num);
+        order.tablewareNum = num;
     }
 
     function flashCart() {
         $("#cartMenu").empty();
+        var cart = order.productOrders;
         var totalPrice = 0;
         for (var i = 0; i < cart.length; i++) {
             totalPrice += cart[i].price * cart[i].num;
@@ -257,11 +355,9 @@
                 "</td>" +
                 "<td class=\"canpinList-title-td\" style=\"width: 380px;\">" + cart[i].name +
                 "</td>" +
-                "<td style=\"width: 80px;\">¥" + cart[i].price + "</td>" +
+                "<td style=\"width: 80px;\">" + cart[i].price + "</td>" +
                 "<td style=\"width: 180px;\">" +
-                "<img src=\"../dist/images/booking/small-cart-minus.png\" onclick='deletcCartNum(" + i + ")'>" +
-                "<span class=\"current-price\">" + cart[i].num + "</span>" +
-                "<img src=\"../dist/images/booking/small-cart-plus.png\" onclick='addCartNum(" + i + ")'>" +
+                "<span class=\"current-price border-free\">" + cart[i].num + "</span>" +
                 "</td>" +
                 "</tr>" +
                 "<tr class=\"detail-con\" style=\"display: none;\">" +
@@ -272,47 +368,69 @@
                 "</table>")
         }
         $("#totalPrice").text("￥" + totalPrice);
+        $("#allPrice").text("￥" + (totalPrice + 10));
+        order.allPrice = totalPrice + 10;
 
     }
 
-    function exitCart(product) {
-        for (var j = 0; j < cart.length; j++) {
-            if (cart[j].id === product.id) {
-                return j;
-            }
-        }
-        return -1;
-    }
-
-    function addCartNum(index) {
-        cart[index].num++;
-        settlement();
-    }
-
-    function deletcCartNum(index) {
-        var product = cart[index];
-        if (product.num > 1) {
-            product.num--;
+    function selectAddr(data, index) {
+        if ($(data).hasClass("active")) {
+            $(data).removeClass("active");
+            order.address = null;
         } else {
-            cart.splice(index, 1);
+            $("#addrBox").find("dl").removeClass("active");
+            $(data).addClass("active");
+            order.address = addrs[index];
         }
-        settlement();
     }
 
-    function settlement() {
-        var url = "/" + userInfo.id + "/cart/insert";
+    function saveAddressInfo() {
+        var name = $("#receiverName").val().trim();
+        var phone = $("#receiverPhone").val().trim();
+        var address = $("#receiverAddress").val().trim();
+        var appAddress = $("#appendReceiverAddress").val().trim();
+        if (isNull(name)) {
+            alert("请输入姓名!");
+            return;
+        }
+        if (isNull(phone)) {
+            alert("请输入手机号!");
+            return;
+        }
+        if (!validPhone(phone)) {
+            alert("请输入正确格式的手机号!");
+            return;
+        }
+        if (isNull(address)) {
+            alert("请输入地址!");
+            return;
+        }
+        if (isNull(appAddress)) {
+            alert("请输入详细地址!");
+            return;
+        }
+        var data = {"receiverName": name};
+        data.receiverPhone = phone;
+        data.receiverAddress = address;
+        data.appendReceiverAddress = appAddress;
+        data.longitude = selectAddress.location.lng;
+        data.latitude = selectAddress.location.lat;
+        data.cityName = selectAddress.district;
+        var url = "/" + userInfo.id + "/address/insert";
+        console.log(data);
+
         $.ajax({
             type: "POST",
             url: url,
-            async: false,
             contentType: "application/json",
-            data: JSON.stringify(cart),
+            data: JSON.stringify(data),
             success: function (result) {
                 if (result.code === 200) {
-                    window.location.reload();
+                    $("#addAddress").modal('hide');
+                    getAddress();
                 } else {
                     if (isEmptyResult(result)) {
-                        alert("未知错误");
+                        alert("发生未知错误");
                     } else {
                         alert(result.message);
                     }
@@ -321,12 +439,57 @@
             error: function (result) {
                 var resultMsg = result.responseJSON;
                 if (isEmptyResult(resultMsg)) {
-                    alert("未知错误");
+                    alert("发生未知错误");
                 } else {
                     alert(resultMsg.message);
                 }
             }
-        });
+        })
+    }
+
+    $('#addAddress').on('hidden.bs.modal', function (e) {
+        $("#receiverName").val("");
+        $("#receiverPhone").val("");
+        $("#receiverAddress").val("");
+        $("#appendReceiverAddress").val("");
+    });
+
+    function submitOrder() {
+        order.description = $("#userNote_jiaobanbisa").val();
+        if (order.address == null) {
+            alert("请选择送餐地址");
+            return;
+        }
+        for (var i = 0; i < order.productOrders.length; i++) {
+            delete order.productOrders[i]["cart"];
+        }
+        var url = "/" + userInfo.id + "/order/insert";
+        $.ajax({
+            type: "POST",
+            url: url,
+            contentType: "application/json",
+            data: JSON.stringify(order),
+            success: function (result) {
+                if (result.code === 200) {
+                    alert("成功下单，等待餐厅处理，在个人订单中查看");
+                    $(location).prop('href', './home.html');
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("发生未知错误");
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("发生未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+            }
+        })
     }
 </script>
 
