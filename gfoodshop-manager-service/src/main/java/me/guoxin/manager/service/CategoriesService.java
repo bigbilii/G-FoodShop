@@ -6,5 +6,16 @@ import java.util.List;
 
 public interface CategoriesService {
 
-    List<GfsCategories> getAllFoodCategoriesWithFood();
+    /**
+     * 查询所有产品信息
+     * @return
+     */
+    List<GfsCategories> getCategoriesList();
+
+    /**
+     * 查询所有产品信息
+     * 不包含其产品信息
+     * @return
+     */
+    List<GfsCategories> getCategoriesListWithoutProduct();
 }

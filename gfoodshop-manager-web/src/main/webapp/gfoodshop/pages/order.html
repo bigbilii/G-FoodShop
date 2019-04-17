@@ -72,13 +72,13 @@
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">功能菜单</li>
-                <li class="active treeview">
+                <li class="treeview">
                     <a href="#">
                         <i class="fa fa-dashboard"></i> <span>用户管理</span>
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>
                     <ul class="treeview-menu">
-                        <li class="active"><a href="user.html"><i class="fa fa-circle-o"></i> 用户列表</a></li>
+                        <li><a href="user.html"><i class="fa fa-circle-o"></i> 用户列表</a></li>
                         <li><a href="online.html"><i class="fa fa-circle-o"></i> 在线用户</a></li>
                     </ul>
                 </li>
@@ -92,13 +92,13 @@
                         <li><a href="online.html"><i class="fa fa-circle-o"></i> 商品列表</a></li>
                     </ul>
                 </li>
-                <li class="treeview">
+                <li class="active treeview">
                     <a href="#">
                         <i class="fa fa-dashboard"></i> <span>订单管理</span>
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="order.html"><i class="fa fa-circle-o"></i> 订单列表</a></li>
+                        <li class="active"><a href="order.html"><i class="fa fa-circle-o"></i> 订单列表</a></li>
                     </ul>
                 </li>
             </ul>
@@ -111,13 +111,13 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                用户列表
-                <small>系统用户列表</small>
+                订单列表
+                <small>系统订单列表</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> 主页</a></li>
-                <li><a href="#">用户管理</a></li>
-                <li class="active">用户列表</li>
+                <li><a href="#">订单管理</a></li>
+                <li class="active">订单列表</li>
             </ol>
         </section>
         <!-- Main content -->
@@ -126,34 +126,32 @@
                 <div class="col-xs-12">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">系统用户列表</h3>
+                            <h3 class="box-title">系统订单列表</h3>
 
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
                             <div class="box-body">
-                                <a class="btn btn-app" data-toggle="modal" data-target="#modal-userInfo"
-                                   onclick="getRoleList()">
-                                    <i class="fa fa-plus-circle"></i> 添加
-                                </a>
                                 <a class="btn btn-app" onclick="deleteAll()">
                                     <i class="fa  fa-trash-o"></i> 删除
                                 </a>
                             </div>
-                            <table id="onlineTable" class="table table-bordered table-striped datatables"
+                            <table id="orderTable" class="table table-bordered table-striped datatables"
                                    style="width:100%">
                                 <thead>
                                 <tr>
                                     <th><input type="checkbox" class="checkall"/></th>
-                                    <th>id</th>
-                                    <th>用户名</th>
-                                    <th>手机号</th>
-                                    <th>角色身份</th>
-                                    <th>性别</th>
+                                    <th>订单号</th>
+                                    <th>总金额(￥)</th>
+                                    <th>用户账号</th>
+                                    <th>收货信息</th>
+                                    <th>餐厅</th>
+                                    <th>备注</th>
+                                    <th>类型</th>
                                     <th>创建时间</th>
-                                    <th>上次登录时间</th>
-                                    <th>描述</th>
-                                    <th>状态</th>
+                                    <th>接单时间</th>
+                                    <th>送达时间</th>
+                                    <th>订单状态</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
@@ -171,61 +169,8 @@
 </div>
 <!-- ./wrapper -->
 
-<div class="modal fade" id="modal-userInfo">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">新增用户</h4>
-            </div>
-            <div class="modal-body">
-                <form role="form" id="userInfoForm">
-                    <div class="box-body">
-                        <div class="form-group">
-                            <label for="username"><i class="fa  fa-certificate text-red"></i>用户名</label>
-                            <input type="text" class="form-control" id="username" placeholder="输入用户名">
-                        </div>
-                        <div class="form-group">
-                            <label for="phone"><i class="fa  fa-certificate text-red"></i>登录电话</label>
-                            <input type="text" class="form-control" id="phone" placeholder="输入登录电话">
-                        </div>
-                        <div class="form-group">
-                            <label for="password"><i class="fa  fa-certificate text-red"></i>密码</label>
-                            <input type="password" class="form-control" id="password"
-                                   placeholder="输入密码">
-                        </div>
-                        <div class="form-group">
-                            <label for="passwordSure"><i class="fa  fa-certificate text-red"></i>重复密码</label>
-                            <input type="password" class="form-control" id="passwordSure"
-                                   placeholder="重复密码">
-                        </div>
-                        <div class="form-group">
-                            <label for="role">角色</label>
-                            <select class="form-control role" id="role">
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="sex">性别</label>
-                            <select class="form-control" id="sex">
-                                <option>保密</option>
-                                <option>男</option>
-                                <option>女</option>
-                            </select>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
-                <button type="submit" class="btn btn-primary" onclick="addUser()">确定</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-</div>
 <!-- /.modal-dialog -->
-<div class="modal fade" id="modal-userUpdateInfo">
+<div class="modal fade" id="modal-orderProducts">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -316,7 +261,7 @@
     /**
      * 在线用户列表初始化
      */
-    $('#onlineTable').DataTable({
+    $('#orderTable').DataTable({
         "searching": true,// 关闭自带搜索
         "bLengthChange": false,// 关闭自带分页选项
         "ordering": true,// 关闭排序
@@ -335,11 +280,11 @@
                 "sNext": "下一页",
                 "sLast": "尾页"
             },
-            "sSearch": "查找用户名或手机"
+            "sSearch": "查找订单号或用户名"
         },
         "ajax": {
-            "url": "/user/list",
-            "type": "POST",
+            "url": "/order/list",
+            "type": "GET",
             "data": function (d) {
                 return {"tbData": JSON.stringify(d)};
             },
@@ -365,40 +310,44 @@
                 }, "bSortable": false
             },
             {
-                "data": "id",
-                "visible": false
+                "data": "id"
             },
-            {"data": "username"},
-            {"data": "phone"},
+            {"data": "allPrice"},
+            {"data": "user.username"},
             {
                 "data": function (data, type, full) {
-                    return data.role.name + "(" + data.role.description + ")";
+                    return data.address.receiverName + " | " + data.address.receiverPhone + " | " + data.address.receiverAddress + data.address.appendReceiverAddress;
                 }
             },
-            {"data": "sex"},
-            {"data": "createTime"},
-            {"data": "lastLoginTime"},
+            {"data": "store.address"},
             {"data": "description"},
+            {"data": "type"},
+            {"data": "createTime"},
+            {"data": "sendTime"},
+            {"data": "arriveTime"},
             {
                 "data": function (data, type, full) {
                     if (data.status === 1) {
-                        return "<small class=\"label label-success\">有效</small>";
-                    } else {
-                        return "<small class=\"label label-danger\">锁定</small>";
+                        return "<small class=\"label label-success\">以下单</small>";
                     }
+                    if (data.status === 2) {
+                        return "<small class=\"label label-success\">商家已接单</small>";
+                    }
+                    if (data.status === 3) {
+                        return "<small class=\"label label-success\">正在配送</small>";
+                    }
+                    if (data.status === 4) {
+                        return "<small class=\"label label-success\">已完成</small>";
+                    }
+                    return "<small class=\"label label-danger\">订单已关闭</small>";
                 }
             },
             {
                 "data": function (data, type, full) {
-                    var opt;
-                    if (data.status === 1) {
-                        opt = "<button type=\"button\" class=\"btn btn-primary btn-xs\" onclick=\"disable(this)\">禁用</button>";
-                    } else {
-                        opt = "<button type=\"button\" class=\"btn btn-primary btn-xs\" onclick=\"restore(this)\">恢复</button>";
-                    }
                     return "<div class=\"btn-group\">" +
-                        "<button type=\"button\" class=\"btn btn-primary btn-xs\" data-toggle=\"modal\" data-target=\"#modal-userUpdateInfo\"  onclick=\"setUserUpdateInfo(this)\">修改</button>" +
-                        "<button type=\"button\" class=\"btn btn-primary btn-xs\" onclick=\"deleteOne(this)\">删除</button>" + opt +
+                        "<button type=\"button\" class=\"btn btn-primary btn-xs\" data-toggle=\"modal\" data-target=\"#modal-orderProducts\"  onclick=\"getOrderProducts(this)\">查看商品</button>" +
+                        "<button type=\"button\" class=\"btn btn-primary btn-xs\" onclick=\"closeOrder(this)\">关闭订单</button>" +
+                        "<button type=\"button\" class=\"btn btn-primary btn-xs\" onclick=\"deleteOne(this)\">删除</button>" +
                         "</div>";
                 }, "bSortable": false
             }
@@ -415,10 +364,10 @@
             return;
         }
         var rowIndex = $(data).parents("tr").index();
-        var id = $('#onlineTable').DataTable().row(rowIndex).data().id;
+        var id = $('#orderTable').DataTable().row(rowIndex).data().id;
         var datas = [];
         datas.push(id);
-        deleteUser(datas);
+        deleteOrder(datas);
     }
 
     /**
@@ -429,7 +378,7 @@
         $('.checkchild').each(function () {
             if ($(this).is(':checked')) {
                 var rowIndex = $(this).parents("tr").index();
-                var id = $('#onlineTable').DataTable().row(rowIndex).data().id;
+                var id = $('#orderTable').DataTable().row(rowIndex).data().id;
                 datas.push(id);
             }
         });
@@ -437,17 +386,17 @@
         if (!del) {
             return;
         }
-        deleteUser(datas);
+        deleteOrder(datas);
     }
 
     /**
      * 删除请求
      * @param data
      */
-    function deleteUser(data) {
+    function deleteOrder(data) {
         $.ajax({
             type: "DELETE",
-            url: "/user/delete",
+            url: "/order/delete",
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function (result) {
@@ -475,256 +424,12 @@
         });
     }
 
-    /**
-     * 添加用户
-     */
-    function addUser() {
-        var username = $("#username").val();
-        var phone = $("#phone").val();
-        var password = $("#password").val();
-        var passwordSure = $("#passwordSure").val();
-        var roleName = $("#role").find("option:selected").text();
-        var sex = $("#sex").find("option:selected").text();
-        var role = findInListByName(roles, roleName);
-        if (role === null) {
-            alert("角色选择错误！");
-            return;
-        }
-        if (isNull(username)) {
-            alert("请输入用户名!");
-            return;
-        }
-        if (isNull(phone)) {
-            alert("请输入手机号码!");
-            return;
-        }
-        if (!validPhone(phone)) {
-            alert("请输入正确的手机号!");
-            return;
-        }
-        if (isNull(password)) {
-            alert("请输入密码!");
-            return;
-        }
-        if (!validPassword(password)) {
-            alert("请输入正确的密码!最少4位，最多20位字母或数字的组合");
-            return;
-        }
-        if (isNull(passwordSure)) {
-            alert("请输入密码!");
-            return;
-        }
-        if (!passwordIsSured(password, passwordSure)) {
-            alert("两次密码不相同，请重新输入");
-            return;
-        }
-        var data = {"username": username};
-        data.password = password;
-        data.phone = phone;
-        data.sex = sex;
-        data.role = role;
-        sendAddUser(data);
-    }
-
-    /**
-     * 修改用户
-     */
-    function updateUser() {
-        var username = $("#usernameU").val();
-        var phone = $("#phoneU").val();
-        var roleName = $("#roleU").find("option:selected").text();
-        var sex = $("#sexU").find("option:selected").text();
-        var role = findInListByName(roles, roleName);
-        if (role === null) {
-            alert("角色选择错误！");
-            return;
-        }
-        if (isNull(username)) {
-            alert("请输入用户名!");
-            return;
-        }
-        if (isNull(phone)) {
-            alert("请输入手机号码!");
-            return;
-        }
-        if (!validPhone(phone)) {
-            alert("请输入正确的手机号!");
-            return;
-        }
-        var data = {"username": username};
-        data.phone = phone;
-        data.sex = sex;
-        data.role = role;
-        data.id = selectId;
-        sendUpdateUser(data);
-    }
-
-    /**
-     * 添加用户请求
-     */
-    function sendAddUser(data) {
-        $.ajax({
-            type: "POST",
-            url: "/user/insert",
-            contentType: "application/json",
-            data: JSON.stringify(data),
-            success: function (result) {
-                if (result.code === 200) {
-                    alert(result.message);
-                    window.location.reload();
-                } else {
-                    if (isEmptyResult(result)) {
-                        alert("发生未知错误");
-                    } else {
-                        alert(result.message);
-                    }
-                }
-            },
-            error: function (result) {
-                var resultMsg = result.responseJSON;
-                if (isEmptyResult(resultMsg)) {
-                    alert("发生未知错误");
-                } else {
-                    alert(resultMsg.message);
-                }
-            }
-        })
-    }
-
-    /**
-     * 更新用户请求
-     */
-    function sendUpdateUser(data) {
+    function closeOrder(data) {
+        var rowIndex = $(data).parents("tr").index();
+        var order = $('#orderTable').DataTable().row(rowIndex).data();
         $.ajax({
             type: "PUT",
-            url: "/user/update",
-            contentType: "application/json",
-            data: JSON.stringify(data),
-            success: function (result) {
-                if (result.code === 200) {
-                    alert(result.message);
-                    window.location.reload();
-                } else {
-                    if (isEmptyResult(result)) {
-                        alert("发生未知错误");
-                    } else {
-                        alert(result.message);
-                    }
-                }
-            },
-            error: function (result) {
-                var resultMsg = result.responseJSON;
-                if (isEmptyResult(resultMsg)) {
-                    alert("发生未知错误");
-                } else {
-                    alert(resultMsg.message);
-                }
-            }
-        })
-    }
-
-    /**
-     * 获取权限列表
-     */
-    function getRoleList() {
-        $.ajax({
-            type: "GET",
-            url: "/role/list",
-            async: false,
-            contentType: "application/json",
-            success: function (result) {
-                if (result.code === 200) {
-                    roles = result.data;
-                    setRoleInfo(result.data);
-                } else {
-                    if (isEmptyResult(result)) {
-                        alert("获取权限信息发生未知错误");
-                    } else {
-                        alert(result.message);
-                    }
-                    window.location.reload();
-                }
-            },
-            error: function (result) {
-                var resultMsg = result.responseJSON;
-                if (isEmptyResult(resultMsg)) {
-                    alert("获取权限信息发生未知错误");
-                } else {
-                    alert(resultMsg.message);
-                }
-                window.location.reload();
-            }
-        });
-    }
-
-    /**
-     * 设置角色信息
-     * @param data
-     */
-    function setRoleInfo(data) {
-        var role = $(".role");
-        role.empty();
-        for (var i = 0; i < data.length; i++) {
-            role.append("<option>" + data[i].name + "</option>");
-        }
-    }
-
-    /**
-     * 设置用户修改信息
-     * @param data
-     */
-    function setUserUpdateInfo(data) {
-        getRoleList();
-        var rowIndex = $(data).parents("tr").index();
-        var user = $('#onlineTable').DataTable().row(rowIndex).data();
-        selectId = user.id;
-        $("#usernameU").val(user.username);
-        $("#phoneU").val(user.phone);
-        $("#roleU").find("option[text='" + user.role.name + "']").attr("selected", true);
-        if (isNull(user.sex)) {
-            $("#sexU").find("option[text='未知']").attr("selected", true);
-        } else {
-            $("#roleU").find("option[text='" + user.sex + "']").attr("selected", true);
-        }
-    }
-
-    function disable(data) {
-        var rowIndex = $(data).parents("tr").index();
-        var user = $('#onlineTable').DataTable().row(rowIndex).data();
-        $.ajax({
-            type: "PUT",
-            url: "/user/" + user.id + "/disable",
-            success: function (result) {
-                if (result.code === 200) {
-                    alert(result.message);
-                    window.location.reload();
-                } else {
-                    if (isEmptyResult(result)) {
-                        alert("获取权限信息发生未知错误");
-                    } else {
-                        alert(result.message);
-                    }
-                    window.location.reload();
-                }
-            },
-            error: function (result) {
-                var resultMsg = result.responseJSON;
-                if (isEmptyResult(resultMsg)) {
-                    alert("获取权限信息发生未知错误");
-                } else {
-                    alert(resultMsg.message);
-                }
-                window.location.reload();
-            }
-        });
-    }
-
-    function restore(data) {
-        var rowIndex = $(data).parents("tr").index();
-        var user = $('#onlineTable').DataTable().row(rowIndex).data();
-        $.ajax({
-            type: "PUT",
-            url: "/user/" + user.id + "/restore",
+            url: "/order/" + order.id + "/close",
             contentType: "application/json",
             success: function (result) {
                 if (result.code === 200) {

@@ -3,10 +3,7 @@ package me.guoxin.utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import me.guoxin.pojo.DataTableDTO;
-import me.guoxin.pojo.Order;
-import me.guoxin.pojo.Page;
-import me.guoxin.pojo.UserColumn;
+import me.guoxin.pojo.*;
 
 import java.util.List;
 
@@ -45,6 +42,11 @@ public class DataTableUtil {
         return dataTableDTO;
     }
 
+    /**
+     * 获取用户 DataTableDTO排序列表值
+     * @param order
+     * @return
+     */
     public static String getUserDataTableOrderBy(Order order) {
         String pre = "u.";
         if (order == null) {
@@ -55,6 +57,44 @@ public class DataTableUtil {
         String columnName = UserColumn.getColunm(column);
         if (columnName == null || "".equalsIgnoreCase(columnName.trim())) {
             columnName = UserColumn.ID.getColumn();
+        }
+        return pre + columnName + " " + dir;
+    }
+
+    /**
+     * 获取订单 DataTableDTO排序列表值
+     * @param order
+     * @return
+     */
+    public static String getOrderDataTableOrderBy(Order order) {
+        String pre = "o.";
+        if (order == null) {
+            return pre + OrderColumn.ID.getColumn() + " " + "desc";
+        }
+        int column = order.getColumn();
+        String dir = order.getDir();
+        String columnName = OrderColumn.getColunm(column);
+        if (columnName == null || "".equalsIgnoreCase(columnName.trim())) {
+            columnName = OrderColumn.ID.getColumn();
+        }
+        return pre + columnName + " " + dir;
+    }
+
+    /**
+     * 获取商品 DataTableDTO排序列表值
+     * @param order
+     * @return
+     */
+    public static String getProductDataTableOrderBy(Order order) {
+        String pre = "p.";
+        if (order == null) {
+            return pre + ProductColumn.ID.getColumn() + " " + "desc";
+        }
+        int column = order.getColumn();
+        String dir = order.getDir();
+        String columnName = ProductColumn.getColunm(column);
+        if (columnName == null || "".equalsIgnoreCase(columnName.trim())) {
+            columnName = ProductColumn.ID.getColumn();
         }
         return pre + columnName + " " + dir;
     }

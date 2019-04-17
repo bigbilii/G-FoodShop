@@ -1,29 +1,30 @@
 package me.guoxin.pojo;
 
-public enum UserColumn {
+public enum OrderColumn {
     ID("id", 1),
-    USERNAME("username", 2),
-    PHONE("phone", 3),
-    ROLE("role_id", 4),
-    SEX("sex", 5),
-    CREAT_TIME("create_time", 6),
-    LAST_LOGIN_TIME("last_login_time", 7),
-    DESCRIPTION("description", 8),
-    STATUS("status", 9);
+    ALLPRICE("all_price", 2),
+    USERID("user_id", 3),
+    ADDRESSID("address_id", 4),
+    STOREID("store_id", 5),
+    DESCRIPTION("description", 6),
+    CREATE_TIME("create_time", 7),
+    SEND_TIME("send_time", 8),
+    ARRIVE_TIME("arrive_time", 9),
+    STATUS("status", 10);
 
 
     private String column;
     private int index;
 
-    private UserColumn(String column, int index) {
+    private OrderColumn(String column, int index) {
         this.column = column;
         this.index = index;
     }
 
     public static String getColunm(int index) {
-        for (UserColumn userColumn : UserColumn.values()) {
-            if (userColumn.getIndex() == index) {
-                return userColumn.getColumn();
+        for (OrderColumn orderColumn : OrderColumn.values()) {
+            if (orderColumn.getIndex() == index) {
+                return orderColumn.getColumn();
             }
         }
         return null;

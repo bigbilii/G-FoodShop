@@ -18,7 +18,7 @@ public class HomeController {
 
     @GetMapping(value = "/homeFood/list")
     public Result getHomeFoodList() {
-        List<GfsCategories> list = categoriesService.getAllFoodCategoriesWithFood();
+        List<GfsCategories> list = categoriesService.getCategoriesList();
         return new ResultUtil<>().setData(list);
     }
 }

@@ -169,6 +169,15 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void deleteUser(List<Long> ids) {
+        List<GfsUser> list = userMapper.selectAdmin();
+        if (list == null || list.isEmpty()) {
+            throw new IException("服务器错误");
+        }
+        GfsUser admin = list.get(0);
+        // 移除admin
+        if (ids.contains(admin.getId())) {
+            ids.remove(admin.getId());
+        }
         userMapper.deleteUser(ids);
     }
 
@@ -248,7 +257,9 @@ public class UserServiceImpl implements UserService {
             throw new IException("更新用户发生错误，可能用户被删除，请刷新重试！");
         }
         GfsUser gfsUser = list.get(0);
-
+        if (gfsUser.getRole().getId() == GfsRole.ADMIN) {
+            throw new IException("不可修改管理员");
+        }
         gfsUser.setStatus(GfsUser._1);
         if (userMapper.updateUser(gfsUser) != 1) {
             throw new IException("修改用户失败！");
@@ -262,6 +273,9 @@ public class UserServiceImpl implements UserService {
             throw new IException("更新用户发生错误，可能用户被删除，请刷新重试！");
         }
         GfsUser gfsUser = list.get(0);
+        if (gfsUser.getRole().getId() == GfsRole.ADMIN) {
+            throw new IException("不可修改管理员");
+        }
         gfsUser.setStatus(GfsUser._0);
         if (userMapper.updateUser(gfsUser) != 1) {
             throw new IException("修改用户失败！");
@@ -281,6 +295,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void changePassword(Long id, PasswordDTO passwordDTO) {
         if (passwordDTO == null) {
             throw new IException("服务器错误");

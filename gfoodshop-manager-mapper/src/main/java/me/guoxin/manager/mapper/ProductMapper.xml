@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="me.guoxin.manager.mapper.ProductMapper">
+
+    <resultMap id="BaseResultMap" type="me.guoxin.pojo.GfsProduct">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="price" jdbcType="DOUBLE" property="price"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <association property="categories" javaType="me.guoxin.pojo.GfsCategories">
+            <id column="c_id" jdbcType="INTEGER" property="id"/>
+            <result column="c_name" jdbcType="VARCHAR" property="name"/>
+            <result column="c_description" jdbcType="VARCHAR" property="description"/>
+            <result column="c_create_time" jdbcType="TIMESTAMP" property="createTime"/>
+            <result column="c_update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        p.id,p.name,p.price,p.description,p.image,p.status,p.create_time,p.update_time,c.id as c_id, c.name as c_name, c.description as c_description, c.create_time as c_create_time, c.update_time as c_update_time
+    </sql>
+
+    <select id="select" resultMap="BaseResultMap" parameterType="String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gfs_product p
+        LEFT JOIN gfs_categories c on p.categories_id = c.id
+        <where>
+            <if test="search != null and search != ''">
+                p.id LIKE CONCAT('%',#{search},'%')
+                OR p.name LIKE CONCAT('%',#{search},'%')
+                OR c.name LIKE CONCAT('%',#{search},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="Long">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gfs_product p
+        LEFT JOIN gfs_categories c on p.categories_id = c.id
+        WHERE p.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="me.guoxin.pojo.GfsProduct">
+        INSERT INTO
+        gfs_product(id,name,price,description,image,status,categories_id,create_time,update_time)
+        values (null ,#{name},#{price},#{description},#{image},#{status},#{categories.id},#{createTime},#{updateTime})
+    </insert>
+
+    <update id="update" parameterType="me.guoxin.pojo.GfsProduct">
+        update gfs_product
+        set name = #{name}, price = #{price}, description = #{description}, image = #{image}, status = #{status}, categories_id = #{categories.id}, create_time = #{createTime}, update_time = #{updateTime}
+        where id = #{id}
+    </update>
+
+
+</mapper>

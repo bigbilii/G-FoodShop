@@ -22,11 +22,25 @@
     </resultMap>
 
     <sql id="Base_Column_List">c.id, c.name, c.description, c.create_time, c.update_time, p.id as p_id, p.name as p_name, p.price as p_price, p.description as p_description,p.image as p_image,p.status as p_status,p.create_time as p_create_time,p.update_time as p_update_time</sql>
+    <sql id="Base_Column_List_Without_Product">c.id, c.name, c.description, c.create_time, c.update_time</sql>
 
-    <select id="AllFoodCategoriesWithFood" resultMap="BaseResultMap">
+    <select id="selectCategories" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM gfs_categories c LEFT JOIN gfs_product p ON c.id = p.categories_id
+    </select>
+
+    <select id="selectCategoriesWithoutProductById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List_Without_Product"/>
+        FROM gfs_categories c
+        WHERE c.id = #{id}
+    </select>
+
+    <select id="selectCategoriesListWithoutProducts" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List_Without_Product"/>
+        FROM gfs_categories c
     </select>
 
 

@@ -14,8 +14,8 @@
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="type" jdbcType="VARCHAR" property="type"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="send_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <result column="arrive_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="send_time" jdbcType="TIMESTAMP" property="sendTime"/>
+        <result column="arrive_time" jdbcType="TIMESTAMP" property="arriveTime"/>
         <association column="user_id" property="user" javaType="me.guoxin.pojo.GfsUser" select="me.guoxin.manager.mapper.UserMapper.selectById"/>
         <association column="address_id" property="address" javaType="me.guoxin.pojo.GfsAddress" select="me.guoxin.manager.mapper.AddressMapper.selectById"/>
         <association column="store_id" property="store" javaType="me.guoxin.pojo.GfsStore" select="me.guoxin.manager.mapper.StoreMapper.selectById"/>
@@ -68,5 +68,43 @@
         where o.user_id = #{id}
     </select>
 
+    <select id="selectByIdWithoutProduct" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List_Without_Product"/>
+        FROM gfs_order o
+        where o.id = #{id}
+    </select>
+
+    <select id="select" resultMap="BaseResultMap" parameterType="String">
+        SELECT
+        <include refid="Base_Column_List_Without_Product"/>
+        FROM gfs_order o
+        LEFT JOIN gfs_user u on o.user_id = u.id
+        <where>
+            <if test="search != null and search != ''">
+                o.id LIKE CONCAT('%',#{search},'%')
+                OR u.username LIKE CONCAT('%',#{search},'%')
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteOrders" parameterType="java.util.List">
+        delete from gfs_order where id in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteOrdersProducts" parameterType="java.util.List">
+        delete from gfs_order_product where order_id in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+
+    <update id="updateOrder" parameterType="me.guoxin.pojo.GfsOrder">
+        update gfs_order
+        set description = #{description}, status = #{status}, send_time = #{sendTime}, arrive_time = #{arriveTime}
+    </update>
 
 </mapper>

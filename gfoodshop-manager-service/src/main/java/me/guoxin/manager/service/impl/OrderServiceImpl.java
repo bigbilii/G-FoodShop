@@ -104,5 +104,49 @@ public class OrderServiceImpl implements OrderService {
         dtoDataTableViewPageDTO.setiTotalDisplayRecords(total);
         return dtoDataTableViewPageDTO;
     }
+
+    @Override
+    public DataTableViewPageDTO<GfsOrder> getOrderList(DataTableDTO dataTableDTO) {
+        DataTableViewPageDTO<GfsOrder> dtoDataTableViewPageDTO = new DataTableViewPageDTO<>();
+        int startIndex = dataTableDTO.getPage().getStart();
+        int length = dataTableDTO.getPage().getLength();
+        startIndex = startIndex / length + 1;
+        String OrderBy = DataTableUtil.getOrderDataTableOrderBy(dataTableDTO.getOrder());
+        PageHelper.startPage(startIndex, length, OrderBy);
+
+        List<GfsOrder> orders = orderMapper.select(dataTableDTO.getSearch());
+        for (GfsOrder order : orders) {
+            if (order.getUser() != null)
+                order.getUser().maskPasswordInfo();
+            if (order.getAddress().getUser() != null)
+                order.getAddress().getUser().maskPasswordInfo();
+        }
+        PageInfo<GfsOrder> pageInfo = new PageInfo<>(orders);
+        long total = pageInfo.getTotal();
+        dtoDataTableViewPageDTO.setData(orders);
+        dtoDataTableViewPageDTO.setiTotalRecords(length);
+        dtoDataTableViewPageDTO.setiTotalDisplayRecords(total);
+        return dtoDataTableViewPageDTO;
+    }
+
+    @Override
+    @Transactional
+    public void deleteOrder(List<Long> ids) {
+        orderMapper.deleteOrders(ids);
+        orderMapper.deleteOrdersProducts(ids);
+    }
+
+    @Override
+    public void orderClose(Long id) {
+        List<GfsOrder> list = orderMapper.selectByIdWithoutProduct(id);
+        if (list == null || list.isEmpty()) {
+            throw new IException("更新订单发生错误，请刷新重试！");
+        }
+        GfsOrder order = list.get(0);
+        order.setStatus(GfsOrder.STATUS_CLOSE);
+        if (orderMapper.updateOrder(order) != 1) {
+            throw new IException("修改订单失败！");
+        }
+    }
 }
 

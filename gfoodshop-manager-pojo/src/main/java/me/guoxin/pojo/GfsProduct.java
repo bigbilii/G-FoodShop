@@ -6,10 +6,10 @@ import java.util.Objects;
 public class GfsProduct {
     private Long id;
     private String name;
-    private double price;
+    private Double price;
     private String description;
     private String image;
-    private int status;
+    private Integer status;
     private GfsCategories categories;
     private Date createTime;
     private Date updateTime;
@@ -31,11 +31,11 @@ public class GfsProduct {
         this.name = name;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -55,11 +55,11 @@ public class GfsProduct {
         this.image = image;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

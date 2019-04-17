@@ -8,6 +8,7 @@ public class GfsOrder {
     public final static Integer STATUS_MAKE = 2;
     public final static Integer STATUS_SEND = 3;
     public final static Integer STATUS_ARRIVE = 4;
+    public final static Integer STATUS_CLOSE = 5;
 
     private Long id;
     private GfsUser user;

@@ -319,7 +319,10 @@
                         if (data.status === 3) {
                             return "<small class=\"label label-success\">正在配送</small>";
                         }
-                        return "<small class=\"label label-success\">已完成</small>";
+                        if (data.status === 4) {
+                            return "<small class=\"label label-success\">已完成</small>";
+                        }
+                        return "<small class=\"label label-danger\">已关闭</small>";
                     }},
                 {"data": "allPrice"},
                 {"data": "createTime"}

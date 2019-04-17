@@ -14,7 +14,13 @@ public class CategoriesServiceImpl implements CategoriesService {
     CategoriesMapper categoriesMapper;
 
     @Override
-    public List<GfsCategories> getAllFoodCategoriesWithFood() {
-        return categoriesMapper.AllFoodCategoriesWithFood();
+    public List<GfsCategories> getCategoriesList() {
+        return categoriesMapper.selectCategories();
     }
+
+    @Override
+    public List<GfsCategories> getCategoriesListWithoutProduct() {
+        return categoriesMapper.selectCategoriesListWithoutProducts();
+    }
+
 }

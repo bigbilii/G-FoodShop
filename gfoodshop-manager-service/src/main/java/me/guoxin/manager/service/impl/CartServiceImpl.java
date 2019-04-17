@@ -91,9 +91,15 @@ public class CartServiceImpl implements CartService {
         } catch (Exception e) {
             throw new IException("服务器错误");
         }
-        GfsCart cart = carts.get(0);
-        cart.makeAllSum();
-        cart.getUser().maskPasswordInfo();
+        GfsCart cart;
+        if (carts == null || carts.size() == 0) {
+            cart = new GfsCart();
+            cart.setProducts(new ArrayList<>());
+        } else {
+            cart = carts.get(0);
+            cart.makeAllSum();
+            cart.getUser().maskPasswordInfo();
+        }
         return cart;
     }
 }
