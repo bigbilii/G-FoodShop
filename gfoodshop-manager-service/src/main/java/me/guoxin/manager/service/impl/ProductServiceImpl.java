@@ -90,4 +90,35 @@ public class ProductServiceImpl implements ProductService {
             throw new IException("修改用户失败！");
         }
     }
+
+    @Override
+    public void disable(Long id) {
+        List<GfsProduct> list = productMapper.selectById(id);
+        if (list == null || list.isEmpty()) {
+            throw new IException("更新用户发生错误，可能用户被删除，请刷新重试！");
+        }
+        GfsProduct gfsProduct = list.get(0);
+        gfsProduct.setStatus(2);
+        if (productMapper.update(gfsProduct) != 1) {
+            throw new IException("修改用户失败！");
+        }
+    }
+
+    @Override
+    public void restore(Long id) {
+        List<GfsProduct> list = productMapper.selectById(id);
+        if (list == null || list.isEmpty()) {
+            throw new IException("更新用户发生错误，可能用户被删除，请刷新重试！");
+        }
+        GfsProduct gfsProduct = list.get(0);
+        gfsProduct.setStatus(1);
+        if (productMapper.update(gfsProduct) != 1) {
+            throw new IException("修改用户失败！");
+        }
+    }
+
+    @Override
+    public void deleteProduct(List<Long> ids) {
+        productMapper.delete(ids);
+    }
 }

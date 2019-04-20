@@ -27,7 +27,8 @@
     <select id="selectCategories" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM gfs_categories c LEFT JOIN gfs_product p ON c.id = p.categories_id
+        FROM gfs_categories c
+        LEFT JOIN gfs_product p ON c.id = p.categories_id and p.status = 1
     </select>
 
     <select id="selectCategoriesWithoutProductById" resultMap="BaseResultMap">

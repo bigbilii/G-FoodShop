@@ -62,6 +62,7 @@ public class AddressServiceImpl implements AddressService {
         Date now = new Date();
         gfsAddress.setCreateTime(now);
         gfsAddress.setUpdateTime(now);
+        gfsAddress.setStatus(1);
 
         if (addressMapper.insert(gfsAddress) != 1) {
             throw new IException("添加地址失败！");
@@ -86,6 +87,6 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public void deleteByUserId(Long id) {
-        addressMapper.setUserIdNull(id);
+        addressMapper.setUnable(id);
     }
 }

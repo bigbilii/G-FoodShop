@@ -36,4 +36,10 @@ public interface ProductMapper {
      * @return
      */
     int update(GfsProduct gfsProduct);
+
+    /**
+     * 删除商品
+     * @param ids 商品id列表
+     */
+    void delete(List<Long> ids);
 }

@@ -3,8 +3,6 @@ package me.guoxin.pojo;
 public class GfsProductCart extends GfsProduct {
     private int num;
     private GfsCart cart;
-    private Long myId;
-
     public int getNum() {
         return num;
     }
@@ -21,11 +19,4 @@ public class GfsProductCart extends GfsProduct {
         this.cart = cart;
     }
 
-    public Long getMyId() {
-        return myId;
-    }
-
-    public void setMyId(Long myId) {
-        this.myId = myId;
-    }
 }

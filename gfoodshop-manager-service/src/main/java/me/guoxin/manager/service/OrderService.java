@@ -43,4 +43,11 @@ public interface OrderService {
      * @param id
      */
     void orderClose(Long id);
+
+    /**
+     * 获取订单信息
+     * @param id
+     * @return
+     */
+    GfsOrder getOrder(Long id);
 }

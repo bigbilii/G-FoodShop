@@ -148,5 +148,14 @@ public class OrderServiceImpl implements OrderService {
             throw new IException("修改订单失败！");
         }
     }
+
+    @Override
+    public GfsOrder getOrder(Long id) {
+        List<GfsOrder> list = orderMapper.selectById(id);
+        if (list == null || list.isEmpty()) {
+            throw new IException("查询失败");
+        }
+        return list.get(0);
+    }
 }
 

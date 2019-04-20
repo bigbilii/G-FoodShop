@@ -14,5 +14,5 @@ public interface AddressMapper {
 
     void delete(Long id);
 
-    void setUserIdNull(Long id);
+    void setUnable(Long id);
 }

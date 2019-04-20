@@ -14,6 +14,7 @@ public class GfsAddress {
     private GfsCity city;
     private Date createTime;
     private Date updateTime;
+    private Integer status;
 
     public Long getId() {
         return id;
@@ -101,5 +102,13 @@ public class GfsAddress {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

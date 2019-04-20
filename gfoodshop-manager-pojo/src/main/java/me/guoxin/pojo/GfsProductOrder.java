@@ -2,7 +2,6 @@ package me.guoxin.pojo;
 
 public class GfsProductOrder extends GfsProduct {
     private int num;
-    private Long myId;
     private GfsOrder order;
 
     public int getNum() {
@@ -11,14 +10,6 @@ public class GfsProductOrder extends GfsProduct {
 
     public void setNum(int num) {
         this.num = num;
-    }
-
-    public Long getMyId() {
-        return myId;
-    }
-
-    public void setMyId(Long myId) {
-        this.myId = myId;
     }
 
     public GfsOrder getOrder() {

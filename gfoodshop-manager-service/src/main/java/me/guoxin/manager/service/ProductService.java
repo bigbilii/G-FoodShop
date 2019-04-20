@@ -5,6 +5,8 @@ import me.guoxin.pojo.DataTableDTO;
 import me.guoxin.pojo.GfsOrder;
 import me.guoxin.pojo.GfsProduct;
 
+import java.util.List;
+
 public interface ProductService {
 
     /**
@@ -28,4 +30,10 @@ public interface ProductService {
      * @param gfsProduct
      */
     void updateProduct(GfsProduct gfsProduct);
+
+    void disable(Long id);
+
+    void restore(Long id);
+
+    void deleteProduct(List<Long> ids);
 }

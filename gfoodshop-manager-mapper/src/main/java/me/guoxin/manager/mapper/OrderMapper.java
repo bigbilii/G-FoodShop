@@ -67,4 +67,11 @@ public interface OrderMapper {
      * @return
      */
     int updateOrder(GfsOrder order);
+
+    /**
+     * 查询订单信息
+     * @param id 订单id
+     * @return
+     */
+    List<GfsOrder> selectById(Long id);
 }

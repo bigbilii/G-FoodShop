@@ -129,6 +129,7 @@
                                     <th>状态</th>
                                     <th>金额</th>
                                     <th>下单时间</th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                             </table>
@@ -190,7 +191,7 @@
             </div>
             <div class="modal-body" style="padding: 0">
                 <div data-include-rendered="rendered" data-include-loaded="loaded">
-                    <div class="address-wrap" >
+                    <div class="address-wrap">
                         <div class="inputBox">
                             <span class="map-span">姓名 :</span>
                             <input type="text" name="receiverName" data-duplex-event="change" placeholder="请输入您的姓名"
@@ -214,6 +215,29 @@
                         <div class="inputBox submitBox">
                             <a class="btn btn-51wm-1" href="javascript:void(0);" onclick="saveAddressInfo()">保存</a>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="productInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+     data-backdrop="static">
+    <div class="modal-dialog modal-address" role="document">
+        <div class="modal-content">
+            <div class="modal-header notitle" style="border-bottom: 0px">
+               <span aria-hidden="true" data-dismiss="modal" aria-label="Close"
+                     class="dk-dialog-close-btn">×</span>
+            </div>
+            <div class="modal-body" style="padding: 0">
+                <div data-include-rendered="rendered" data-include-loaded="loaded">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody id="productInfoTable">
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -309,7 +333,8 @@
             "columns": [
                 {"data": "store.address"},
                 {"data": "id"},
-                { "data": function (data, type, full) {
+                {
+                    "data": function (data, type, full) {
                         if (data.status === 1) {
                             return "<small class=\"label label-success\">以下单</small>";
                         }
@@ -323,9 +348,15 @@
                             return "<small class=\"label label-success\">已完成</small>";
                         }
                         return "<small class=\"label label-danger\">已关闭</small>";
-                    }},
+                    }
+                },
                 {"data": "allPrice"},
-                {"data": "createTime"}
+                {"data": "createTime"},
+                {
+                    "data": function (data, type, full) {
+                        return "<button type=\"button\" data-toggle=\"modal\" data-target=\"#productInfo\" class=\"btn btn-primary btn-xs\" onclick=\"productInfo(this)\">详情</button>";
+                    }
+                },
             ]
         });
     });
@@ -382,7 +413,6 @@
             }
         })
     }
-
 
 
     function saveAddressInfo() {
@@ -538,6 +568,103 @@
     function addOrderList() {
         table.ajax.reload();
     }
+
+    function productInfo(data) {
+        var rowIndex = $(data).parents("tr").index();
+        var id = $('#orderTable').DataTable().row(rowIndex).data().id;
+        var url = "/order/" + id;
+        console.log(url);
+        $.ajax({
+            type: "GET",
+            url: url,
+            contentType: "application/json",
+            sync: false,
+            success: function (result) {
+                if (result.code === 200) {
+                    setProductInfo(result.data);
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("未知错误");
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+            }
+        });
+    }
+
+    function setProductInfo(data) {
+        var table = $("#productInfoTable")
+        table.append("<p class=\"lead\">订单详情</p>");
+        table.append(
+            "<tr><th style=\"width:30%\">订单号:</th>" +
+            "<td></td>" +
+            "<td></td>" +
+            "<td>" + data.id + "</td>" +
+            "<tr><th style=\"width:30%\">餐厅:</th>" +
+            "<td></td>" +
+            "<td></td>" +
+            "<td>" + data.store.address + "</td>" +
+            "<tr><th style=\"width:30%\">送餐信息:</th>" +
+            "<td>" + data.address.receiverName + "</td>" +
+            "<td>" + data.address.receiverPhone + "</td>" +
+            "<td>" + data.address.receiverAddress + data.address.appendReceiverAddress + "</td>" +
+            "<tr><th style=\"width:30%\">用户:</th>" +
+            "<td></td>" +
+            "<td></td>" +
+            "<td>" + data.user.username + "</td>" +
+            "<tr><th style=\"width:30%\">类型:</th>" +
+            "<td></td>" +
+            "<td></td>" +
+            "<td>" + data.type + "</td>");
+        for (var i = 0; i < data.productOrders.length; i++) {
+            if (i === 0) {
+                table.append("<tr><th style=\"width:30%\">商品:</th>" +
+                    "<td>" + data.productOrders[i].name + "</td>" +
+                    "<td>" + data.productOrders[i].num + "个</td>" +
+                    "<td>" + data.productOrders[i].price + "元</td>");
+            } else {
+                table.append("<tr><th style=\"width:30%\"></th>" +
+                    "<td>" + data.productOrders[i].name + "</td>" +
+                    "<td>" + data.productOrders[i].price + "元</td>" +
+                    "<td>" + data.productOrders[i].num + "个</td>");
+            }
+        }
+        var sendtime = data.sendTime == null ? "无" : data.sendTime;
+        var createTime = data.createTime == null ? "无" : data.createTime;
+        var arriveTime = data.arriveTime == null ? "无" : data.arriveTime;
+        table.append("<tr><th style=\"width:30%\">总计:</th>" +
+            "<td></td>" +
+            "<td></td>" +
+            "<td>" + data.allPrice + "元</td>" +
+            "<tr><th style=\"width:30%\">餐具:</th>" +
+            "<td></td>" +
+            "<td></td>" +
+            "<td>" + data.tablewareNum + "个</td>" +
+            "<tr><th style=\"width:30%\">下单时间:</th>" +
+            "<td></td>" +
+            "<td></td>" +
+            "<td>" + createTime + "</td>" +
+            "<tr><th style=\"width:30%\">送货时间:</th>" +
+            "<td></td>" +
+            "<td></td>" +
+            "<td>" +sendtime +"</td>" +
+            "<tr><th style=\"width:30%\">完成时间:</th>" +
+            "<td></td>" +
+            "<td></td>" +
+            "<td>" + arriveTime + "</td>"
+        );
+    }
+
+
 </script>
 
 </html>

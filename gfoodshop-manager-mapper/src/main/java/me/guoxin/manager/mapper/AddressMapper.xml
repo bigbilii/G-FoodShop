@@ -10,6 +10,7 @@
         <result column="receiver_phone" jdbcType="VARCHAR" property="receiverPhone"/>
         <result column="receiver_address" jdbcType="VARCHAR" property="receiverAddress"/>
         <result column="append_receiver_address" jdbcType="VARCHAR" property="appendReceiverAddress"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
         <result column="longitude" jdbcType="DOUBLE" property="longitude"/>
         <result column="latitude" jdbcType="DOUBLE" property="latitude"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -19,11 +20,11 @@
     </resultMap>
 
     <sql id="Base_Column_List_WITHOUT_USER">
-        a.id, a.receiver_name, a.receiver_phone, a.receiver_address, a.append_receiver_address, a.longitude, a.latitude, a.create_time, a.update_time, a.user_id
+        a.id, a.receiver_name, a.receiver_phone, a.receiver_address, a.append_receiver_address, a.longitude, a.latitude, a.create_time, a.update_time, a.user_id, a.status
     </sql>
 
     <insert id="insert" parameterType="me.guoxin.pojo.GfsAddress">
-        INSERT INTO gfs_address(id, user_id,receiver_name,receiver_phone,receiver_address,append_receiver_address,longitude,latitude,city_id,create_time,update_time) VALUES (#{id},#{user.id},#{receiverName},#{receiverPhone},#{receiverAddress},#{appendReceiverAddress},#{longitude},#{latitude},#{city.id},#{createTime},#{updateTime})
+        INSERT INTO gfs_address(id, user_id,receiver_name,receiver_phone,receiver_address,append_receiver_address,longitude,latitude,city_id,create_time,update_time,status) VALUES (#{id},#{user.id},#{receiverName},#{receiverPhone},#{receiverAddress},#{appendReceiverAddress},#{longitude},#{latitude},#{city.id},#{createTime},#{updateTime},#{status})
     </insert>
 
     <select id="selectByUserId" resultMap="BaseResultMap">
@@ -32,15 +33,15 @@
         FROM
         gfs_address a
         JOIN  gfs_user u ON a.user_id = u.id
-        WHERE u.id = #{id}
+        WHERE u.id = #{id} AND a.status = 1
     </select>
 
     <delete id="delete" parameterType="java.lang.Long">
         DELETE from gfs_address where id = #{id}
     </delete>
 
-    <update id="setUserIdNull" parameterType="java.lang.Long">
-        UPDATE gfs_address SET user_id = NULL where id = #{id}
+    <update id="setUnable" parameterType="java.lang.Long">
+        UPDATE gfs_address SET status = 2 where id = #{id}
     </update>
     
     <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">

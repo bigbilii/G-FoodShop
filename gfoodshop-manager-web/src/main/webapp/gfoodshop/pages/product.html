@@ -88,8 +88,8 @@
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>
                     <ul class="treeview-menu">
-                        <li class="active"><a href="user.html"><i class="fa fa-circle-o"></i> 商品列表</a></li>
-                        <li><a href="online.html"><i class="fa fa-circle-o"></i> 商品列表</a></li>
+                        <li ><a href="product.html"><i class="fa fa-circle-o"></i> 商品列表</a></li>
+                        <li class="active"><a href="product.html"><i class="fa fa-circle-o"></i> 商品列表</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
@@ -409,7 +409,7 @@
             return;
         }
         var rowIndex = $(data).parents("tr").index();
-        var id = $('#onlineTable').DataTable().row(rowIndex).data().id;
+        var id = $('#productTable').DataTable().row(rowIndex).data().id;
         var datas = [];
         datas.push(id);
         deleteUser(datas);
@@ -423,7 +423,7 @@
         $('.checkchild').each(function () {
             if ($(this).is(':checked')) {
                 var rowIndex = $(this).parents("tr").index();
-                var id = $('#onlineTable').DataTable().row(rowIndex).data().id;
+                var id = $('#productTable').DataTable().row(rowIndex).data().id;
                 datas.push(id);
             }
         });
@@ -441,7 +441,7 @@
     function deleteUser(data) {
         $.ajax({
             type: "DELETE",
-            url: "/user/delete",
+            url: "/product/delete",
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function (result) {
@@ -699,6 +699,68 @@
         $("#categoriesU").find("option[text='" + product.categories.name + "']").attr("selected", true);
     }
 
+    function disable(data) {
+        var rowIndex = $(data).parents("tr").index();
+        var product = $('#productTable').DataTable().row(rowIndex).data();
+        $.ajax({
+            type: "PUT",
+            url: "/product/" + product.id + "/disable",
+            success: function (result) {
+                if (result.code === 200) {
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("获取权限信息发生未知错误");
+                    } else {
+                        alert(result.message);
+                    }
+                    window.location.reload();
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("获取权限信息发生未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+                window.location.reload();
+            }
+        });
+    }
+
+    function restore(data) {
+        var rowIndex = $(data).parents("tr").index();
+        var product = $('#productTable').DataTable().row(rowIndex).data();
+        $.ajax({
+            type: "PUT",
+            url: "/product/" + product.id + "/restore",
+            contentType: "application/json",
+            success: function (result) {
+                if (result.code === 200) {
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("获取权限信息发生未知错误");
+                    } else {
+                        alert(result.message);
+                    }
+                    window.location.reload();
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("获取权限信息发生未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+                window.location.reload();
+            }
+        });
+    }
 </script>
 </body>
 </html>

@@ -3,12 +3,10 @@ package me.guoxin.front.controller;
 import me.guoxin.dto.DataTableViewPageDTO;
 import me.guoxin.dto.OnlineUserDTO;
 import me.guoxin.manager.service.OrderService;
-import me.guoxin.pojo.DataTableDTO;
-import me.guoxin.pojo.GfsOrder;
-import me.guoxin.pojo.GfsProductCart;
-import me.guoxin.pojo.Result;
+import me.guoxin.pojo.*;
 import me.guoxin.utils.DataTableUtil;
 import me.guoxin.utils.ResultUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,5 +28,16 @@ public class OrderController {
         DataTableDTO dataTableDTO = DataTableUtil.getDataTableDTO(tbData);
         DataTableViewPageDTO<GfsOrder> list = orderService.getOrderListByUserId(id, dataTableDTO);
         return new ResultUtil<>().setData(list);
+    }
+
+    /**
+     * 查询商品信息
+     *
+     * @return
+     */
+    @GetMapping(value = "/order/{id}")
+    public Result select(@PathVariable("id") Long id) {
+        GfsOrder gfsOrder = orderService.getOrder(id);
+        return new ResultUtil<>().setData(gfsOrder);
     }
 }

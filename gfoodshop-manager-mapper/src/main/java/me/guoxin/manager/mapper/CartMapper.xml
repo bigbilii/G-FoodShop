@@ -47,7 +47,7 @@
     <insert id="insertCartProduct" parameterType="java.util.List">
         INSERT INTO gfs_cart_product(id, cart_id,product_id,num) VALUES
         <foreach collection="list" item="item" separator=",">
-            (#{item.myId} ,#{item.cart.id},#{item.id},#{item.num})
+            (null ,#{item.cart.id},#{item.id},#{item.num})
         </foreach>
     </insert>
 

@@ -20,20 +20,16 @@
         <association column="address_id" property="address" javaType="me.guoxin.pojo.GfsAddress" select="me.guoxin.manager.mapper.AddressMapper.selectById"/>
         <association column="store_id" property="store" javaType="me.guoxin.pojo.GfsStore" select="me.guoxin.manager.mapper.StoreMapper.selectById"/>
         <collection property="productOrders" ofType="me.guoxin.pojo.GfsProductOrder">
-            <id column="p_id" jdbcType="BIGINT" property="id"/>
             <result column="p_name" jdbcType="VARCHAR" property="name"/>
             <result column="p_price" jdbcType="DECIMAL" property="price"/>
             <result column="p_description" jdbcType="VARCHAR" property="description"/>
             <result column="p_image" jdbcType="VARCHAR" property="image"/>
-            <result column="p_status" jdbcType="INTEGER" property="status"/>
             <result column="p_num" jdbcType="INTEGER" property="num"/>
-            <result column="p_create_time" jdbcType="TIMESTAMP" property="createTime"/>
-            <result column="p_update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         </collection>
     </resultMap>
 
     <sql id="Base_Column_List">
-        o.id,o.user_id,o.store_id,o.address_id,o.box_price, o.all_price, o.delivery_price, o.tablewareNum, o.status, o.description, o.type, o.create_time, o.send_time, o.arrive_time, p.id as p_id, p.name as p_name, p.price as p_price, p.description as p_description,p.image as p_image,p.status as p_status,p.create_time as p_create_time,p.update_time as p_update_time,op.num as p_num
+        o.id,o.user_id,o.store_id,o.address_id,o.box_price, o.all_price, o.delivery_price, o.tablewareNum, o.status, o.description, o.type, o.create_time, o.send_time, o.arrive_time, op.product_name as p_name, op.product_price as p_price, op.product_description as p_description,op.product_image as p_image,op.num as p_num
     </sql>
 
     <sql id="Base_Column_List_Without_Product">
@@ -46,9 +42,9 @@
     </insert>
 
     <insert id="insertOrderProduct" parameterType="java.util.List">
-        INSERT INTO gfs_order_product(id, order_id,product_id,num) VALUES
+        INSERT INTO gfs_order_product(id, order_id,num,product_name,product_price,product_description,product_image) VALUES
         <foreach collection="list" item="item" separator=",">
-            (#{item.myId} ,#{item.order.id},#{item.id},#{item.num})
+            (null ,#{item.order.id},#{item.num},#{item.name},#{item.price},#{item.description},#{item.image})
         </foreach>
     </insert>
 
@@ -57,8 +53,15 @@
         <include refid="Base_Column_List"/>
         FROM gfs_order o
         LEFT JOIN gfs_order_product op ON op.order_id = o.id
-        left join gfs_product p on op.product_id = p.id
         where o.user_id = #{id}
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gfs_order o
+        LEFT JOIN gfs_order_product op ON op.order_id = o.id
+        where o.id = #{id}
     </select>
 
     <select id="selectByUserIdWithoutProduct" resultMap="BaseResultMap">

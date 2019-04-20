@@ -27,7 +27,7 @@ public class CategoriesController {
     @RequiresPermissions("categories:list")
     @GetMapping(value = "/categories/list")
     public Result select() {
-        List<GfsCategories> list = categoriesService.getCategoriesList();
+        List<GfsCategories> list = categoriesService.getCategoriesListWithoutProduct();
         return new ResultUtil<>().setData(list);
     }
 }
