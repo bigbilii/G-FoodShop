@@ -32,4 +32,16 @@
         JOIN gfs_city c ON a.city_id = c.id
         WHERE a.id = #{id}
     </select>
+
+    <insert id="insert" parameterType="me.guoxin.pojo.GfsCity" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO gfs_city(id,name) VALUES (null,#{name})
+    </insert>
+
+    <delete id="delete" parameterType="java.util.Set">
+        DELETE FROM gfs_city
+        WHERE id in
+        <foreach collection="set" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
 </mapper>

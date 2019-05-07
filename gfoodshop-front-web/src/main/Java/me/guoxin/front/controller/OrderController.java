@@ -40,4 +40,15 @@ public class OrderController {
         GfsOrder gfsOrder = orderService.getOrder(id);
         return new ResultUtil<>().setData(gfsOrder);
     }
+
+    /**
+     * 查询商品信息
+     *
+     * @return
+     */
+    @PutMapping(value = "/order/{id}/cancel")
+    public Result cancel(@PathVariable("id") Long id) {
+        orderService.cancel(id);
+        return new ResultUtil<>().setData(null,"取消成功");
+    }
 }

@@ -25,6 +25,7 @@ public class DataTableUtil {
         int start = Integer.valueOf(data.get("start").toString());
         // 获取length字段
         int length = Integer.valueOf(data.get("length").toString());
+
         Page page = new Page();
         page.setStart(start);
         page.setLength(length);
@@ -35,7 +36,20 @@ public class DataTableUtil {
             JSONObject orderData = (JSONObject) orderDatas.get(0);
             order = orderData.toJavaObject(Order.class);
         }
-
+        // 获取状态
+        Object s = data.get("status");
+        if (s != null) {
+            String ss = s.toString();
+            if (!"".equals(ss.trim())) {
+                int status = Integer.valueOf(ss);
+                if (status == 0) {
+                    dataTableDTO.setS(DateUtil.getTodayStartTime());
+                    dataTableDTO.setE(DateUtil.getTodayEndTime());
+                } else {
+                    dataTableDTO.setStatus(status);
+                }
+            }
+        }
         dataTableDTO.setSearch(search);
         dataTableDTO.setPage(page);
         dataTableDTO.setOrder(order);
@@ -95,6 +109,43 @@ public class DataTableUtil {
         String columnName = ProductColumn.getColunm(column);
         if (columnName == null || "".equalsIgnoreCase(columnName.trim())) {
             columnName = ProductColumn.ID.getColumn();
+        }
+        return pre + columnName + " " + dir;
+    }
+    /**
+     * 获取分类 DataTableDTO排序列表值
+     * @param order
+     * @return
+     */
+    public static String getCategoriesDataTableOrderBy(Order order) {
+        String pre = "c.";
+        if (order == null) {
+            return pre + CategoriesColumn.ID.getColumn() + " " + "desc";
+        }
+        int column = order.getColumn();
+        String dir = order.getDir();
+        String columnName = CategoriesColumn.getColunm(column);
+        if (columnName == null || "".equalsIgnoreCase(columnName.trim())) {
+            columnName = CategoriesColumn.ID.getColumn();
+        }
+        return pre + columnName + " " + dir;
+    }
+
+    /**
+     * 获取商家 DataTableDTO排序列表值
+     * @param order
+     * @return
+     */
+    public static String getStoreDataTableOrderBy(Order order) {
+        String pre = "s.";
+        if (order == null) {
+            return pre + StoreColumn.ID.getColumn() + " " + "desc";
+        }
+        int column = order.getColumn();
+        String dir = order.getDir();
+        String columnName = StoreColumn.getColunm(column);
+        if (columnName == null || "".equalsIgnoreCase(columnName.trim())) {
+            columnName = StoreColumn.ID.getColumn();
         }
         return pre + columnName + " " + dir;
     }

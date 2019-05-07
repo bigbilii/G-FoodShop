@@ -7,8 +7,10 @@ public class GfsStore {
     private String address;
     private String phone;
     private GfsCity city;
-    private double latitude;
-    private double longitude;
+    private Double latitude;
+    private Double longitude;
+    private Date createTime;
+    private Date updateTime;
 
     public Long getId() {
         return id;
@@ -42,20 +44,35 @@ public class GfsStore {
         this.city = city;
     }
 
-    public double getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public double getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 }

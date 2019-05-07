@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GFoodShop | 后台管理</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link href="../bower_components/bootstrap/dist/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Ionicons -->
+    <link href="https://cdn.bootcss.com/ionicons/2.0.0/css/ionicons.min.css" rel="stylesheet">
+    <!-- DataTables -->
+    <link href="../bower_components/datatables.net-bs/dataTables.bootstrap.min.css" rel="stylesheet">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
+
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <header class="main-header">
+        <!-- Logo -->
+        <a href="index.html" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>G</b>FS</span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>GFood</b>Shop</span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="hidden-xs" id="userNameA"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <p>用户名:<span id="userNameB"></span></p>
+                                <p>登录手机号:<span id="userPhone"></span></p>
+                                <p>身份:
+                                    <span id="userRole"></span>
+                                    <small id="userRoleName"></small>
+                                </p>
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-right">
+                                    <a href="/user/logout" class="btn btn-default btn-flat">退出登录</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu" data-widget="tree">
+                <li class="header">功能菜单</li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-dashboard"></i> <span>用户管理</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="user.html"><i class="fa fa-circle-o"></i> 用户列表</a></li>
+                        <li><a href="online.html"><i class="fa fa-circle-o"></i> 在线用户</a></li>
+                    </ul>
+                </li>
+                <li class="active treeview">
+                    <a href="#">
+                        <i class="fa fa-dashboard"></i> <span>商品管理</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="active"><a href="categories.html"><i class="fa fa-circle-o"></i> 分类列表</a></li>
+                        <li><a href="product.html"><i class="fa fa-circle-o"></i> 商品列表</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-dashboard"></i> <span>后台管理</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="order.html"><i class="fa fa-circle-o"></i> 订单列表</a></li>
+                        <li><a href="store.html"><i class="fa fa-circle-o"></i> 店铺列表</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                分类列表
+                <small>系统分类列表</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> 主页</a></li>
+                <li><a href="#">商品管理</a></li>
+                <li class="active">分类列表</li>
+            </ol>
+        </section>
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12" style="margin-left: 0;padding-left: 0">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">系统分类列表</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="box-body">
+                                <a class="btn btn-app" data-toggle="modal" data-target="#modal-categoriesInfo">
+                                    <i class="fa fa-plus-circle"></i> 添加
+                                </a>
+                                <a class="btn btn-app" onclick="deleteAll()">
+                                    <i class="fa  fa-trash-o"></i> 删除
+                                </a>
+                            </div>
+                            <table id="categoriesTable" class="table table-bordered table-striped datatables"
+                                   style="width:100%">
+                                <thead>
+                                <tr>
+                                    <th><input type="checkbox" class="checkall"/></th>
+                                    <th>id</th>
+                                    <th>名字</th>
+                                    <th>描述</th>
+                                    <th>创建时间</th>
+                                    <th>更新时间</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<!-- ./wrapper -->
+
+<div class="modal fade" id="modal-categoriesInfo">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">新增分类</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="categoriesForm">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="name">分类名</label>
+                            <input type="text" class="form-control" id="name" placeholder="输入分类名">
+                        </div>
+                        <div class="form-group">
+                            <label>描述</label>
+                            <textarea class="form-control" rows="3" placeholder="输入 ..." id="description"></textarea>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
+                <button type="submit" class="btn btn-primary send" onclick="addCategories()">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div>
+<!-- /.modal-dialog -->
+<div class="modal fade" id="modal-categoriesUpdateInfo">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">修改分类信息</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="categoriesUpdateInfoForm">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>分类名</label>
+                            <input type="text" class="form-control" id="nameU" placeholder="输入分类名">
+                        </div>
+                        <div class="form-group">
+                            <label>描述</label>
+                            <textarea class="form-control" rows="3" placeholder="输入 ..." id="descriptionU"></textarea>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
+                <button type="submit" class="btn btn-primary send" onclick="updateCategories()">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
+<!-- jQuery 3 -->
+<script src="../bower_components/jquery/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="../bower_components/bootstrap/dist/bootstrap.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+    $.widget.bridge('uibutton', $.ui.button);
+</script>
+<!-- Slimscroll -->
+<script src="https://cdn.bootcss.com/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js"></script>
+<!-- DataTables -->
+<script src="../bower_components/datatables.net/jquery.dataTables.min.js"></script>
+<script src="../bower_components/datatables.net-bs/dataTables.bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../dist/js/adminlte.min.js"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="../dist/js/pages/dashboard.js"></script>
+<!-- distpicker -->
+<script src="../plugins/distpicker/distpicker.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../dist/js/demo.js"></script>
+<!-- page script -->
+<script src="../dist/js/public.js"></script>
+<script src="../dist/js/common.js"></script>
+<!-- datatables 工具-->
+<script src="../dist/js/datatablesUtils.js"></script>
+<script>
+    var selectId;
+
+    /**
+     * 在线用户列表初始化
+     */
+    $('#categoriesTable').DataTable({
+        "searching": true,// 关闭自带搜索
+        "bLengthChange": false,// 关闭自带分页选项
+        "ordering": true,// 关闭排序
+        "serverSide": true,// 这个用来指明是通过服务端来取数据
+        "processing": true, // 打开数据加载时的等待效果
+        "order": [[1, "desc"]],// 设置默认排序为 id
+        "oLanguage": {
+            "sLengthMenu": "每页显示 _Menu_条记录",
+            "sInfo": "当前显示_START_到_END_条,共_TOTAL_条记录",
+            "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+            "sZeroRecords": "对不起,查询不到相关的数据",
+            "sInfoFiltered": "",// "(从 _MAX_ 条记录过滤)"此项为显示过滤信息
+            "oPaginate": {
+                "sFirst": "首页",
+                "sPrevious": "上一页",
+                "sNext": "下一页",
+                "sLast": "尾页"
+            },
+            "sSearch": "查找分类名"
+        },
+        "ajax": {
+            "url": "/categories/list/tb",
+            "type": "GET",
+            "data": function (d) {
+                return {"tbData": JSON.stringify(d)};
+            },
+            "dataSrc": function (json) {
+                json.iTotalDisplayRecords = json.data.iTotalDisplayRecords;
+                json.iTotalRecords = json.data.iTotalRecords;
+                return json.data.data;
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+            }
+        },
+        "columns": [
+            {
+                "sClass": "text-center",
+                "render": function (data, type, full, meta) {
+                    return '<input type="checkbox" class="checkchild"/>';
+                }, "bSortable": false
+            },
+            {"data": "id"},
+            {"data": "name"},
+            {"data": "description"},
+            {"data": "createTime"},
+            {"data": "updateTime"},
+            {
+                "data": function (data, type, full) {
+                    return "<div class=\"btn-group\">" +
+                        "<button type=\"button\" class=\"btn btn-primary btn-xs\" data-toggle=\"modal\" data-target=\"#modal-categoriesUpdateInfo\"  onclick=\"setUpdateInfo(this)\">修改</button>" +
+                        "<button type=\"button\" class=\"btn btn-primary btn-xs\" onclick=\"deleteOne(this)\">删除</button>" +
+                        "</div>";
+                }, "bSortable": false, "width": "120px",
+            }
+        ]
+    });
+
+    /**
+     * 删除一个
+     * @param data
+     */
+    function deleteOne(data) {
+        var del = confirm("是否删除");
+        if (!del) {
+            return;
+        }
+        var rowIndex = $(data).parents("tr").index();
+        var id = $('#categoriesTable').DataTable().row(rowIndex).data().id;
+        var datas = [];
+        datas.push(id);
+        var url = "/categories/delete";
+        sendDELETE(url, datas);
+    }
+
+    /**
+     * 删除多个
+     */
+    function deleteAll() {
+        var datas = [];
+        $('.checkchild').each(function () {
+            if ($(this).is(':checked')) {
+                var rowIndex = $(this).parents("tr").index();
+                var id = $('#categoriesTable').DataTable().row(rowIndex).data().id;
+                datas.push(id);
+            }
+        });
+        var del = confirm("是否删除");
+        if (!del) {
+            return;
+        }
+        var url = "/categories/delete";
+        sendDELETE(url, datas);
+    }
+
+
+    /**
+     * 添加
+     */
+    function addCategories() {
+        var name = $("#name").val();
+        var description = $("#description").val();
+        if (isNull(name)) {
+            alert("请输入名字!");
+            return;
+        }
+        var data = {"name": name};
+        data.description = description;
+        var url = "/categories/insert";
+        sendPOST(url, data);
+    }
+
+    /**
+     * 修改用户
+     */
+    function updateCategories() {
+        var name = $("#nameU").val();
+        var description = $("#descriptionU").val();
+        if (isNull(name)) {
+            alert("请输入名字!");
+            return;
+        }
+        var data = {"name": name};
+        data.description = description;
+        data.id = selectId;
+        var url = "/categories/update";
+        sendPUT(url, data);
+    }
+
+    /**
+     * 设置商品修改信息
+     * @param data
+     */
+    function setUpdateInfo(data) {
+        var rowIndex = $(data).parents("tr").index();
+        var categories = $('#categoriesTable').DataTable().row(rowIndex).data();
+        selectId = categories.id;
+        $("#nameU").val(categories.name);
+        $("#descriptionU").val(categories.description);
+    }
+
+</script>
+</body>
+</html>

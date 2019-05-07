@@ -52,9 +52,6 @@
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">个人信息</a>
-                                </div>
                                 <div class="pull-right">
                                     <a href="/user/logout" class="btn btn-default btn-flat">退出登录</a>
                                 </div>
@@ -88,17 +85,18 @@
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>
                     <ul class="treeview-menu">
-                        <li ><a href="product.html"><i class="fa fa-circle-o"></i> 商品列表</a></li>
+                        <li><a href="categories.html"><i class="fa fa-circle-o"></i> 分类列表</a></li>
                         <li class="active"><a href="product.html"><i class="fa fa-circle-o"></i> 商品列表</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-dashboard"></i> <span>订单管理</span>
+                        <i class="fa fa-dashboard"></i> <span>后台管理</span>
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="order.html"><i class="fa fa-circle-o"></i> 订单列表</a></li>
+                        <li><a href="store.html"><i class="fa fa-circle-o"></i> 店铺列表</a></li>
                     </ul>
                 </li>
             </ul>
@@ -297,19 +295,13 @@
 <script src="../dist/js/demo.js"></script>
 <!-- page script -->
 <script src="../dist/js/public.js"></script>
+<script src="../dist/js/common.js"></script>
 <!-- datatables 工具-->
 <script src="../dist/js/datatablesUtils.js"></script>
 <script>
     var selectId;
     var categoriesList;
     var nowImagePath;
-    /**
-     * 初始化加载函数
-     */
-    $(function () {
-        var userInfo = loadUserInfo();
-        showUserInfo(userInfo);
-    });
     /**
      * 在线用户列表初始化
      */
@@ -332,10 +324,10 @@
                 "sNext": "下一页",
                 "sLast": "尾页"
             },
-            "sSearch": "查找用户名或手机"
+            "sSearch": "查找id|名字|分类"
         },
         "ajax": {
-            "url": "/product/list",
+            "url": "/product/list/tb",
             "type": "GET",
             "data": function (d) {
                 return {"tbData": JSON.stringify(d)};
@@ -412,7 +404,8 @@
         var id = $('#productTable').DataTable().row(rowIndex).data().id;
         var datas = [];
         datas.push(id);
-        deleteUser(datas);
+        var url = "/product/delete";
+        sendDELETE(url, datas);
     }
 
     /**
@@ -431,46 +424,12 @@
         if (!del) {
             return;
         }
-        deleteUser(datas);
+        var url = "/product/delete";
+        sendDELETE(url, datas);
     }
 
     /**
-     * 删除请求
-     * @param data
-     */
-    function deleteUser(data) {
-        $.ajax({
-            type: "DELETE",
-            url: "/product/delete",
-            contentType: "application/json",
-            data: JSON.stringify(data),
-            success: function (result) {
-                if (result.code === 200) {
-                    alert(result.message);
-                    window.location.reload();
-                } else {
-                    if (isEmptyResult(result)) {
-                        alert("未知错误");
-                    } else {
-                        alert(result.message);
-                    }
-                    window.location.reload();
-                }
-            },
-            error: function (result) {
-                var resultMsg = result.responseJSON;
-                if (isEmptyResult(resultMsg)) {
-                    alert("未知错误");
-                } else {
-                    alert(resultMsg.message);
-                }
-                window.location.reload();
-            }
-        });
-    }
-
-    /**
-     * 添加用户
+     * 添加商品
      */
     function addProduct() {
         var name = $("#name").val();
@@ -500,11 +459,12 @@
         data.description = description;
         data.categories = categories;
         data.image = image;
-        sendAddProduct(data);
+        var url = "/product/insert";
+        sendPOST(url, data);
     }
 
     /**
-     * 修改用户
+     * 修改商品
      */
     function updateProduct() {
         var name = $("#nameU").val();
@@ -531,71 +491,8 @@
         data.categories = categories;
         data.image = image;
         data.id = selectId;
-        sendUpdateProduct(data);
-    }
-
-    /**
-     * 添加商品请求
-     */
-    function sendAddProduct(data) {
-        $.ajax({
-            type: "POST",
-            url: "/product/insert",
-            contentType: "application/json",
-            data: JSON.stringify(data),
-            success: function (result) {
-                if (result.code === 200) {
-                    alert(result.message);
-                    window.location.reload();
-                } else {
-                    if (isEmptyResult(result)) {
-                        alert("发生未知错误");
-                    } else {
-                        alert(result.message);
-                    }
-                }
-            },
-            error: function (result) {
-                var resultMsg = result.responseJSON;
-                if (isEmptyResult(resultMsg)) {
-                    alert("发生未知错误");
-                } else {
-                    alert(resultMsg.message);
-                }
-            }
-        })
-    }
-
-    /**
-     * 更新商品请求
-     */
-    function sendUpdateProduct(data) {
-        $.ajax({
-            type: "PUT",
-            url: "/product/update",
-            contentType: "application/json",
-            data: JSON.stringify(data),
-            success: function (result) {
-                if (result.code === 200) {
-                    alert(result.message);
-                    window.location.reload();
-                } else {
-                    if (isEmptyResult(result)) {
-                        alert("发生未知错误");
-                    } else {
-                        alert(result.message);
-                    }
-                }
-            },
-            error: function (result) {
-                var resultMsg = result.responseJSON;
-                if (isEmptyResult(resultMsg)) {
-                    alert("发生未知错误");
-                } else {
-                    alert(resultMsg.message);
-                }
-            }
-        })
+        var url = "/product/update";
+        sendPUT(url, data);
     }
 
     /**
@@ -696,70 +593,21 @@
         $("#nameU").val(product.name);
         $("#priceU").val(product.price);
         $("#descriptionU").val(product.description);
-        $("#categoriesU").find("option[text='" + product.categories.name + "']").attr("selected", true);
+        $("#categoriesU").find("option:contains(" + product.categories.name + ")").attr("selected", true);
     }
 
     function disable(data) {
         var rowIndex = $(data).parents("tr").index();
         var product = $('#productTable').DataTable().row(rowIndex).data();
-        $.ajax({
-            type: "PUT",
-            url: "/product/" + product.id + "/disable",
-            success: function (result) {
-                if (result.code === 200) {
-                    alert(result.message);
-                    window.location.reload();
-                } else {
-                    if (isEmptyResult(result)) {
-                        alert("获取权限信息发生未知错误");
-                    } else {
-                        alert(result.message);
-                    }
-                    window.location.reload();
-                }
-            },
-            error: function (result) {
-                var resultMsg = result.responseJSON;
-                if (isEmptyResult(resultMsg)) {
-                    alert("获取权限信息发生未知错误");
-                } else {
-                    alert(resultMsg.message);
-                }
-                window.location.reload();
-            }
-        });
+        var url = "/product/" + product.id + "/disable";
+        sendPUTNoData(url);
     }
 
     function restore(data) {
         var rowIndex = $(data).parents("tr").index();
         var product = $('#productTable').DataTable().row(rowIndex).data();
-        $.ajax({
-            type: "PUT",
-            url: "/product/" + product.id + "/restore",
-            contentType: "application/json",
-            success: function (result) {
-                if (result.code === 200) {
-                    alert(result.message);
-                    window.location.reload();
-                } else {
-                    if (isEmptyResult(result)) {
-                        alert("获取权限信息发生未知错误");
-                    } else {
-                        alert(result.message);
-                    }
-                    window.location.reload();
-                }
-            },
-            error: function (result) {
-                var resultMsg = result.responseJSON;
-                if (isEmptyResult(resultMsg)) {
-                    alert("获取权限信息发生未知错误");
-                } else {
-                    alert(resultMsg.message);
-                }
-                window.location.reload();
-            }
-        });
+        var url = "/product/" + product.id + "/restore";
+        sendPUTNoData(url);
     }
 </script>
 </body>

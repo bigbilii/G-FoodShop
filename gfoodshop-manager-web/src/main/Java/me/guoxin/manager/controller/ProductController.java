@@ -27,7 +27,7 @@ public class ProductController {
      * @return
      */
     @RequiresPermissions("product:list")
-    @GetMapping(value = "/product/list")
+    @GetMapping(value = "/product/list/tb")
     public Result select(String tbData) {
         DataTableDTO dataTableDTO = DataTableUtil.getDataTableDTO(tbData);
         DataTableViewPageDTO<GfsProduct> list = productService.getProductList(dataTableDTO);
@@ -59,6 +59,7 @@ public class ProductController {
         productService.updateProduct(gfsProduct);
         return new ResultUtil<>().setData(null, "修改商品成功");
     }
+
     /**
      * 删除用户
      *
@@ -71,6 +72,7 @@ public class ProductController {
         productService.deleteProduct(ids);
         return new ResultUtil<>().setData(null, "删除成功");
     }
+
     /**
      * 下架商品
      *

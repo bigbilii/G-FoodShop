@@ -145,7 +145,7 @@ public class UserController {
      * @throws Exception
      */
     @RequiresPermissions("user:list")
-    @PostMapping(value = "/user/list")
+    @PostMapping(value = "/user/list/tb")
     public Result listUsers(String tbData) {
         // 处理dataTable发送Json字符串参数
         DataTableDTO dataTableDTO = DataTableUtil.getDataTableDTO(tbData);

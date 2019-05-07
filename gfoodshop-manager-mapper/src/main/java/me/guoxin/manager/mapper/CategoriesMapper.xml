@@ -44,5 +44,51 @@
         FROM gfs_categories c
     </select>
 
+    <insert id="insert" parameterType="me.guoxin.pojo.GfsCategories">
+        INSERT INTO
+        gfs_categories(id,name,description,create_time,update_time)
+        values (null ,#{name},#{description},#{createTime},#{updateTime})
+    </insert>
+
+    <select id="select" resultMap="BaseResultMap" parameterType="String">
+        SELECT
+        <include refid="Base_Column_List_Without_Product"/>
+        FROM
+        gfs_categories c
+        <where>
+            <if test="search != null and search != ''">
+                c.name LIKE CONCAT('%',#{search},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="Long">
+        SELECT
+        <include refid="Base_Column_List_Without_Product"/>
+        FROM
+        gfs_categories c
+        WHERE c.id = #{id}
+    </select>
+    <select id="selectByName" resultMap="BaseResultMap" parameterType="String">
+        SELECT
+        <include refid="Base_Column_List_Without_Product"/>
+        FROM
+        gfs_categories c
+        WHERE c.name = #{name}
+    </select>
+
+    <update id="update" parameterType="me.guoxin.pojo.GfsProduct">
+        update gfs_categories c
+        set name = #{name}, description = #{description},  create_time = #{createTime}, update_time = #{updateTime}
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.util.List">
+        delete from gfs_categories where id in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+
 
 </mapper>

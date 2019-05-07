@@ -10,11 +10,14 @@
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
         <result column="longitude" jdbcType="DOUBLE" property="longitude"/>
         <result column="latitude" jdbcType="DOUBLE" property="latitude"/>
-        <association property="city" resultMap="me.guoxin.manager.mapper.CityMapper.BaseResultMap"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <association column="city_id" property="city" javaType="me.guoxin.pojo.GfsCity"
+                     select="me.guoxin.manager.mapper.CityMapper.selectById"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        s.id, s.address, s.phone, s.latitude, s.longitude
+        s.id, s.address, s.phone, s.latitude, s.longitude, s.create_time, s.update_time,s.city_id
     </sql>
 
     <select id="selectByCityId" resultMap="BaseResultMap">
@@ -31,5 +34,45 @@
         where id = #{id}
     </select>
 
+    <select id="selectByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+        select
+        <include refid="Base_Column_List"/>
+        from gfs_store s
+        where s.id in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
 
+    <insert id="insert" parameterType="me.guoxin.pojo.GfsStore">
+        INSERT INTO
+        gfs_store(id,address,phone,longitude,latitude,city_id,create_time,update_time)
+        values (null ,#{address},#{phone},#{longitude},#{latitude},#{city.id},#{createTime},#{updateTime})
+    </insert>
+
+    <select id="select" resultMap="BaseResultMap" parameterType="String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        gfs_store s
+        <where>
+            <if test="search != null and search != ''">
+                s.address LIKE CONCAT('%',#{search},'%')
+            </if>
+        </where>
+    </select>
+
+    <update id="update" parameterType="me.guoxin.pojo.GfsStore">
+        update gfs_store s
+        set address = #{address}, phone = #{phone}, longitude = #{longitude},latitude = #{latitude}, city_id = #{city.id},create_time = #{createTime}, update_time = #{updateTime}
+        where id = #{id}
+    </update>
+
+
+    <delete id="delete" parameterType="java.util.List">
+        delete from gfs_store where id in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
 </mapper>

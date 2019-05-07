@@ -42,7 +42,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void insertProduct(GfsProduct gfsProduct) {
-        if (gfsProduct.getPrice() <= 0) {
+        if (gfsProduct.getName() == null || "".equals(gfsProduct.getName().trim())) {
+            throw new IException("商品名不为空");
+        }
+        if (gfsProduct.getCategories() == null ) {
+            throw new IException("分类不为空");
+        }
+        if (gfsProduct.getImage() == null ) {
+            throw new IException("图片不为空");
+        }
+        if (gfsProduct.getPrice() == null||gfsProduct.getPrice() <= 0) {
             throw new IException("价格设置错误");
         }
         Date now = new Date();
@@ -87,7 +96,7 @@ public class ProductServiceImpl implements ProductService {
         }
         gfsProduct.setUpdateTime(new Date());
         if (productMapper.update(gfsProduct) != 1) {
-            throw new IException("修改用户失败！");
+            throw new IException("修改商品失败！");
         }
     }
 
@@ -95,12 +104,12 @@ public class ProductServiceImpl implements ProductService {
     public void disable(Long id) {
         List<GfsProduct> list = productMapper.selectById(id);
         if (list == null || list.isEmpty()) {
-            throw new IException("更新用户发生错误，可能用户被删除，请刷新重试！");
+            throw new IException("更新商品发生错误，可能商品被删除，请刷新重试！");
         }
         GfsProduct gfsProduct = list.get(0);
         gfsProduct.setStatus(2);
         if (productMapper.update(gfsProduct) != 1) {
-            throw new IException("修改用户失败！");
+            throw new IException("修改商品失败！");
         }
     }
 
@@ -108,12 +117,12 @@ public class ProductServiceImpl implements ProductService {
     public void restore(Long id) {
         List<GfsProduct> list = productMapper.selectById(id);
         if (list == null || list.isEmpty()) {
-            throw new IException("更新用户发生错误，可能用户被删除，请刷新重试！");
+            throw new IException("更新商品发生错误，可能商品被删除，请刷新重试！");
         }
         GfsProduct gfsProduct = list.get(0);
         gfsProduct.setStatus(1);
         if (productMapper.update(gfsProduct) != 1) {
-            throw new IException("修改用户失败！");
+            throw new IException("修改商品失败！");
         }
     }
 

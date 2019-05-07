@@ -52,9 +52,6 @@
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">个人信息</a>
-                                </div>
                                 <div class="pull-right">
                                     <a href="/user/logout" class="btn btn-default btn-flat">退出登录</a>
                                 </div>
@@ -88,17 +85,18 @@
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>
                     <ul class="treeview-menu">
-                        <li ><a href="product.html"><i class="fa fa-circle-o"></i> 商品列表</a></li>
-                        <li ><a href="product.html"><i class="fa fa-circle-o"></i> 商品列表</a></li>
+                        <li><a href="categories.html"><i class="fa fa-circle-o"></i> 分类列表</a></li>
+                        <li><a href="product.html"><i class="fa fa-circle-o"></i> 商品列表</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-dashboard"></i> <span>订单管理</span>
+                        <i class="fa fa-dashboard"></i> <span>后台管理</span>
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="order.html"><i class="fa fa-circle-o"></i> 订单列表</a></li>
+                        <li><a href="store.html"><i class="fa fa-circle-o"></i> 店铺列表</a></li>
                     </ul>
                 </li>
             </ul>
@@ -300,21 +298,14 @@
 <script src="../dist/js/demo.js"></script>
 <!-- page script -->
 <script src="../dist/js/public.js"></script>
+<script src="../dist/js/common.js"></script>
 <!-- datatables 工具-->
 <script src="../dist/js/datatablesUtils.js"></script>
 <script>
     var roles;
-
     var selectId;
     /**
-     * 初始化加载函数
-     */
-    $(function () {
-        var userInfo = loadUserInfo();
-        showUserInfo(userInfo);
-    });
-    /**
-     * 在线用户列表初始化
+     * 列表初始化
      */
     $('#onlineTable').DataTable({
         "searching": true,// 关闭自带搜索
@@ -338,7 +329,7 @@
             "sSearch": "查找用户名或手机"
         },
         "ajax": {
-            "url": "/user/list",
+            "url": "/user/list/tb",
             "type": "POST",
             "data": function (d) {
                 return {"tbData": JSON.stringify(d)};
@@ -418,7 +409,8 @@
         var id = $('#onlineTable').DataTable().row(rowIndex).data().id;
         var datas = [];
         datas.push(id);
-        deleteUser(datas);
+        var url = "/user/delete";
+        sendDELETE(url, datas);
     }
 
     /**
@@ -437,43 +429,10 @@
         if (!del) {
             return;
         }
-        deleteUser(datas);
+        var url = "/user/delete";
+        sendDELETE(url, datas);
     }
 
-    /**
-     * 删除请求
-     * @param data
-     */
-    function deleteUser(data) {
-        $.ajax({
-            type: "DELETE",
-            url: "/user/delete",
-            contentType: "application/json",
-            data: JSON.stringify(data),
-            success: function (result) {
-                if (result.code === 200) {
-                    alert(result.message);
-                    window.location.reload();
-                } else {
-                    if (isEmptyResult(result)) {
-                        alert("未知错误");
-                    } else {
-                        alert(result.message);
-                    }
-                    window.location.reload();
-                }
-            },
-            error: function (result) {
-                var resultMsg = result.responseJSON;
-                if (isEmptyResult(resultMsg)) {
-                    alert("未知错误");
-                } else {
-                    alert(resultMsg.message);
-                }
-                window.location.reload();
-            }
-        });
-    }
 
     /**
      * 添加用户
@@ -523,7 +482,8 @@
         data.phone = phone;
         data.sex = sex;
         data.role = role;
-        sendAddUser(data);
+        var url = "/user/insert";
+        sendPOST(url, data);
     }
 
     /**
@@ -556,71 +516,8 @@
         data.sex = sex;
         data.role = role;
         data.id = selectId;
-        sendUpdateUser(data);
-    }
-
-    /**
-     * 添加用户请求
-     */
-    function sendAddUser(data) {
-        $.ajax({
-            type: "POST",
-            url: "/user/insert",
-            contentType: "application/json",
-            data: JSON.stringify(data),
-            success: function (result) {
-                if (result.code === 200) {
-                    alert(result.message);
-                    window.location.reload();
-                } else {
-                    if (isEmptyResult(result)) {
-                        alert("发生未知错误");
-                    } else {
-                        alert(result.message);
-                    }
-                }
-            },
-            error: function (result) {
-                var resultMsg = result.responseJSON;
-                if (isEmptyResult(resultMsg)) {
-                    alert("发生未知错误");
-                } else {
-                    alert(resultMsg.message);
-                }
-            }
-        })
-    }
-
-    /**
-     * 更新用户请求
-     */
-    function sendUpdateUser(data) {
-        $.ajax({
-            type: "PUT",
-            url: "/user/update",
-            contentType: "application/json",
-            data: JSON.stringify(data),
-            success: function (result) {
-                if (result.code === 200) {
-                    alert(result.message);
-                    window.location.reload();
-                } else {
-                    if (isEmptyResult(result)) {
-                        alert("发生未知错误");
-                    } else {
-                        alert(result.message);
-                    }
-                }
-            },
-            error: function (result) {
-                var resultMsg = result.responseJSON;
-                if (isEmptyResult(resultMsg)) {
-                    alert("发生未知错误");
-                } else {
-                    alert(resultMsg.message);
-                }
-            }
-        })
+        var url = "/user/update";
+        sendPUT(url, data);
     }
 
     /**
@@ -680,75 +577,26 @@
         selectId = user.id;
         $("#usernameU").val(user.username);
         $("#phoneU").val(user.phone);
-        $("#roleU").find("option[text='" + user.role.name + "']").attr("selected", true);
+        $("#roleU").find("option:contains(" + user.role.name + ")").attr("selected", true);
         if (isNull(user.sex)) {
-            $("#sexU").find("option[text='未知']").attr("selected", true);
+            $("#sexU").find("option:contains('未知')").attr("selected", true);
         } else {
-            $("#roleU").find("option[text='" + user.sex + "']").attr("selected", true);
+            $("#sexU").find("option:contains(" + user.sex + ")").attr("selected", true);
         }
     }
 
     function disable(data) {
         var rowIndex = $(data).parents("tr").index();
         var user = $('#onlineTable').DataTable().row(rowIndex).data();
-        $.ajax({
-            type: "PUT",
-            url: "/user/" + user.id + "/disable",
-            success: function (result) {
-                if (result.code === 200) {
-                    alert(result.message);
-                    window.location.reload();
-                } else {
-                    if (isEmptyResult(result)) {
-                        alert("获取权限信息发生未知错误");
-                    } else {
-                        alert(result.message);
-                    }
-                    window.location.reload();
-                }
-            },
-            error: function (result) {
-                var resultMsg = result.responseJSON;
-                if (isEmptyResult(resultMsg)) {
-                    alert("获取权限信息发生未知错误");
-                } else {
-                    alert(resultMsg.message);
-                }
-                window.location.reload();
-            }
-        });
+        var url = "/user/" + user.id + "/disable";
+        sendPUTNoData(url);
     }
 
     function restore(data) {
         var rowIndex = $(data).parents("tr").index();
         var user = $('#onlineTable').DataTable().row(rowIndex).data();
-        $.ajax({
-            type: "PUT",
-            url: "/user/" + user.id + "/restore",
-            contentType: "application/json",
-            success: function (result) {
-                if (result.code === 200) {
-                    alert(result.message);
-                    window.location.reload();
-                } else {
-                    if (isEmptyResult(result)) {
-                        alert("获取权限信息发生未知错误");
-                    } else {
-                        alert(result.message);
-                    }
-                    window.location.reload();
-                }
-            },
-            error: function (result) {
-                var resultMsg = result.responseJSON;
-                if (isEmptyResult(resultMsg)) {
-                    alert("获取权限信息发生未知错误");
-                } else {
-                    alert(resultMsg.message);
-                }
-                window.location.reload();
-            }
-        });
+        var url = "/user/" + user.id + "/restore";
+        sendPUTNoData(url);
     }
 </script>
 </body>

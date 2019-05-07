@@ -53,9 +53,6 @@
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">个人信息</a>
-                                </div>
                                 <div class="pull-right">
                                     <a href="/user/logout" class="btn btn-default btn-flat">退出登录</a>
                                 </div>
@@ -89,17 +86,18 @@
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>
                     <ul class="treeview-menu">
-                        <li ><a href="product.html"><i class="fa fa-circle-o"></i> 商品列表</a></li>
-                        <li ><a href="product.html"><i class="fa fa-circle-o"></i> 商品列表</a></li>
+                        <li><a href="categories.html"><i class="fa fa-circle-o"></i> 分类列表</a></li>
+                        <li><a href="product.html"><i class="fa fa-circle-o"></i> 商品列表</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-dashboard"></i> <span>订单管理</span>
+                        <i class="fa fa-dashboard"></i> <span>后台管理</span>
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="order.html"><i class="fa fa-circle-o"></i> 订单列表</a></li>
+                        <li><a href="store.html"><i class="fa fa-circle-o"></i> 店铺列表</a></li>
                     </ul>
                 </li>
             </ul>
@@ -184,15 +182,8 @@
 <script src="../dist/js/demo.js"></script>
 <!-- page script -->
 <script src="../dist/js/public.js"></script>
+<script src="../dist/js/common.js"></script>
 <script>
-
-    /**
-     * 初始化加载函数
-     */
-    $(function(){
-        var userInfo = loadUserInfo();
-        showUserInfo(userInfo);
-    });
     /**
      * 在线用户列表初始化
      */
@@ -280,42 +271,8 @@
         var sessionId = $('#onlineTable').DataTable().row(rowIndex).data().sessionId;
         var datas = [];
         datas.push(sessionId);
-        kickout(datas);
-    }
-
-    /**
-     * 踢出请求
-     * @param data
-     */
-    function kickout(data) {
-        $.ajax({
-            type: "POST",
-            url: "/user/kickout/online",
-            contentType: "application/json",
-            data: JSON.stringify(data),
-            success: function (result) {
-                if (result.code === 200) {
-                    alert(result.message);
-                    window.location.reload();
-                } else {
-                    if (isEmptyResult(result)) {
-                        alert("未知错误");
-                    } else {
-                        alert(result.message);
-                    }
-                    window.location.reload();
-                }
-            },
-            error: function (result) {
-                var resultMsg = result.responseJSON;
-                if (isEmptyResult(resultMsg)) {
-                    alert("未知错误");
-                } else {
-                    alert(resultMsg.message);
-                }
-                window.location.reload();
-            }
-        });
+        var url = "/user/kickout/online";
+        sendPOST(url,datas);
     }
 </script>
 </body>

@@ -52,9 +52,6 @@
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">个人信息</a>
-                                </div>
                                 <div class="pull-right">
                                     <a href="/user/logout" class="btn btn-default btn-flat">退出登录</a>
                                 </div>
@@ -88,17 +85,18 @@
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>
                     <ul class="treeview-menu">
-                        <li ><a href="product.html"><i class="fa fa-circle-o"></i> 商品列表</a></li>
-                        <li ><a href="product.html"><i class="fa fa-circle-o"></i> 商品列表</a></li>
+                        <li><a href="categories.html"><i class="fa fa-circle-o"></i> 分类列表</a></li>
+                        <li><a href="product.html"><i class="fa fa-circle-o"></i> 商品列表</a></li>
                     </ul>
                 </li>
                 <li class="active treeview">
                     <a href="#">
-                        <i class="fa fa-dashboard"></i> <span>订单管理</span>
+                        <i class="fa fa-dashboard"></i> <span>后台管理</span>
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>
                     <ul class="treeview-menu">
                         <li class="active"><a href="order.html"><i class="fa fa-circle-o"></i> 订单列表</a></li>
+                        <li><a href="store.html"><i class="fa fa-circle-o"></i> 店铺列表</a></li>
                     </ul>
                 </li>
             </ul>
@@ -127,7 +125,6 @@
                     <div class="box">
                         <div class="box-header">
                             <h3 class="box-title">系统订单列表</h3>
-
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
@@ -169,53 +166,29 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- /.modal-dialog -->
-<div class="modal fade" id="modal-orderProducts">
-    <div class="modal-dialog">
+<div class="modal fade" id="productInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+     data-backdrop="static">
+    <div class="modal-dialog modal-address" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">修改用户信息</h4>
+            <div class="modal-header notitle" style="border-bottom: 0px">
             </div>
-            <div class="modal-body">
-                <form role="form" id="userUpdateInfoForm">
-                    <div class="box-body">
-                        <div class="form-group">
-                            <label for="usernameU"><i class="fa  fa-certificate text-red"></i>用户名</label>
-                            <input type="text" class="form-control" id="usernameU"
-                                   placeholder="输入用户名">
-                        </div>
-                        <div class="form-group">
-                            <label for="phoneU"><i class="fa  fa-certificate text-red"></i>登录电话</label>
-                            <input type="text" class="form-control" id="phoneU" placeholder="输入登录电话">
-                        </div>
-                        <div class="form-group">
-                            <label for="roleU">角色</label>
-                            <select class="form-control role" id="roleU">
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="sexU">性别</label>
-                            <select class="form-control" id="sexU">
-                                <option>保密</option>
-                                <option>男</option>
-                                <option>女</option>
-                            </select>
-                        </div>
+            <div class="modal-body" style="padding: 0">
+                <div data-include-rendered="rendered" data-include-loaded="loaded">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody id="productInfoTable">
+
+                            </tbody>
+                        </table>
                     </div>
-                </form>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
-                <button type="submit" class="btn btn-primary" onclick="updateUser()">确定</button>
             </div>
         </div>
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
 </div>
-<!-- /.modal -->
 
 
 <!-- jQuery 3 -->
@@ -245,19 +218,13 @@
 <script src="../dist/js/demo.js"></script>
 <!-- page script -->
 <script src="../dist/js/public.js"></script>
+<script src="../dist/js/common.js"></script>
 <!-- datatables 工具-->
 <script src="../dist/js/datatablesUtils.js"></script>
 <script>
     var roles;
 
     var selectId;
-    /**
-     * 初始化加载函数
-     */
-    $(function () {
-        var userInfo = loadUserInfo();
-        showUserInfo(userInfo);
-    });
     /**
      * 在线用户列表初始化
      */
@@ -283,7 +250,7 @@
             "sSearch": "查找订单号或用户名"
         },
         "ajax": {
-            "url": "/order/list",
+            "url": "/order/list/tb",
             "type": "GET",
             "data": function (d) {
                 return {"tbData": JSON.stringify(d)};
@@ -345,7 +312,7 @@
             {
                 "data": function (data, type, full) {
                     return "<div class=\"btn-group\">" +
-                        "<button type=\"button\" class=\"btn btn-primary btn-xs\" data-toggle=\"modal\" data-target=\"#modal-orderProducts\"  onclick=\"getOrderProducts(this)\">查看商品</button>" +
+                        "<button type=\"button\" class=\"btn btn-primary btn-xs\" data-toggle=\"modal\" data-target=\"#productInfo\"  onclick=\"productInfo(this)\">查看商品</button>" +
                         "<button type=\"button\" class=\"btn btn-primary btn-xs\" onclick=\"closeOrder(this)\">关闭订单</button>" +
                         "<button type=\"button\" class=\"btn btn-primary btn-xs\" onclick=\"deleteOne(this)\">删除</button>" +
                         "</div>";
@@ -367,7 +334,8 @@
         var id = $('#orderTable').DataTable().row(rowIndex).data().id;
         var datas = [];
         datas.push(id);
-        deleteOrder(datas);
+        var url = "/order/delete";
+        sendDELETE(url, datas);
     }
 
     /**
@@ -386,74 +354,117 @@
         if (!del) {
             return;
         }
-        deleteOrder(datas);
+        var url = "/order/delete";
+        sendDELETE(url, datas);
     }
 
-    /**
-     * 删除请求
-     * @param data
-     */
-    function deleteOrder(data) {
+    function closeOrder(data) {
+        var rowIndex = $(data).parents("tr").index();
+        var order = $('#orderTable').DataTable().row(rowIndex).data();
+        var url = "/order/" + order.id + "/close";
+        sendPUTNoData(url);
+    }
+
+
+    function productInfo(data) {
+        var rowIndex = $(data).parents("tr").index();
+        var id = $('#orderTable').DataTable().row(rowIndex).data().id;
+        var url = "/order/" + id;
+        console.log(url);
         $.ajax({
-            type: "DELETE",
-            url: "/order/delete",
+            type: "GET",
+            url: url,
             contentType: "application/json",
-            data: JSON.stringify(data),
+            sync: false,
             success: function (result) {
                 if (result.code === 200) {
-                    alert(result.message);
-                    window.location.reload();
+                    setProductInfo(result.data);
                 } else {
                     if (isEmptyResult(result)) {
                         alert("未知错误");
+                        window.location.reload();
                     } else {
                         alert(result.message);
+                        window.location.reload();
                     }
-                    window.location.reload();
                 }
             },
             error: function (result) {
                 var resultMsg = result.responseJSON;
                 if (isEmptyResult(resultMsg)) {
                     alert("未知错误");
+                    window.location.reload();
                 } else {
                     alert(resultMsg.message);
+                    window.location.reload();
                 }
-                window.location.reload();
             }
         });
     }
 
-    function closeOrder(data) {
-        var rowIndex = $(data).parents("tr").index();
-        var order = $('#orderTable').DataTable().row(rowIndex).data();
-        $.ajax({
-            type: "PUT",
-            url: "/order/" + order.id + "/close",
-            contentType: "application/json",
-            success: function (result) {
-                if (result.code === 200) {
-                    alert(result.message);
-                    window.location.reload();
-                } else {
-                    if (isEmptyResult(result)) {
-                        alert("获取权限信息发生未知错误");
-                    } else {
-                        alert(result.message);
-                    }
-                    window.location.reload();
-                }
-            },
-            error: function (result) {
-                var resultMsg = result.responseJSON;
-                if (isEmptyResult(resultMsg)) {
-                    alert("获取权限信息发生未知错误");
-                } else {
-                    alert(resultMsg.message);
-                }
-                window.location.reload();
+
+    function setProductInfo(data) {
+        var table = $("#productInfoTable");
+        table.empty();
+        table.append("<p class=\"lead\">订单详情</p>");
+        table.append(
+            "<tr><th style=\"width:30%\">订单号:</th>" +
+            "<td></td>" +
+            "<td></td>" +
+            "<td>" + data.id + "</td>" +
+            "<tr><th style=\"width:30%\">餐厅:</th>" +
+            "<td></td>" +
+            "<td></td>" +
+            "<td>" + data.store.address + "</td>" +
+            "<tr><th style=\"width:30%\">送餐信息:</th>" +
+            "<td>" + data.address.receiverName + "</td>" +
+            "<td>" + data.address.receiverPhone + "</td>" +
+            "<td>" + data.address.receiverAddress + data.address.appendReceiverAddress + "</td>" +
+            "<tr><th style=\"width:30%\">用户:</th>" +
+            "<td></td>" +
+            "<td></td>" +
+            "<td>" + data.user.username + "</td>" +
+            "<tr><th style=\"width:30%\">类型:</th>" +
+            "<td></td>" +
+            "<td></td>" +
+            "<td>" + data.type + "</td>");
+        for (var i = 0; i < data.productOrders.length; i++) {
+            if (i === 0) {
+                table.append("<tr><th style=\"width:30%\">商品:</th>" +
+                    "<td>" + data.productOrders[i].name + "</td>" +
+                    "<td>" + data.productOrders[i].num + "个</td>" +
+                    "<td>" + data.productOrders[i].price + "元</td>");
+            } else {
+                table.append("<tr><th style=\"width:30%\"></th>" +
+                    "<td>" + data.productOrders[i].name + "</td>" +
+                    "<td>" + data.productOrders[i].price + "元</td>" +
+                    "<td>" + data.productOrders[i].num + "个</td>");
             }
-        });
+        }
+        var sendtime = data.sendTime == null ? "无" : data.sendTime;
+        var createTime = data.createTime == null ? "无" : data.createTime;
+        var arriveTime = data.arriveTime == null ? "无" : data.arriveTime;
+        table.append("<tr><th style=\"width:30%\">总计:</th>" +
+            "<td></td>" +
+            "<td></td>" +
+            "<td>" + data.allPrice + "元</td>" +
+            "<tr><th style=\"width:30%\">餐具:</th>" +
+            "<td></td>" +
+            "<td></td>" +
+            "<td>" + data.tablewareNum + "个</td>" +
+            "<tr><th style=\"width:30%\">下单时间:</th>" +
+            "<td></td>" +
+            "<td></td>" +
+            "<td>" + createTime + "</td>" +
+            "<tr><th style=\"width:30%\">送货时间:</th>" +
+            "<td></td>" +
+            "<td></td>" +
+            "<td>" + sendtime + "</td>" +
+            "<tr><th style=\"width:30%\">完成时间:</th>" +
+            "<td></td>" +
+            "<td></td>" +
+            "<td>" + arriveTime + "</td>"
+        );
     }
 </script>
 </body>

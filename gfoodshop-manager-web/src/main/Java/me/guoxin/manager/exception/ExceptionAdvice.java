@@ -41,6 +41,19 @@ public class ExceptionAdvice {
     }
 
     /**
+     * 外键冲突
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(java.sql.SQLIntegrityConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result handleSQLIntegrityConstraintViolationException(Exception e) {
+        e.printStackTrace();
+        return new ResultUtil<>().setMsg(500, "不可删除，其有关联内容存在");
+    }
+
+    /**
      * 处理参数异常
      *
      * @param e

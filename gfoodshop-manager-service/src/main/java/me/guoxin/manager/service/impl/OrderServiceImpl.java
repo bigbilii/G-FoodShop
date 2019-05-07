@@ -13,9 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -113,8 +111,38 @@ public class OrderServiceImpl implements OrderService {
         startIndex = startIndex / length + 1;
         String OrderBy = DataTableUtil.getOrderDataTableOrderBy(dataTableDTO.getOrder());
         PageHelper.startPage(startIndex, length, OrderBy);
+        Map<String, Object> map = new HashMap<>();
+        map.put("search", dataTableDTO.getSearch());
+        List<GfsOrder> orders = orderMapper.select(map);
+        for (GfsOrder order : orders) {
+            if (order.getUser() != null)
+                order.getUser().maskPasswordInfo();
+            if (order.getAddress().getUser() != null)
+                order.getAddress().getUser().maskPasswordInfo();
+        }
+        PageInfo<GfsOrder> pageInfo = new PageInfo<>(orders);
+        long total = pageInfo.getTotal();
+        dtoDataTableViewPageDTO.setData(orders);
+        dtoDataTableViewPageDTO.setiTotalRecords(length);
+        dtoDataTableViewPageDTO.setiTotalDisplayRecords(total);
+        return dtoDataTableViewPageDTO;
+    }
 
-        List<GfsOrder> orders = orderMapper.select(dataTableDTO.getSearch());
+    @Override
+    public DataTableViewPageDTO<GfsOrder> getOrderList(DataTableDTO dataTableDTO, Long id) {
+        DataTableViewPageDTO<GfsOrder> dtoDataTableViewPageDTO = new DataTableViewPageDTO<>();
+        int startIndex = dataTableDTO.getPage().getStart();
+        int length = dataTableDTO.getPage().getLength();
+        startIndex = startIndex / length + 1;
+        String OrderBy = DataTableUtil.getOrderDataTableOrderBy(dataTableDTO.getOrder());
+        PageHelper.startPage(startIndex, length, OrderBy);
+        Map<String, Object> map = new HashMap<>();
+        map.put("search", dataTableDTO.getSearch());
+        map.put("storeId", id);
+        map.put("status", dataTableDTO.getStatus());
+        map.put("s", dataTableDTO.getS());
+        map.put("e", dataTableDTO.getE());
+        List<GfsOrder> orders = orderMapper.select(map);
         for (GfsOrder order : orders) {
             if (order.getUser() != null)
                 order.getUser().maskPasswordInfo();
@@ -132,8 +160,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public void deleteOrder(List<Long> ids) {
-        orderMapper.deleteOrders(ids);
         orderMapper.deleteOrdersProducts(ids);
+        orderMapper.deleteOrders(ids);
     }
 
     @Override
@@ -150,12 +178,80 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public void orderAccept(Long id) {
+        List<GfsOrder> list = orderMapper.selectByIdWithoutProduct(id);
+        if (list == null || list.isEmpty()) {
+            throw new IException("更新订单发生错误，请刷新重试！");
+        }
+        GfsOrder order = list.get(0);
+        if (order.getStatus() == GfsOrder.STATUS_CREATE) {
+            order.setStatus(GfsOrder.STATUS_MAKE);
+        } else {
+            throw new IException("订单当前状态不可接受");
+        }
+        if (orderMapper.updateOrder(order) != 1) {
+            throw new IException("修改订单失败！");
+        }
+    }
+
+    @Override
+    public void orderSend(Long id) {
+        List<GfsOrder> list = orderMapper.selectByIdWithoutProduct(id);
+        if (list == null || list.isEmpty()) {
+            throw new IException("更新订单发生错误，请刷新重试！");
+        }
+        GfsOrder order = list.get(0);
+        if (order.getStatus() == GfsOrder.STATUS_MAKE) {
+            order.setStatus(GfsOrder.STATUS_SEND);
+            order.setSendTime(new Date());
+        } else {
+            throw new IException("订单当前状态不可配送");
+        }
+        if (orderMapper.updateOrder(order) != 1) {
+            throw new IException("修改订单失败！");
+        }
+    }
+
+    @Override
+    public void orderDone(Long id) {
+        List<GfsOrder> list = orderMapper.selectByIdWithoutProduct(id);
+        if (list == null || list.isEmpty()) {
+            throw new IException("更新订单发生错误，请刷新重试！");
+        }
+        GfsOrder order = list.get(0);
+        if (order.getStatus() == GfsOrder.STATUS_SEND) {
+            order.setStatus(GfsOrder.STATUS_ARRIVE);
+            order.setArriveTime(new Date());
+        } else {
+            throw new IException("订单当前状态不可完成");
+        }
+        if (orderMapper.updateOrder(order) != 1) {
+            throw new IException("修改订单失败！");
+        }
+    }
+
+    @Override
     public GfsOrder getOrder(Long id) {
         List<GfsOrder> list = orderMapper.selectById(id);
         if (list == null || list.isEmpty()) {
             throw new IException("查询失败");
         }
         return list.get(0);
+    }
+
+    @Override
+    public void cancel(Long id) {
+        List<GfsOrder> list = orderMapper.selectById(id);
+        if (list == null || list.isEmpty()) {
+            throw new IException("服务器错误");
+        }
+        GfsOrder order = list.get(0);
+        if (order.getStatus() == GfsOrder.STATUS_CREATE) {
+            order.setStatus(GfsOrder.STATUS_CLOSE);
+            orderMapper.updateOrder(order);
+        } else {
+            throw new IException("当前订单状态不可取消");
+        }
     }
 }
 

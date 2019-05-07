@@ -11,6 +11,7 @@ public interface OrderService {
     /**
      * 用户插入
      * 订单数据
+     *
      * @param id
      * @param order
      */
@@ -18,7 +19,8 @@ public interface OrderService {
 
     /**
      * 获取订单信息
-     * @param id 用户id
+     *
+     * @param id           用户id
      * @param dataTableDTO
      * @return
      */
@@ -26,13 +28,24 @@ public interface OrderService {
 
     /**
      * 获取订单信息
+     *
      * @param dataTableDTO
      * @return
      */
     DataTableViewPageDTO<GfsOrder> getOrderList(DataTableDTO dataTableDTO);
 
     /**
+     * 获取订单信息
+     *
+     * @param dataTableDTO
+     * @param id           商店id
+     * @return
+     */
+    DataTableViewPageDTO<GfsOrder> getOrderList(DataTableDTO dataTableDTO, Long id);
+
+    /**
      * 删除订单信息
+     *
      * @param ids 需要删除订单id列表
      */
     void deleteOrder(List<Long> ids);
@@ -40,14 +53,29 @@ public interface OrderService {
     /**
      * 修改订单信息
      * 关闭订单
+     *
      * @param id
      */
     void orderClose(Long id);
 
     /**
      * 获取订单信息
+     *
      * @param id
      * @return
      */
     GfsOrder getOrder(Long id);
+
+    /**
+     * 取消订单
+     *
+     * @param id
+     */
+    void cancel(Long id);
+
+    void orderAccept(Long id);
+
+    void orderDone(Long id);
+
+    void orderSend(Long id);
 }

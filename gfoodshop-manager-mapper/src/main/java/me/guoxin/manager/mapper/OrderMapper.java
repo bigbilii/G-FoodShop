@@ -1,10 +1,12 @@
 package me.guoxin.manager.mapper;
 
+import me.guoxin.pojo.GfsOP;
 import me.guoxin.pojo.GfsOrder;
 import me.guoxin.pojo.GfsProductOrder;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface OrderMapper {
     /**
@@ -44,10 +46,10 @@ public interface OrderMapper {
 
     /**
      * 查询所有订单信息
-     * @param search 查询信息
+     * @param map 查询信息
      * @return
      */
-    List<GfsOrder> select(@Param("search")String search);
+    List<GfsOrder> select(Map<String, Object> map);
 
     /**
      * 删除订单信息
@@ -74,4 +76,10 @@ public interface OrderMapper {
      * @return
      */
     List<GfsOrder> selectById(Long id);
+
+    /**
+     * 查询订单商品信息
+     * @return
+     */
+    List<GfsOP> selectOP();
 }

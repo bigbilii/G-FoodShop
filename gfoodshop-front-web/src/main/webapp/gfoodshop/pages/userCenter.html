@@ -354,7 +354,8 @@
                 {"data": "createTime"},
                 {
                     "data": function (data, type, full) {
-                        return "<button type=\"button\" data-toggle=\"modal\" data-target=\"#productInfo\" class=\"btn btn-primary btn-xs\" onclick=\"productInfo(this)\">详情</button>";
+                        var info = "<button type=\"button\"  class=\"btn btn-primary btn-xs\" onclick=\"cancelOrder(this)\" style='margin: 5px'>取消订单</button>"
+                        return "<button type=\"button\" data-toggle=\"modal\" data-target=\"#productInfo\" class=\"btn btn-primary btn-xs\" onclick=\"productInfo(this)\">详情</button>" + info;
                     }
                 },
             ]
@@ -438,6 +439,10 @@
         }
         if (isNull(appAddress)) {
             alert("请输入详细地址!");
+            return;
+        }
+        if (selectAddress.location == null) {
+            alert("选择的地区错误!");
             return;
         }
         var data = {"receiverName": name};
@@ -549,8 +554,10 @@
                 } else {
                     if (isEmptyResult(result)) {
                         alert("发生未知错误");
+                        window.location.reload();
                     } else {
                         alert(result.message);
+                        window.location.reload();
                     }
                 }
             },
@@ -558,8 +565,10 @@
                 var resultMsg = result.responseJSON;
                 if (isEmptyResult(resultMsg)) {
                     alert("发生未知错误");
+                    window.location.reload();
                 } else {
                     alert(resultMsg.message);
+                    window.location.reload();
                 }
             }
         })
@@ -585,8 +594,10 @@
                 } else {
                     if (isEmptyResult(result)) {
                         alert("未知错误");
+                        window.location.reload();
                     } else {
                         alert(result.message);
+                        window.location.reload();
                     }
                 }
             },
@@ -594,15 +605,55 @@
                 var resultMsg = result.responseJSON;
                 if (isEmptyResult(resultMsg)) {
                     alert("未知错误");
+                    window.location.reload();
                 } else {
                     alert(resultMsg.message);
+                    window.location.reload();
+                }
+            }
+        });
+    }
+
+    function cancelOrder(data) {
+        var rowIndex = $(data).parents("tr").index();
+        var id = $('#orderTable').DataTable().row(rowIndex).data().id;
+        var url = "/order/" + id + "/cancel";
+        console.log(url);
+        $.ajax({
+            type: "PUT",
+            url: url,
+            contentType: "application/json",
+            sync: false,
+            success: function (result) {
+                if (result.code === 200) {
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("未知错误");
+                        window.location.reload();
+                    } else {
+                        alert(result.message);
+                        window.location.reload();
+                    }
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("未知错误");
+                    window.location.reload();
+                } else {
+                    alert(resultMsg.message);
+                    window.location.reload();
                 }
             }
         });
     }
 
     function setProductInfo(data) {
-        var table = $("#productInfoTable")
+        var table = $("#productInfoTable");
+        table.empty();
         table.append("<p class=\"lead\">订单详情</p>");
         table.append(
             "<tr><th style=\"width:30%\">订单号:</th>" +
@@ -656,7 +707,7 @@
             "<tr><th style=\"width:30%\">送货时间:</th>" +
             "<td></td>" +
             "<td></td>" +
-            "<td>" +sendtime +"</td>" +
+            "<td>" + sendtime + "</td>" +
             "<tr><th style=\"width:30%\">完成时间:</th>" +
             "<td></td>" +
             "<td></td>" +
