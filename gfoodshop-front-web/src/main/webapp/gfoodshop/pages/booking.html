@@ -103,65 +103,9 @@
                 </div>
                 <div class="dk-recom-box">
                     <p>为您推荐</p>
-                    <div class="dk-rem-main">
-                        <div class="product-box-rem">
-                            <div class="product-img">
-                                <img src="http://51wm-pic1.oss-cn-hangzhou.aliyuncs.com/product/c2096979-2cf3-47cf-9537-a8ccd3e87bc1.png">
-                            </div>
-                            <div style="overflow: hidden;padding:10px;">
-                                <div class="product-name-rem" title="玫瑰果子">
-                                    玫瑰果子
-                                </div>
-                                <div class="detail">
-                                </div>
-                            </div>
-                            <div avalonctrl="cart">
-                                <span style="position: relative;">
-
-			        	</span><span style="position: relative;">
-			        	</span>
-                            </div>
-                            <div class="product-price-rem">¥8</div>
-
-                            <div class="product-change relative">
-                                <div>
-                                    <button class="product-opr single-chose0">+</button>
-                                </div>
-                            </div>
-                            <div class="product-btn relative">
-
-                            </div>
-                        </div>
-                        <div class="product-box-rem">
-                            <div class="product-img">
-                                <img src="http://51wm-pic1.oss-cn-hangzhou.aliyuncs.com/product/6cb9dc18-a51f-4300-9a68-bd560247c3b0.png">
-                            </div>
-                            <div style="overflow: hidden;padding:10px;">
-                                <div class="product-name-rem" title="西柚果子">
-                                    西柚果子
-                                </div>
-                                <div class="detail">
-                                </div>
-                            </div>
-                            <div avalonctrl="cart">
-                                <span style="position: relative;">
-
-			        	</span><span style="position: relative;">
-			        	</span>
-                            </div>
-                            <div class="product-price-rem">
-                                ¥8
-                            </div>
-                            <div class="product-change relative">
-                                <div>
-                                    <button class="product-opr single-chose0">+</button>
-                                </div>
-                            </div>
-                            <div class="product-btn relative">
-                            </div>
-                        </div>
+                    <div class="dk-rem-main" id="recommend">
                     </div>
-                    <button class="togetmore-btn">更多</button>
+                    <button class="togetmore-btn" onclick="showMore()">更多</button>
                 </div>
             </div>
         </div>
@@ -189,6 +133,8 @@
 
 <script>
     var cart = new Array();
+    var recommend = new Array();
+    var nowCount = 0;
     $(function () {
         $.ajax({
             type: "GET",
@@ -215,21 +161,87 @@
                 }
             }
         });
+        $.ajax({
+            type: "GET",
+            url: "/" + userInfo.id + "/recommend",
+            contentType: "application/json",
+            success: function (result) {
+                if (result.code === 200) {
+                    recommend = result.data;
+                    makeRecommend();
+                } else {
+                    if (isEmptyResult(result)) {
+                        alert("未知错误");
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                var resultMsg = result.responseJSON;
+                if (isEmptyResult(resultMsg)) {
+                    alert("未知错误");
+                } else {
+                    alert(resultMsg.message);
+                }
+            }
+        });
 
     });
 
+    function showMore() {
+        if (recommend.length - nowCount == 1) {
+            nowCount += 1;
+        }
+        makeRecommend();
+    }
 
-    function addToCart(index, i) {
-        var product = categories[index].products[i];
-        var j = exitCart(product);
-        if (j >= 0) {
-            cart[j].num++;
-        } else {
-            product.num = 1;
-            cart.push(product);
+    function makeRecommend() {
+        $("#recommend").empty();
+        if (recommend.length == 0) {
+            return;
+        }
+        for (var i = 0; i < 2; i++) {
+            if (nowCount >= recommend.length) {
+                nowCount = 0;
+            }
+            $("#recommend").append("<div class=\"product-box-rem\">" +
+                "<div class=\"product-img\">" +
+                "<img src='" + recommend[nowCount].image + "'>" +
+                "</div>" +
+                "<div style=\"overflow: hidden;padding:10px;\">" +
+                "<div class=\"product-name-rem\">" +
+                recommend[nowCount].name +
+                "</div>" +
+                "<div class=\"detail\">" +
+                "</div>" +
+                "</div>" +
+                "<div avalonctrl=\"cart\">" +
+                "<span style=\"position: relative;\">" +
+                "</span><span style=\"position: relative;\">" +
+                "</span>" +
+                "</div>" +
+                "<div class=\"product-price-rem\">" +
+                "￥" +recommend[nowCount].price +
+                "</div>" +
+                "<div class=\"product-change relative\">" +
+                "<div>" +
+                "<button class=\"product-opr single-chose0\" onclick='addToCart("+nowCount+")'>+</button>" +
+                "</div>" +
+                "</div>" +
+                "<div class=\"product-btn relative\">" +
+                "</div>" +
+                "</div>");
+            nowCount++;
 
         }
-        flashCart();
+    }
+
+    function addToCart(i) {
+        var product = recommend[i];
+        product.num = 1;
+        cart.push(product);
+        settlement();
     }
 
     function flashCart() {

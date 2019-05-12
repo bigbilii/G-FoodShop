@@ -20,12 +20,12 @@ public class RecommendUtil {
         //Set<String> nowS = new HashSet<>();
         for (GfsOP op : ops) {
             if (op.getOrderId().equals(now)) {
-                nowS.append(op.getProductId()).append(";");
+                nowS.append(op.getProductId()).append(Apriori2.ITEM_SPLIT);
             }else {
                 matrix.add(nowS.toString());
                 nowS = new StringBuffer();
                 now = op.getOrderId();
-                nowS.append(op.getProductId()).append(";");
+                nowS.append(op.getProductId()).append(Apriori2.ITEM_SPLIT);
             }
         }
         return matrix;

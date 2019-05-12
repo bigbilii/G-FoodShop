@@ -4,22 +4,16 @@
 
 <mapper namespace="me.guoxin.manager.mapper.RecommendMapper">
 
-    <resultMap id="BaseResultMap" type="me.guoxin.pojo.GfsProduct">
+    <resultMap id="BaseResultMap" type="me.guoxin.pojo.GfsRule">
         <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="price" jdbcType="DOUBLE" property="price"/>
-        <result column="description" jdbcType="VARCHAR" property="description"/>
-        <result column="image" jdbcType="VARCHAR" property="image"/>
-        <result column="status" jdbcType="INTEGER" property="status"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <association property="categories" javaType="me.guoxin.pojo.GfsCategories">
-            <id column="c_id" jdbcType="INTEGER" property="id"/>
-            <result column="c_name" jdbcType="VARCHAR" property="name"/>
-            <result column="c_description" jdbcType="VARCHAR" property="description"/>
-            <result column="c_create_time" jdbcType="TIMESTAMP" property="createTime"/>
-            <result column="c_update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        </association>
+        <result column="products" jdbcType="VARCHAR" property="products"/>
+        <result column="confidence" jdbcType="DOUBLE" property="confidence"/>
+    </resultMap>
+
+    <resultMap id="BaseResultMap2" type="me.guoxin.pojo.GfsFrequent">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="products" jdbcType="VARCHAR" property="products"/>
+        <result column="support" jdbcType="DOUBLE" property="support"/>
     </resultMap>
 
     <update id="truncateFrequent">
@@ -32,15 +26,23 @@
 
     <insert id="insertFrequent" keyProperty="id" useGeneratedKeys="true" parameterType="java.util.HashMap">
         INSERT INTO gfs_frequent (id,products,support) VALUE
-        <foreach collection="content.entrySet()" index="key" item="value" separator="," >
+        <foreach collection="content.entrySet()" index="key" item="value" separator=",">
             (null,#{key},#{value})
         </foreach>
     </insert>
 
     <insert id="insertRules" keyProperty="id" useGeneratedKeys="true" parameterType="java.util.HashMap">
         INSERT INTO gfs_rules (id,products,confidence) VALUE
-        <foreach collection="content.entrySet()" index="key" item="value" separator="," >
+        <foreach collection="content.entrySet()" index="key" item="value" separator=",">
             (null,#{key},#{value})
         </foreach>
     </insert>
+
+    <select id="selectRules" resultMap="BaseResultMap">
+        SELECT id,products,confidence FROM gfs_rules
+    </select>
+
+    <select id="selectFrequent" resultMap="BaseResultMap2">
+        SELECT id,products,support FROM gfs_frequent
+    </select>
 </mapper>

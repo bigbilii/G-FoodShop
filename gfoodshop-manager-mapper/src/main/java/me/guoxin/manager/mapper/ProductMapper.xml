@@ -48,6 +48,17 @@
         WHERE p.id = #{id}
     </select>
 
+    <select id="selectByIds" resultMap="BaseResultMap" parameterType="java.util.Set">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM gfs_product p
+        LEFT JOIN gfs_categories c on p.categories_id = c.id
+        WHERE p.id in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
     <insert id="insert" parameterType="me.guoxin.pojo.GfsProduct">
         INSERT INTO
         gfs_product(id,name,price,description,image,status,categories_id,create_time,update_time)

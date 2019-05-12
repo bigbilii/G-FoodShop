@@ -10,8 +10,8 @@ public class Apriori2
 {
 	private final static int SUPPORT = 2; // 支持度阈值
 	private final static double CONFIDENCE = 0.7; // 置信度阈值
-	private final static String ITEM_SPLIT = ";"; // 项之间的分隔符
-	private final static String CON = "->"; // 项之间的分隔符
+	public final static String ITEM_SPLIT = ";"; // 项之间的分隔符
+	public final static String CON = "->"; // 项之间的分隔符
 	
 	/**
 	 * 算法主程序

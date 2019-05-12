@@ -5,6 +5,7 @@ import me.guoxin.pojo.GfsProduct;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ProductMapper {
     /**
@@ -42,4 +43,6 @@ public interface ProductMapper {
      * @param ids 商品id列表
      */
     void delete(List<Long> ids);
+
+    List<GfsProduct> selectByIds(@Param("list")Set<Long> resultIds);
 }
