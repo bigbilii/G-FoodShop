@@ -3,10 +3,10 @@ package me.guoxin.pojo;
 public enum StoreColumn {
     ID("id", 1),
     ADDRESS("address", 2),
-    PHONE("phone", 2),
-    CITY("city_id", 3),
-    CREATE_TIME("create_time", 4),
-    UPDATE_TIME("update_time", 5);
+    PHONE("phone", 3),
+    CITY("city_id", 4),
+    CREATE_TIME("create_time", 5),
+    UPDATE_TIME("update_time", 6);
 
 
     private String column;

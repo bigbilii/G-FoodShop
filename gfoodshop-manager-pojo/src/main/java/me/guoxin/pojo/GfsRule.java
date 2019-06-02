@@ -64,7 +64,7 @@ public class GfsRule {
             l.add(Long.valueOf(ll[i]));
         }
         Set<Long> r = new HashSet<Long>();
-        for (int i = 0; i < ll.length; i++) {
+        for (int i = 0; i < rr.length; i++) {
             r.add(Long.valueOf(rr[i]));
         }
         this.left = l;

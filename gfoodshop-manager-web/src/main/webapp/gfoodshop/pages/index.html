@@ -240,65 +240,6 @@
         </section>
 
         <section class="content">
-            <!--<div class="row">-->
-            <!--<div class="col-md-3 col-sm-6 col-xs-12">-->
-            <!--<div class="info-box">-->
-            <!--<span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>-->
-
-            <!--<div class="info-box-content">-->
-            <!--<span class="info-box-text">CPU Traffic</span>-->
-            <!--<span class="info-box-number">90<small>%</small></span>-->
-            <!--</div>-->
-            <!--&lt;!&ndash; /.info-box-content &ndash;&gt;-->
-            <!--</div>-->
-            <!--&lt;!&ndash; /.info-box &ndash;&gt;-->
-            <!--</div>-->
-            <!--&lt;!&ndash; /.col &ndash;&gt;-->
-            <!--<div class="col-md-3 col-sm-6 col-xs-12">-->
-            <!--<div class="info-box">-->
-            <!--<span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>-->
-
-            <!--<div class="info-box-content">-->
-            <!--<span class="info-box-text">Likes</span>-->
-            <!--<span class="info-box-number">41,410</span>-->
-            <!--</div>-->
-            <!--&lt;!&ndash; /.info-box-content &ndash;&gt;-->
-            <!--</div>-->
-            <!--&lt;!&ndash; /.info-box &ndash;&gt;-->
-            <!--</div>-->
-            <!--&lt;!&ndash; /.col &ndash;&gt;-->
-
-            <!--&lt;!&ndash; fix for small devices only &ndash;&gt;-->
-            <!--<div class="clearfix visible-sm-block"></div>-->
-
-            <!--<div class="col-md-3 col-sm-6 col-xs-12">-->
-            <!--<div class="info-box">-->
-            <!--<span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>-->
-
-            <!--<div class="info-box-content">-->
-            <!--<span class="info-box-text">Sales</span>-->
-            <!--<span class="info-box-number">760</span>-->
-            <!--</div>-->
-            <!--&lt;!&ndash; /.info-box-content &ndash;&gt;-->
-            <!--</div>-->
-            <!--&lt;!&ndash; /.info-box &ndash;&gt;-->
-            <!--</div>-->
-            <!--&lt;!&ndash; /.col &ndash;&gt;-->
-            <!--<div class="col-md-3 col-sm-6 col-xs-12">-->
-            <!--<div class="info-box">-->
-            <!--<span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>-->
-
-            <!--<div class="info-box-content">-->
-            <!--<span class="info-box-text">New Members</span>-->
-            <!--<span class="info-box-number">2,000</span>-->
-            <!--</div>-->
-            <!--&lt;!&ndash; /.info-box-content &ndash;&gt;-->
-            <!--</div>-->
-            <!--&lt;!&ndash; /.info-box &ndash;&gt;-->
-            <!--</div>-->
-            <!--&lt;!&ndash; /.col &ndash;&gt;-->
-            <!--</div>-->
-
 
             <div class="row">
                 <!-- Left col -->
@@ -333,6 +274,10 @@
                     <div class="box box-info">
                         <div class="box-header with-border">
                             <h3 class="box-title">关联规则</h3>
+                            <div class="box-footer clearfix">
+                                <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-right"
+                                   onclick="makeRecommend()">更新关联规则</a>
+                            </div>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
@@ -352,10 +297,11 @@
                             <!-- /.table-responsive -->
                         </div>
                         <!-- /.box-body -->
-                        <div class="box-footer clearfix">
-                            <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-right"
-                               onclick="makeRecommend()">更新关联规则</a>
-                        </div>
+
+                        <!--<div class="box-footer clearfix">-->
+                            <!--<a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-right"-->
+                               <!--onclick="makeOrder()">添加</a>-->
+                        <!--</div>-->
                         <!-- /.box-footer -->
                     </div>
                     <!-- /.box -->
@@ -406,6 +352,7 @@
 <script src="../dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
+<script src="../dist/js/public.js"></script>
 <script>
     $(function () {
         $.ajax({
@@ -499,6 +446,38 @@
                 }
             });
         }
+    }
+    function makeOrder() {
+
+
+            $.ajax({
+                type: "GET",
+                url: "/makeOrder",
+                sync: false,
+                success: function (result) {
+                    if (result.code === 200) {
+                    } else {
+                        if (isEmptyResult(result)) {
+                            alert("未知错误");
+                            window.location.reload();
+                        } else {
+                            alert(result.message);
+                            window.location.reload();
+                        }
+                    }
+                },
+                error: function (result) {
+                    var resultMsg = result.responseJSON;
+                    if (isEmptyResult(resultMsg)) {
+                        alert("未知错误");
+                        window.location.reload();
+                    } else {
+                        alert(resultMsg.message);
+                        window.location.reload();
+                    }
+                }
+            });
+
     }
 
     function showFrequent(data) {

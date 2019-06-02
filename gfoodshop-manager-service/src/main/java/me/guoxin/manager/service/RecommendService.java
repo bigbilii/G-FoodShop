@@ -14,4 +14,6 @@ public interface RecommendService {
     List<GfsFrequent> getFrequent();
 
     List<GfsRule> getRules();
+
+    void makeOrder();
 }

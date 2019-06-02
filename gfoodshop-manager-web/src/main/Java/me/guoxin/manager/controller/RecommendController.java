@@ -30,10 +30,16 @@ public class RecommendController {
         List<GfsFrequent> list = recommendService.getFrequent();
         return new ResultUtil<>().setData(list);
     }
+
     @GetMapping(value = "/getRules")
     public Result getRules() {
         List<GfsRule> list = recommendService.getRules();
         return new ResultUtil<>().setData(list);
+    }
+
+    @GetMapping(value = "/makeOrder")
+    public void makeOrder() {
+        recommendService.makeOrder();
     }
 
 }

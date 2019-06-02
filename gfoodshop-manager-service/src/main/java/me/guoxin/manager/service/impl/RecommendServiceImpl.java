@@ -1,10 +1,6 @@
 package me.guoxin.manager.service.impl;
 
-import me.guoxin.fp.FpNode;
-import me.guoxin.fp.Fptree;
-import me.guoxin.manager.mapper.OrderMapper;
-import me.guoxin.manager.mapper.ProductMapper;
-import me.guoxin.manager.mapper.RecommendMapper;
+import me.guoxin.manager.mapper.*;
 import me.guoxin.manager.service.CartService;
 import me.guoxin.manager.service.RecommendService;
 import me.guoxin.pojo.*;
@@ -26,6 +22,12 @@ public class RecommendServiceImpl implements RecommendService {
     RecommendMapper recommendMapper;
     @Resource
     ProductMapper productMapper;
+    @Resource
+    UserMapper userMapper;
+    @Resource
+    StoreMapper storeMapper;
+    @Resource
+    AddressMapper addressMapper;
 
     @Override
     @Transactional
@@ -67,6 +69,7 @@ public class RecommendServiceImpl implements RecommendService {
         // 获取关联规则
         List<GfsRule> rules = recommendMapper.selectRules();
         for (GfsRule rule : rules) {
+            // 解析规则
             rule.make();
             if (cartProductsId.containsAll(rule.getLeft())) {
                 resultIds.addAll(rule.getRight());
@@ -118,6 +121,61 @@ public class RecommendServiceImpl implements RecommendService {
     public List<GfsRule> getRules() {
         List<GfsRule> rules = recommendMapper.selectRules();
         return rules;
+    }
+
+    @Override
+    public void makeOrder() {
+        List<GfsUser> users = userMapper.listUsers(null);
+        List<GfsStore> stores = storeMapper.select(null);
+        List<GfsProduct> products = productMapper.select(null);
+        Random random = new Random();
+        for (int i = 0; i < 5000; i++) {
+            GfsOrder gfsOrder = new GfsOrder();
+
+            GfsUser user = users.get(random.nextInt(users.size()));
+            GfsStore store = stores.get(random.nextInt(stores.size()));
+            List<GfsAddress> addresses = addressMapper.selectByUserId(user.getId());
+            GfsAddress address = addresses.get(random.nextInt(addresses.size()));
+
+            int productNum = random.nextInt(4);
+            Set<GfsProductOrder> pp = new HashSet<>();
+            while (pp.size() <= productNum) {
+                GfsProduct ppp = products.get(random.nextInt(products.size()));
+                GfsProductOrder po = new GfsProductOrder();
+                po.hello(ppp);
+                po.setNum(random.nextInt(2));
+                po.setOrder(gfsOrder);
+                pp.add(po);
+            }
+            List<GfsProductOrder> orderProduct = new ArrayList<>();
+            orderProduct.addAll(pp);
+
+
+            gfsOrder.setBoxPrice(2);
+            double allPrice = 0;
+            for (GfsProduct product : orderProduct) {
+                allPrice += product.getPrice();
+            }
+            gfsOrder.setAllPrice(allPrice);
+            gfsOrder.setDeliveryPrice(8);
+            gfsOrder.setTablewareNum(2);
+            gfsOrder.setStatus(random.nextInt(5));
+            gfsOrder.setType("货到付款");
+            Date date = new Date();
+            gfsOrder.setSendTime(date);
+            gfsOrder.setArriveTime(date);
+            gfsOrder.setCreateTime(date);
+            gfsOrder.setUser(user);
+            gfsOrder.setAddress(address);
+            gfsOrder.setStore(store);
+            gfsOrder.setProductOrders(orderProduct);
+            if (orderMapper.insertOrder(gfsOrder) != 1) {
+                throw new IException("操作失败！");
+            }
+            if (orderMapper.insertOrderProduct(gfsOrder.getProductOrders()) != gfsOrder.getProductOrders().size()) {
+                throw new IException("操作失败！");
+            }
+        }
     }
 
 
