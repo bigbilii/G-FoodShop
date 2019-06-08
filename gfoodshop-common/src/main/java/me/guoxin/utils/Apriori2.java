@@ -1,14 +1,10 @@
 package me.guoxin.utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Apriori2 {
-    private final static int SUPPORT = 6; // 支持度阈值
-    private final static double CONFIDENCE = 0.7; // 置信度阈值
+    private final static int SUPPORT = 3; // 支持度阈值
+    private final static double CONFIDENCE = 0.4; // 置信度阈值
     public final static String ITEM_SPLIT = ";"; // 项之间的分隔符
     public final static String CON = "->"; // 项之间的分隔符
 
@@ -19,6 +15,8 @@ public class Apriori2 {
      * @return
      */
     public static Map<String, Integer> apriori(List<String> dataList) {
+        System.out.println(new Date());
+
         Map<String, Integer> stepFrequentSetMap = new HashMap<>();
         stepFrequentSetMap.putAll(findFrequentOneSets(dataList));
 
@@ -27,7 +25,7 @@ public class Apriori2 {
 
         while (stepFrequentSetMap != null && stepFrequentSetMap.size() > 0) {
             Map<String, Integer> candidateSetMap = aprioriGen(stepFrequentSetMap);
-
+            System.out.println(stepFrequentSetMap.size());
             Set<String> candidateKeySet = candidateSetMap.keySet();
 
             //扫描D，进行计数
@@ -36,13 +34,21 @@ public class Apriori2 {
                     boolean flag = true;
                     String[] strings = candidate.split(ITEM_SPLIT);
                     for (String string : strings) {
-                        if (data.indexOf(string + ITEM_SPLIT) == -1) {
+                        int index = data.indexOf(string + ITEM_SPLIT);
+                        if (index == -1) {
                             flag = false;
                             break;
+                        }else if (index > 0){
+                            index = data.indexOf(ITEM_SPLIT + string + ITEM_SPLIT);
+                            if (index == -1) {
+                                flag = false;
+                                break;
+                            }
                         }
                     }
-                    if (flag)
+                    if (flag) {
                         candidateSetMap.put(candidate, candidateSetMap.get(candidate) + 1);
+                    }
                 }
             }
 
@@ -57,7 +63,7 @@ public class Apriori2 {
             // 合并所有频繁集
             frequentSetMap.putAll(stepFrequentSetMap);
         }
-
+        System.out.println(new Date());
         return frequentSetMap;
     }
 
@@ -107,7 +113,6 @@ public class Apriori2 {
 
             for (String s2 : candidateSet) {
                 String[] strings2 = s2.split(ITEM_SPLIT);
-
 
                 boolean flag = true;
                 for (int i = 0; i < strings1.length - 1; i++) {
@@ -187,7 +192,6 @@ public class Apriori2 {
      *
      * @param sourceSet
      * @return 为了以后可以用在其他地方，这里我们不是用递归的方法
-     * 参考：http://blog.163.com/xiaohui_1123@126/blog/static/3980524020109784356915/
      * 思路：假设集合S（A,B,C,D），其大小为4，拥有2的4次方个子集，即0-15，二进制表示为0000，0001，...，1111。
      * 对应的子集为空集，{D}，...，{A,B,C,D}。
      */
@@ -245,38 +249,41 @@ public class Apriori2 {
 
 
     public static void main(String[] args) {
-        ArrayList<String> dataList = new ArrayList<>();
-        dataList.add("1;2;5;");
-        dataList.add("2;4;");
-        dataList.add("2;3;");
-        dataList.add("1;2;4;");
-        dataList.add("1;3;");
-        dataList.add("2;3;");
-        dataList.add("1;3;");
-        dataList.add("1;2;3;5;");
-        dataList.add("1;2;3;");
-
-        System.out.println("=数据集合==========");
-        for (String string : dataList) {
-            System.out.println(string);
-        }
-
-        Apriori2 apriori2 = new Apriori2();
-
-        System.out.println("=频繁项集==========");
-
-        Map<String, Integer> frequentSetMap = apriori2.apriori(dataList);
-        Set<String> keySet = frequentSetMap.keySet();
-        for (String key : keySet) {
-            System.out.println(key + " : " + frequentSetMap.get(key));
-        }
-
-        System.out.println("=关联规则==========");
-        Map<String, Double> relationRulesMap = apriori2.getRelationRules(frequentSetMap);
-        Set<String> rrKeySet = relationRulesMap.keySet();
-        for (String rrKey : rrKeySet) {
-            System.out.println(rrKey + "  :  " + relationRulesMap.get(rrKey));
-        }
+        //ArrayList<String> dataList = new ArrayList<>();
+        //dataList.add("1;2;5;");
+        //dataList.add("2;4;");
+        //dataList.add("2;3;");
+        //dataList.add("1;2;4;");
+        //dataList.add("1;3;");
+        //dataList.add("2;3;");
+        //dataList.add("1;3;");
+        //dataList.add("1;2;3;5;");
+        //dataList.add("1;2;3;");
+        //
+        //System.out.println("=数据集合==========");
+        //for (String string : dataList) {
+        //    System.out.println(string);
+        //}
+        //
+        //Apriori2 apriori2 = new Apriori2();
+        //
+        //System.out.println("=频繁项集==========");
+        //
+        //Map<String, Integer> frequentSetMap = apriori2.apriori(dataList);
+        //Set<String> keySet = frequentSetMap.keySet();
+        //for (String key : keySet) {
+        //    System.out.println(key + " : " + frequentSetMap.get(key));
+        //}
+        //
+        //System.out.println("=关联规则==========");
+        //Map<String, Double> relationRulesMap = apriori2.getRelationRules(frequentSetMap);
+        //Set<String> rrKeySet = relationRulesMap.keySet();
+        //for (String rrKey : rrKeySet) {
+        //    System.out.println(rrKey + "  :  " + relationRulesMap.get(rrKey));
+        //}
+        String a = "17;16;";
+        String b = ";6;";
+        System.out.println(a.indexOf(b));
 
     }
 }

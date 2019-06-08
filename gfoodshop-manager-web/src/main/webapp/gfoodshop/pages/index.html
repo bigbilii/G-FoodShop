@@ -287,7 +287,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>规则</th>
-                                        <th>支持度</th>
+                                        <th>置信度</th>
                                     </tr>
                                     </thead>
                                     <tbody id="rules">
@@ -352,7 +352,7 @@
 <script src="../dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
-<script src="../dist/js/public.js"></script>
+<script src="../dist/js/common.js"></script>
 <script>
     $(function () {
         $.ajax({
@@ -413,8 +413,8 @@
 
     function makeRecommend() {
         var sure = confirm("此操作将更新关联规则，旧规则无法找回，并且需要大量时间，是否继续操作");
-        $(".loader").css("display", "block");
         if (sure) {
+            $(".loader").css("display", "block");
             $.ajax({
                 type: "POST",
                 url: "/makeRecommend",

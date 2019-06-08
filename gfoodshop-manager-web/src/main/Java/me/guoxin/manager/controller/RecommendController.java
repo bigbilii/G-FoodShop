@@ -5,6 +5,7 @@ import me.guoxin.pojo.GfsFrequent;
 import me.guoxin.pojo.GfsRule;
 import me.guoxin.pojo.Result;
 import me.guoxin.utils.ResultUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,9 +20,9 @@ public class RecommendController {
     RecommendService recommendService;
 
     @PostMapping(value = "/makeRecommend")
+    @RequiresPermissions("rule:update")
     public Result makeRecommend() throws InterruptedException {
         recommendService.makeRecommend();
-        Thread.sleep(10000);
         return new ResultUtil<>().setData(null, "更新规则成功");
     }
 
