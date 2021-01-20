@@ -21,7 +21,7 @@
         <druid.version>1.1.10</druid.version>
         <jstl.version>1.2</jstl.version>
         <servlet-api-version>4.0.0</servlet-api-version>
-        <jackson.version>2.9.8</jackson.version>
+        <jackson.version>2.12.1</jackson.version>
         <jedis.version>2.9.0</jedis.version>
         <log4j.version>2.9.1</log4j.version>
         <slf4j.version>1.7.25</slf4j.version>
