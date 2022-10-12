@@ -25,7 +25,7 @@
         <jedis.version>2.9.0</jedis.version>
         <log4j.version>2.9.1</log4j.version>
         <slf4j.version>1.7.25</slf4j.version>
-        <shiro.version>1.4.0</shiro.version>
+        <shiro.version>1.10.0</shiro.version>
         <json.version>20160810</json.version>
         <fastjson.version>1.2.56</fastjson.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
